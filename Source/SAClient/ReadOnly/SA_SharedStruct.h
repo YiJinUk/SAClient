@@ -30,9 +30,17 @@ enum class ELanguage : uint8
 UENUM()
 enum class EWaveStatus : uint8
 {
-	MAIN, // 게임시작전 UI화면 입니다
+	TITLE, // 게임시작전 UI화면 입니다
 	PLAY, // 웨이브중
-	STAND_BY // 웨이브가 끝나고 쉬는시간
+	STAND_BY, // 웨이브가 끝나고 쉬는시간
+	GAMEOVER, // 게임오버
+};
+
+UENUM()
+enum class EUIMainStatus : uint8
+{
+	TITLE,
+	GAME,
 };
 
 USTRUCT(BlueprintType)

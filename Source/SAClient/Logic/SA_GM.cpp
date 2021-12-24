@@ -41,9 +41,6 @@ void ASA_GM::GMInit()
 	/*자주 사용하는 게임데이터를 캐싱합니다*/
 	_data_game_cache = _sagi->GetDataGame();
 
-	/*플레이어정보 초기화*/
-	_info_player.hp = _data_game_cache->GetPlayetHP();
-
 	/*맵에 생성된 플레이어를 가져옵니다*/
 	TArray<AActor*> arr_found_actor;
 	UGameplayStatics::GetAllActorsOfClass(wld, ASA_Player::StaticClass(), arr_found_actor);
@@ -89,7 +86,14 @@ void ASA_GM::GMInit()
 	//_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 
 	/*플레이어를 초기화합니다*/
+	InitInfoPlayer();
 	_pc->PCInit(this, _info_player);
+}
+
+void ASA_GM::InitInfoPlayer()
+{
+	/*플레이어정보 초기화*/
+	_info_player.hp = _data_game_cache->GetPlayetHP();
 }
 
 void ASA_GM::Tick(float DeltaTime)
@@ -133,13 +137,45 @@ void ASA_GM::Tick(float DeltaTime)
 
 		/*UI Update*/
 		_pc->PCUIUpdateCheck();
+
+		WaveEndCheck();
 	}
+}
+
+void ASA_GM::ReturnTitle()
+{
+	ASA_Monster* spawn_monster = nullptr;
+	for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
+	{
+		spawn_monster = _spawn_monsters[i];
+		_manager_pool->PoolInMonster(spawn_monster);
+	}
+	_spawn_monsters.Empty(100);
+
+	InitInfoPlayer();
+
+	SetWaveStatus(EWaveStatus::TITLE);
 }
 
 void ASA_GM::WaveStart()
 {
 	_tick = 0;
+
+	_pc->PCWaveStart();
+
 	SetWaveStatus(EWaveStatus::PLAY);
+}
+
+void ASA_GM::WaveEndCheck()
+{
+	/*플레이어의 체력이 0이하로 떨어지면 게임이 종료됩니다*/
+	if (_info_player.hp <= 0)
+	{
+		/*게임오버*/
+		SetWaveStatus(EWaveStatus::GAMEOVER);
+
+		_pc->PCWaveGameOver();
+	}
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

@@ -8,8 +8,7 @@
 #include "SA_PC.generated.h"
 
 class ASA_GM;
-class USA_UI_Game;
-class USA_UI_Title;
+class USA_UI_Main;
 
 /**
  * 
@@ -26,16 +25,16 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 		void PCBPInit();
 	UFUNCTION(BlueprintImplementableEvent)
-		USA_UI_Game* PCCreateWidgetGame();
-	UFUNCTION(BlueprintImplementableEvent)
-		USA_UI_Title* PCCreateWidgetTitle();
+		USA_UI_Main* PCCreateWidgetMain();
 private:
 	UPROPERTY()
 		ASA_GM* _sagm = nullptr;
 #pragma endregion
 
 #pragma region Wave
-
+public:
+	void PCWaveStart();
+	void PCWaveGameOver();
 #pragma endregion
 
 #pragma region UI
@@ -43,11 +42,10 @@ public:
 	//매 프레임이 종료될 때 마다 호출합니다. 변경된 정보만 업데이트 합니다
 	void PCUIUpdateCheck();
 
+	void PCReturnTitle();
 private:
 	UPROPERTY()
-		USA_UI_Game* _ui_game = nullptr;
-	UPROPERTY()
-		USA_UI_Title* _ui_title = nullptr;
+		USA_UI_Main* _ui_main = nullptr;
 	UPROPERTY()
 		FInfoPlayer _ui_info_player;
 #pragma endregion	

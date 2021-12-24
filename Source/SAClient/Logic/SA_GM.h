@@ -62,17 +62,26 @@ private:
 		ASA_Manager_Pool* _manager_pool = nullptr;
 #pragma endregion
 
+#pragma region Game
+public:
+	//웨이브종료후 다시 타이틀로 돌아갑니다
+	void ReturnTitle();
+#pragma endregion
+
 #pragma region Wave
 public:
 	void WaveStart();
+	//웨이브종료를 체크합니다
+	void WaveEndCheck();
 
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
 private:
-	EWaveStatus _wave_status = EWaveStatus::MAIN;
+	EWaveStatus _wave_status = EWaveStatus::TITLE;
 #pragma endregion
 
 #pragma region Player
 public:
+	void InitInfoPlayer();
 	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
 private:
 	UPROPERTY()
