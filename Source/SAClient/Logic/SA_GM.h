@@ -3,8 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ReadOnly/SA_SharedStruct.h"
 #include "GameFramework/GameModeBase.h"
 #include "SA_GM.generated.h"
+
+class USA_GI;
+class ASA_PC;
+class ASA_Player;
+class ASA_Monster;
+class ASA_SpawnPoint;
+class ASA_Manager_Pool;
 
 /**
  * 
@@ -13,5 +21,74 @@ UCLASS()
 class SACLIENT_API ASA_GM : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+#pragma region Debug
+public:
+	UFUNCTION(BlueprintCallable)
+		void DebugWaveStart();
+#pragma endregion
+
+#pragma region General
+private:
+	FORCEINLINE const int64 GetNewId();
+private:
+	UPROPERTY()
+		int64 _id_master = 0;
+	//1프레임마다 1씩 더해줍니다
+	UPROPERTY()
+		int64 _tick = 0;
+
+	UPROPERTY()
+		USA_GI* _sagi = nullptr;
+
+	FDataGame* _data_game_cache = nullptr;
+#pragma endregion
+
+#pragma region Init
+protected:
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+private:
+	void GMInit();
+#pragma endregion
+
+#pragma region Tick
+protected:
+	virtual void Tick(float DeltaTime) override;
+#pragma endregion
+
+#pragma region Manager
+private:
+	UPROPERTY()
+		ASA_Manager_Pool* _manager_pool = nullptr;
+#pragma endregion
+
+#pragma region Wave
+public:
+	void WaveStart();
+
+	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
+private:
+	EWaveStatus _wave_status = EWaveStatus::MAIN;
+#pragma endregion
+
+#pragma region Player
+private:
+	UPROPERTY()
+		ASA_PC* _player_pc = nullptr;
+	UPROPERTY()
+		ASA_Player* _player_chr = nullptr;
+	UPROPERTY()
+		FVector _player_loc = FVector::ZeroVector;
+#pragma endregion
+
+#pragma region Monster
+private:
+	FORCEINLINE ASA_SpawnPoint* GetRandomSpawnPoint();
+private:
+	UPROPERTY()
+		TArray<ASA_Monster*> _spawn_monsters;
+	UPROPERTY()
+		TArray<ASA_SpawnPoint*> _mob_spawn_points;
+#pragma endregion
+
 };

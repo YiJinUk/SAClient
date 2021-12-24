@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ReadOnly/SA_SharedStruct.h"
 #include "Engine/GameInstance.h"
 #include "SA_GI.generated.h"
 
@@ -13,5 +14,25 @@ UCLASS()
 class SACLIENT_API USA_GI : public UGameInstance
 {
 	GENERATED_BODY()
-	
+
+#pragma region Init
+protected:
+	USA_GI();
+public:
+	void GIInit();
+#pragma endregion
+
+#pragma region DataFind,Get
+public:
+	FDataMonster* FindDataMonsterByCode(const FString& str_code_monster);
+
+	FORCEINLINE FDataGame* GetDataGame();
+private:
+	UPROPERTY()
+		UDataTable* _dt_game = nullptr;
+	UPROPERTY()
+		UDataTable* _dt_monster = nullptr;
+
+		FDataGame* _data_game = nullptr;
+#pragma endregion
 };
