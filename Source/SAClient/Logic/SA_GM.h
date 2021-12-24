@@ -72,13 +72,19 @@ private:
 #pragma endregion
 
 #pragma region Player
+public:
+	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
 private:
 	UPROPERTY()
-		ASA_PC* _player_pc = nullptr;
+		ASA_PC* _pc = nullptr;
 	UPROPERTY()
 		ASA_Player* _player_chr = nullptr;
+	//몬스터들의 도착점입니다
 	UPROPERTY()
 		FVector _player_loc = FVector::ZeroVector;
+
+	UPROPERTY()
+		FInfoPlayer _info_player;
 #pragma endregion
 
 #pragma region Monster

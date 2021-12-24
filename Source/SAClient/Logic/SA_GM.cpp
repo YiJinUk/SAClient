@@ -21,7 +21,7 @@ void ASA_GM::DebugWaveStart()
 void ASA_GM::PostLogin(APlayerController* NewPlayer)
 {
 	/*앱을 최초로 실행시켰습니다 초기화를 진행합니다*/
-	_player_pc = Cast<ASA_PC>(NewPlayer);
+	_pc = Cast<ASA_PC>(NewPlayer);
 
 	GMInit();
 }
@@ -40,6 +40,9 @@ void ASA_GM::GMInit()
 
 	/*자주 사용하는 게임데이터를 캐싱합니다*/
 	_data_game_cache = _sagi->GetDataGame();
+
+	/*플레이어정보 초기화*/
+	_info_player.hp = _data_game_cache->GetPlayetHP();
 
 	/*맵에 생성된 플레이어를 가져옵니다*/
 	TArray<AActor*> arr_found_actor;
@@ -84,6 +87,9 @@ void ASA_GM::GMInit()
 	//s_param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	//_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
+
+	/*플레이어를 초기화합니다*/
+	_pc->PCInit(this, _info_player);
 }
 
 void ASA_GM::Tick(float DeltaTime)
@@ -120,9 +126,13 @@ void ASA_GM::Tick(float DeltaTime)
 			{
 				//Arrive!
 				_manager_pool->PoolInMonster(spawn_monster);
+				--_info_player.hp;
 				_spawn_monsters.RemoveAt(i);
 			}
 		}
+
+		/*UI Update*/
+		_pc->PCUIUpdateCheck();
 	}
 }
 
@@ -134,4 +144,5 @@ void ASA_GM::WaveStart()
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }
 ASA_SpawnPoint* ASA_GM::GetRandomSpawnPoint() { return _mob_spawn_points[UKismetMathLibrary::RandomInteger(_mob_spawn_points.Num())]; }
+const FInfoPlayer& ASA_GM::GetInfoPlayer() const { return _info_player; }
 void ASA_GM::SetWaveStatus(const EWaveStatus e_wave_status) { _wave_status = e_wave_status; }

@@ -44,8 +44,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Wave")
 		int32 _dest_radius = 100;
 
+	UPROPERTY(EditAnywhere, Category = "Player")
+		int32 _player_hp = 100;
 public:
 	FORCEINLINE const int32 GetDestRadius() const { return _dest_radius; }
+	FORCEINLINE const int32 GetPlayetHP() const { return _player_hp; }
 };
 
 USTRUCT(BlueprintType)
@@ -76,4 +79,14 @@ public:
 		FVector velocity = FVector::ZeroVector;
 	UPROPERTY()
 		FRotator rot = FRotator::ZeroRotator;
+};
+
+USTRUCT()
+struct FInfoPlayer
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		int32 hp = 0;
 };
