@@ -82,8 +82,13 @@ public:
 	UPROPERTY()
 		int32 dmg = 0;
 
+	UPROPERTY()
+		int32 as = 0;
+	UPROPERTY()
+		int32 as_wait = 0;
 public:
 	FORCEINLINE const int32 GetDMGTotal() const { return dmg; }
+	FORCEINLINE const int32 GetASTotal() const { return as; }
 };
 
 USTRUCT(BlueprintType)

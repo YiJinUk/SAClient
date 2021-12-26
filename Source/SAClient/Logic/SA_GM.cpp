@@ -86,7 +86,7 @@ void ASA_GM::GMInit()
 	/*발사체 정보를 초기화합니다*/
 	_proj_loc_start_3d = FVector(_player_loc.X, _player_loc.Y, _data_game_cache->GetPROJZFixed());
 	_proj_loc_start_2d = FVector2D(_player_loc.X, _player_loc.Y);
-
+	_proj_velocity = FVector2D(1.f, 0.f);
 
 	/*플레이어를 초기화합니다*/
 	InitInfoPlayer();
@@ -98,6 +98,9 @@ void ASA_GM::InitInfoPlayer()
 	/*플레이어정보 초기화*/
 	_info_player.hp = _data_game_cache->GetPlayetHP();
 	_info_player.dmg = 1;
+	_info_player.as = 60;
+
+	_info_player.as_wait = 0;
 }
 
 void ASA_GM::Tick(float DeltaTime)
@@ -120,6 +123,16 @@ void ASA_GM::Tick(float DeltaTime)
 				_spawn_monsters.Add(spawn_monster);
 			}
 		}
+
+		/*발사체 발사 검사*/
+		++_info_player.as_wait;
+		if (_info_player.as_wait >= _info_player.GetASTotal())
+		{
+			/*발사*/
+			_info_player.as_wait = 0;
+			ShootPROJ();
+		}
+
 
 		ASA_Monster* spawn_monster = nullptr;
 		for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
@@ -219,14 +232,19 @@ void ASA_GM::WaveEndCheck()
 	}
 }
 
-void ASA_GM::ShootPROJ(const FVector& v_dest)
+void ASA_GM::ShootPROJ()
 {
 	/*도착점을 통해 velocity를 계산합니다*/
-	FVector2D v_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
+	//FVector2D v_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
 
 	ASA_Projectile* spawn_proj = _manager_pool->PoolGetPROJByCode("PROJ00001");
-	spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d, v_velocity, USA_FunctionLibrary::GetLookRotatorYawByV3(_proj_loc_start_3d, v_dest));
+	spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d, _proj_velocity, 0.f);
 	_spawn_projs.Add(spawn_proj);
+}
+
+void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
+{
+	_proj_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

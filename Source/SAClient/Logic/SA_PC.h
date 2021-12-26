@@ -20,6 +20,7 @@ class SACLIENT_API ASA_PC : public APlayerController
 	
 protected:
 	ASA_PC();
+	virtual void Tick(float DeltaTime) override;
 
 #pragma region Init
 public:
@@ -45,7 +46,10 @@ protected:
 	virtual void SetupInputComponent() override;
 private:
 	void TapPressed();
+	void TapReleased();
 private:
+	UPROPERTY()
+		bool _is_tap_pressed = false;
 	UPROPERTY()
 		FHitResult _tap_hit = FHitResult();
 #pragma endregion

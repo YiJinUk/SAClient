@@ -111,7 +111,8 @@ private:
 
 #pragma region Projectile
 public:
-	void ShootPROJ(const FVector& v_dest);
+	void ShootPROJ();
+	void ChangePROJVelocity(const FVector& v_dest);
 private:
 	UPROPERTY()
 		TArray<ASA_Projectile*> _spawn_projs;
@@ -122,5 +123,8 @@ private:
 	//발사체가 시작되는 위치입니다 2D
 	UPROPERTY()
 		FVector2D _proj_loc_start_2d = FVector2D::ZeroVector;
+	//발사체의 velocity입니다
+	UPROPERTY()
+		FVector2D _proj_velocity = FVector2D::ZeroVector;
 #pragma endregion
 };

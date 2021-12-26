@@ -12,6 +12,16 @@ ASA_PC::ASA_PC()
 	bShowMouseCursor = true;
 }
 
+void ASA_PC::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (_is_tap_pressed && _sagm)
+	{
+		GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, false, _tap_hit);
+		_sagm->ChangePROJVelocity(_tap_hit.Location);
+	}
+}
+
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayer& s_info_player)
 {
 	_sagm = sagm;
@@ -39,10 +49,12 @@ void ASA_PC::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	InputComponent->BindAction("Tap", IE_Pressed, this, &ASA_PC::TapPressed);
+	InputComponent->BindAction("Tap", IE_Released, this, &ASA_PC::TapReleased);
 }
 
 void ASA_PC::TapPressed()
 {
+	_is_tap_pressed = true;
 	/*
 	* 발사체를 발사합니다
 	* 시작점 : 플레이어 캐릭터
@@ -53,8 +65,13 @@ void ASA_PC::TapPressed()
 	*/
 	//USA_FunctionLibrary::GPrintString(100, 2, "TapPressed");
 	/*탭 위치 가져오기 ECC_GameTraceChannel3=PLANE*/
-	GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, false, _tap_hit);
-	_sagm->ShootPROJ(_tap_hit.Location);
+	//GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, false, _tap_hit);
+	//_sagm->ShootPROJ(_tap_hit.Location);
+}
+
+void ASA_PC::TapReleased()
+{
+	_is_tap_pressed = false;
 }
 
 void ASA_PC::PCUIUpdateCheck()
