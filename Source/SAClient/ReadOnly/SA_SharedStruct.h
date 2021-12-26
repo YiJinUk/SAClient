@@ -98,10 +98,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Stat")
 		int32 _hp = 100;
+	UPROPERTY(EditAnywhere, Category = "Stat")
+		int16 _move_speed = 500;
 public:
 	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
 	FORCEINLINE const int32& GetHP() const { return _hp; }
+	FORCEINLINE const int16& GetMoveSpeed() const { return _move_speed; }
 };
 
 USTRUCT()
@@ -124,6 +127,9 @@ public:
 		int32 hp = 0;
 	UPROPERTY()
 		int32 hp_max = 0;
+
+	UPROPERTY()
+		int16 move_speed = 0;
 };
 
 USTRUCT(BlueprintType)

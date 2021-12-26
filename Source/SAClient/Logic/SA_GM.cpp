@@ -155,12 +155,18 @@ void ASA_GM::Tick(float DeltaTime)
 				spawn_proj = _spawn_projs[i];
 
 				/*Find Target*/
-				for (ASA_Monster* monster : _spawn_monsters)
+				for (int32 j = _spawn_monsters.Num() - 1; j >= 0; --j)
 				{
-					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
+					spawn_monster = _spawn_monsters[j];
+
+					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
 					{
 						//Arrive!
-						_manager_battle->BattleCalcStart(spawn_proj, monster, _info_player.GetDMGTotal());
+						if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player.GetDMGTotal()))
+						{
+							_manager_pool->PoolInMonster(spawn_monster);
+							_spawn_monsters.RemoveAt(j);
+						}
 
 						_manager_pool->PoolInPROJ(spawn_proj);
 						_spawn_projs.RemoveAt(i);

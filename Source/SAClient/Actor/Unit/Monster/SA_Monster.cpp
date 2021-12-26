@@ -34,6 +34,7 @@ void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
 	if (!s_data_monster) return;
 	_info_monster.code = s_data_monster->GetCode();
 	_info_monster.hp_max = s_data_monster->GetHP();
+	_info_monster.move_speed = s_data_monster->GetMoveSpeed();
 
 	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
 }
@@ -61,7 +62,7 @@ void ASA_Monster::MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FV
 
 void ASA_Monster::MOBMove(const float f_delta_time)
 {
-	AddActorWorldOffset(_info_monster.velocity * 1000 * f_delta_time);
+	AddActorWorldOffset(_info_monster.velocity * _info_monster.move_speed * f_delta_time);
 }
 
 void ASA_Monster::MOBSetPoolActive(const bool b_is_active)
@@ -91,7 +92,7 @@ int32 ASA_Monster::MOBChangeHP(const int32 i_change_hp, const bool b_is_add)
 		_info_monster.hp -= i_change_hp;
 		if (_info_monster.hp < 0)
 		{
-			_info_monster.hp = _info_monster.hp_max;
+			_info_monster.hp = 0;
 		}
 	}
 
