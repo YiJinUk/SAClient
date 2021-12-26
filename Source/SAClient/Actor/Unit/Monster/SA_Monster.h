@@ -47,7 +47,7 @@ public:
 	* b_is_add T : i_change_hp만큼 체력을 추가합니다
 	* return : 계산결과 남은 체력값 입니다
 	*/
-	int32 MOBChangeHP(const int32 i_change_hp, const bool b_is_add = false);
+	int32 MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const bool b_is_add = false);
 
 	FORCEINLINE const FInfoMonster& GetInfoMonster() const;
 private:

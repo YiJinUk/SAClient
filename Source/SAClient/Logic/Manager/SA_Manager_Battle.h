@@ -6,6 +6,7 @@
 #include "Logic/Manager/SA_Manager_Master.h"
 #include "SA_Manager_Battle.generated.h"
 
+class ASA_GM;
 class ASA_Projectile;
 class ASA_Monster;
 
@@ -16,7 +17,13 @@ UCLASS()
 class SACLIENT_API ASA_Manager_Battle : public ASA_Manager_Master
 {
 	GENERATED_BODY()
-	
+
+public:
+	void BattleInit(ASA_GM* sagm);
+private:
+	UPROPERTY()
+		ASA_GM* _sagm = nullptr;
+
 public:
 	/* return T : 몬스터를 처치하는데 성공했습니다*/
 	bool BattleCalcStart(ASA_Projectile* proj, ASA_Monster* monster, const int32 i_dmg);

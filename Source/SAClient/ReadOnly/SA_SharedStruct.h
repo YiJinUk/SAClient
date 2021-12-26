@@ -123,6 +123,26 @@ struct FInfoPlayer
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY()
+		int32 _gold = 0;
+public:
+	void ChangeGold(const int32 i_gold, const bool b_is_add)
+	{
+		if (b_is_add)
+			_gold += i_gold;
+		else
+			_gold -= i_gold;
+	}
+
+	FORCEINLINE const int32 GetGold() const { return _gold; }
+};
+
+USTRUCT()
+struct FInfoPlayerCharacter
+{
+	GENERATED_BODY()
+
 public:
 	UPROPERTY()
 		int32 hp = 0;
@@ -152,11 +172,15 @@ protected:
 		int32 _hp = 100;
 	UPROPERTY(EditAnywhere, Category = "Stat")
 		int16 _move_speed = 500;
+
+	UPROPERTY(EditAnywhere, Category = "Bonus")
+		int32 _bonus_gold = 1;
 public:
 	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
 	FORCEINLINE const int32& GetHP() const { return _hp; }
 	FORCEINLINE const int16& GetMoveSpeed() const { return _move_speed; }
+	FORCEINLINE const int32& GetBonusGold() const { return _bonus_gold; }
 };
 
 USTRUCT()
@@ -182,6 +206,9 @@ public:
 
 	UPROPERTY()
 		int16 move_speed = 0;
+
+	UPROPERTY()
+		int32 bonus_gold = 0;
 };
 
 USTRUCT(BlueprintType)

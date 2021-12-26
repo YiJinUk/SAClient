@@ -24,7 +24,7 @@ protected:
 
 #pragma region Init
 public:
-	void PCInit(ASA_GM* sagm, FInfoPlayer& s_info_player);
+	void PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr);
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 		void PCBPInit();
@@ -64,6 +64,11 @@ private:
 	UPROPERTY()
 		USA_UI_Main* _ui_main = nullptr;
 	UPROPERTY()
-		FInfoPlayer _ui_info_player;
-#pragma endregion	
+		FInfoPlayerCharacter _ui_info_player_chr;
+#pragma endregion
+
+#pragma region UI.Player
+public:
+	void PCUIUpdatePlayerGold(const int32 i_gold_update);
+#pragma endregion
 };

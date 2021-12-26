@@ -11,6 +11,7 @@ class USA_UI_Game;
 class USA_UI_Title;
 class ASA_PC;
 class UWidgetSwitcher;
+class UTextBlock;
 
 /**
  * 
@@ -29,6 +30,9 @@ private:
 		USA_UI_Game* _game = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		USA_UI_Title* _title = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _gold = nullptr;
+
 	UPROPERTY()
 		EUIMainStatus _main_status = EUIMainStatus::TITLE;
 
@@ -39,7 +43,12 @@ public:
 	void UIMainWaveGameOver();
 	void UIMainRetunTitle();
 
-	void UIPlayerUpdateCheck(const FInfoPlayer& s_info_player_new, const FInfoPlayer& s_info_player_old);
+	void UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old);
 private:
 	void UISwitchMainWidget(const EUIMainStatus e_ui_main_status);
+
+
+
+public:
+	void UIMainUpdatePlayerGold(const int32 i_gold_update);
 };

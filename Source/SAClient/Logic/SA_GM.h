@@ -98,10 +98,10 @@ private:
 		FDataWave _data_wave_current;
 #pragma endregion
 
-#pragma region Player
+#pragma region PlayerChr
 public:
-	void InitInfoPlayer();
-	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
+	void InitInfoPlayerChr();
+	FORCEINLINE const FInfoPlayerCharacter& GetInfoPlayerChr() const;
 private:
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
@@ -112,7 +112,7 @@ private:
 		FVector _player_loc = FVector::ZeroVector;
 
 	UPROPERTY()
-		FInfoPlayer _info_player;
+		FInfoPlayerCharacter _info_player_chr;
 #pragma endregion
 
 #pragma region Monster
@@ -146,5 +146,16 @@ private:
 	//발사체의 velocity입니다
 	UPROPERTY()
 		FVector2D _proj_velocity = FVector2D::ZeroVector;
+#pragma endregion
+
+
+#pragma region Player
+public:
+	void PlayerChangeGold(const int32 i_gold, const bool b_is_add);
+
+	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
+private:
+	UPROPERTY()
+		FInfoPlayer _info_player;
 #pragma endregion
 };

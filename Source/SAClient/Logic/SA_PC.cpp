@@ -22,16 +22,20 @@ void ASA_PC::Tick(float DeltaTime)
 	}
 }
 
-void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayer& s_info_player)
+void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 {
 	_sagm = sagm;
-	_ui_info_player = s_info_player;
+	_ui_info_player_chr = s_info_player_chr;
+	const FInfoPlayer& s_info_player = _sagm->GetInfoPlayer();
 	//블루프린트에서 초기화해야하는것은 초기화합니다
 	PCBPInit();
 
-	//위젯을 생성합니다
+	//위젯을 생성 및 초기화합니다
 	_ui_main = PCCreateWidgetMain();
 	_ui_main->UIMainInit();
+
+	/*위젯을 세부적으로 초기화합니다*/
+	_ui_main->UIMainUpdatePlayerGold(s_info_player.GetGold());
 }
 
 void ASA_PC::PCWaveStart()
@@ -64,13 +68,18 @@ void ASA_PC::TapReleased()
 
 void ASA_PC::PCUIUpdateCheck()
 {
-	const FInfoPlayer& s_info_player = _sagm->GetInfoPlayer();
-	_ui_main->UIPlayerUpdateCheck(s_info_player, _ui_info_player);
+	const FInfoPlayerCharacter& s_info_player_chr = _sagm->GetInfoPlayerChr();
+	_ui_main->UIPlayerUpdateCheck(s_info_player_chr, _ui_info_player_chr);
 
-	_ui_info_player = s_info_player;
+	//_ui_info_player_chr = s_info_player_chr;
 }
 void ASA_PC::PCReturnTitle()
 {
 	_sagm->ReturnTitle();
 	_ui_main->UIMainRetunTitle();
+}
+
+void ASA_PC::PCUIUpdatePlayerGold(const int32 i_gold_update)
+{
+	_ui_main->UIMainUpdatePlayerGold(i_gold_update);
 }

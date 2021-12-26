@@ -82,6 +82,7 @@ void ASA_GM::GMInit()
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
+	_manager_battle->BattleInit(this);
 
 	/*발사체 정보를 초기화합니다*/
 	_proj_loc_start_3d = FVector(_player_loc.X, _player_loc.Y, _data_game_cache->GetPROJZFixed());
@@ -89,18 +90,18 @@ void ASA_GM::GMInit()
 	_proj_velocity = FVector2D(1.f, 0.f);
 
 	/*플레이어를 초기화합니다*/
-	InitInfoPlayer();
-	_pc->PCInit(this, _info_player);
+	InitInfoPlayerChr();
+	_pc->PCInit(this, _info_player_chr);
 }
 
-void ASA_GM::InitInfoPlayer()
+void ASA_GM::InitInfoPlayerChr()
 {
 	/*플레이어정보 초기화*/
-	_info_player.hp = _data_game_cache->GetPlayetHP();
-	_info_player.dmg = 1;
-	_info_player.as = 60;
+	_info_player_chr.hp = _data_game_cache->GetPlayetHP();
+	_info_player_chr.dmg = 1;
+	_info_player_chr.as = 60;
 
-	_info_player.as_wait = 0;
+	_info_player_chr.as_wait = 0;
 }
 
 void ASA_GM::Tick(float DeltaTime)
@@ -115,11 +116,11 @@ void ASA_GM::Tick(float DeltaTime)
 		TickSpawnMonster();
 
 		/*발사체 발사 검사*/
-		++_info_player.as_wait;
-		if (_info_player.as_wait >= _info_player.GetASTotal())
+		++_info_player_chr.as_wait;
+		if (_info_player_chr.as_wait >= _info_player_chr.GetASTotal())
 		{
 			/*발사*/
-			_info_player.as_wait = 0;
+			_info_player_chr.as_wait = 0;
 			ShootPROJ();
 		}
 
@@ -137,7 +138,7 @@ void ASA_GM::Tick(float DeltaTime)
 			{
 				//Arrive!
 				_manager_pool->PoolInMonster(spawn_monster);
-				--_info_player.hp;
+				--_info_player_chr.hp;
 				_spawn_monsters.RemoveAt(i);
 			}
 		}
@@ -165,7 +166,7 @@ void ASA_GM::Tick(float DeltaTime)
 					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
 					{
 						//Arrive!
-						if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player.GetDMGTotal()))
+						if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
 						{
 							_manager_pool->PoolInMonster(spawn_monster);
 							_spawn_monsters.RemoveAt(j);
@@ -216,7 +217,7 @@ void ASA_GM::TickSpawnMonster()
 void ASA_GM::TickCheckWaveEnd()
 {
 	/*플레이어의 체력이 0이하로 떨어지면 게임이 종료됩니다*/
-	if (_info_player.hp <= 0)
+	if (_info_player_chr.hp <= 0)
 	{
 		/*게임오버*/
 		SetWaveStatus(EWaveStatus::GAMEOVER);
@@ -240,7 +241,7 @@ void ASA_GM::ReturnTitle()
 	PoolInAllSpawnedMonsters();
 	PoolInAllSpawnedPROJs();
 
-	InitInfoPlayer();
+	InitInfoPlayerChr();
 
 	SetWaveStatus(EWaveStatus::TITLE);
 }
@@ -320,7 +321,14 @@ void ASA_GM::PoolInAllSpawnedMonsters()
 	_spawn_monsters.Empty(100);
 }
 
+void ASA_GM::PlayerChangeGold(const int32 i_gold, const bool b_is_add)
+{
+	_info_player.ChangeGold(i_gold, b_is_add);
+	_pc->PCUIUpdatePlayerGold(_info_player.GetGold());
+}
+
 const int64 ASA_GM::GetNewId() { return ++_id_master; }
 ASA_SpawnPoint* ASA_GM::GetRandomSpawnPoint() { return _mob_spawn_points[UKismetMathLibrary::RandomInteger(_mob_spawn_points.Num())]; }
+const FInfoPlayerCharacter& ASA_GM::GetInfoPlayerChr() const { return _info_player_chr; }
 const FInfoPlayer& ASA_GM::GetInfoPlayer() const { return _info_player; }
 void ASA_GM::SetWaveStatus(const EWaveStatus e_wave_status) { _wave_status = e_wave_status; }

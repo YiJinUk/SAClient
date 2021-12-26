@@ -7,12 +7,14 @@
 #include "Title/SA_UI_Title.h"
 
 #include "Components/WidgetSwitcher.h"
+#include "Components/TextBlock.h"
 
 void USA_UI_Main::UIMainInit()
 {
 	_pc = Cast<ASA_PC>(GetOwningPlayer());
 	UISwitchMainWidget(EUIMainStatus::TITLE);
 	_game->UIGameInit(_pc);
+	_title->UITitleInit(_pc);
 }
 
 void USA_UI_Main::UIMainRetunTitle()
@@ -30,11 +32,12 @@ void USA_UI_Main::UIMainWaveGameOver()
 	_game->UIGameSetVisibleGameOver(ESlateVisibility::Visible);
 }
 
-void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayer& s_info_player_new, const FInfoPlayer& s_info_player_old)
+void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old)
 {
 	if (s_info_player_new.hp != s_info_player_old.hp)
 	{
 		_game->SetHP(s_info_player_new.hp);
+		s_info_player_old.hp = s_info_player_new.hp;
 	}
 }
 
@@ -52,4 +55,9 @@ void USA_UI_Main::UISwitchMainWidget(const EUIMainStatus e_ui_main_status)
 	default:
 		break;
 	}
+}
+
+void USA_UI_Main::UIMainUpdatePlayerGold(const int32 i_gold_update)
+{
+	_gold->SetText(FText::AsNumber(i_gold_update));
 }
