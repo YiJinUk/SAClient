@@ -9,6 +9,7 @@
 #include "SA_SharedStruct.generated.h"
 
 class ASA_Monster;
+class ASA_Projectile;
 
 /**
  * 
@@ -50,13 +51,39 @@ struct FDataGame : public FTableRowBase
 protected:
 	//목표지점 반경입니다
 	UPROPERTY(EditAnywhere, Category = "Wave")
-		int32 _dest_radius = 100;
+		int16 _dest_radius = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Player")
-		int32 _player_hp = 100;
+		int16 _player_hp = 100;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		int16 _proj_speed = 1000;
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		int16 _proj_range = 100;
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		int8 _proj_z_fixed = 50;
 public:
-	FORCEINLINE const int32 GetDestRadius() const { return _dest_radius; }
-	FORCEINLINE const int32 GetPlayetHP() const { return _player_hp; }
+	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
+	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
+
+	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
+	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
+	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
+};
+
+USTRUCT()
+struct FInfoPlayer
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		int32 hp = 0;
+	UPROPERTY()
+		int32 dmg = 0;
+
+public:
+	FORCEINLINE const int32 GetDMGTotal() const { return dmg; }
 };
 
 USTRUCT(BlueprintType)
@@ -99,12 +126,31 @@ public:
 		int32 hp_max = 0;
 };
 
+USTRUCT(BlueprintType)
+struct FDataProjectile : public FTableRowBase
+{
+	GENERATED_BODY()
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "General")
+		TSubclassOf<ASA_Projectile> _class_projectile;
+	UPROPERTY(EditAnywhere, Category = "General")
+		FString _code = "0";
+public:
+	FORCEINLINE const TSubclassOf<ASA_Projectile>& GetClassPROJ() const { return _class_projectile; }
+	FORCEINLINE const FString& GetCode() const { return _code; }
+};
+
 USTRUCT()
-struct FInfoPlayer
+struct FInfoProjectile
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY()
-		int32 hp = 0;
+		int64 id = 0;
+	UPROPERTY()
+		FString code = "0";
+
+	UPROPERTY()
+		FVector velocity = FVector::ZeroVector;
 };

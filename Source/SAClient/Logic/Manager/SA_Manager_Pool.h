@@ -8,6 +8,7 @@
 
 class USA_GI;
 class ASA_Monster;
+class ASA_Projectile;
 
 UCLASS()
 class SACLIENT_API ASA_Manager_Pool : public ASA_Manager_Master
@@ -19,19 +20,20 @@ public:
 
 public:
 	ASA_Monster* PoolGetMonsterByCode(const FString& str_code_monster);
-
+	ASA_Projectile* PoolGetPROJByCode(const FString& str_code_proj);
+public:
 	void PoolInMonster(ASA_Monster* monster);
-protected:
-	UFUNCTION(BlueprintImplementableEvent)
-		ASA_Monster* PoolSpawnMonster(TSubclassOf<ASA_Monster> class_monster);
+	void PoolInPROJ(ASA_Projectile* proj);
 private:
 	ASA_Monster* PoolOutMonster(const FString& str_code_monster);
+	ASA_Projectile* PoolOutPROJ(const FString& str_code_proj);
+
 private:
 	UPROPERTY()
 		USA_GI* _sagi = nullptr;
 
-
 	FActorSpawnParameters _spawn_param = FActorSpawnParameters();
 
 	TMap<FString, TArray<ASA_Monster*>> _pool_monster;
+	TMap<FString, TArray<ASA_Projectile*>> _pool_projectile;
 };

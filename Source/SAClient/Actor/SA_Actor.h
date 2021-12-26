@@ -17,4 +17,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 		class USceneComponent* _root_scene = nullptr;
 
+public:
+	FVector2D GetActorLocation2D();
+
 };

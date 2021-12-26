@@ -6,9 +6,11 @@
 #include "SA_GI.h"
 #include "SA_PC.h"
 #include "Manager/SA_Manager_Pool.h"
+#include "Manager/SA_Manager_Battle.h"
 #include "Actor/Unit/Player/SA_Player.h"
 #include "Actor/Unit/Monster/SA_Monster.h"
 #include "Actor/Object/SA_SpawnPoint.h"
+#include "Actor/Object/Projectile/SA_Projectile.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -76,9 +78,14 @@ void ASA_GM::GMInit()
 	s_param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
+	_manager_battle = wld->SpawnActor<ASA_Manager_Battle>(s_param); // 전투 매니저
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
+
+	/*발사체 정보를 초기화합니다*/
+	_proj_loc_start_3d = FVector(_player_loc.X, _player_loc.Y, _data_game_cache->GetPROJZFixed());
+	_proj_loc_start_2d = FVector2D(_player_loc.X, _player_loc.Y);
 
 
 	/*플레이어를 초기화합니다*/
@@ -90,6 +97,7 @@ void ASA_GM::InitInfoPlayer()
 {
 	/*플레이어정보 초기화*/
 	_info_player.hp = _data_game_cache->GetPlayetHP();
+	_info_player.dmg = 1;
 }
 
 void ASA_GM::Tick(float DeltaTime)
@@ -104,7 +112,7 @@ void ASA_GM::Tick(float DeltaTime)
 		{
 			ASA_SpawnPoint* spawn_point_rnd = nullptr;
 			ASA_Monster* spawn_monster = nullptr;
-			for (int32 i = 0; i < 10; ++i)
+			for (int32 i = 0; i < 1; ++i)
 			{
 				spawn_point_rnd = GetRandomSpawnPoint();
 				spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00001");
@@ -128,6 +136,37 @@ void ASA_GM::Tick(float DeltaTime)
 				_manager_pool->PoolInMonster(spawn_monster);
 				--_info_player.hp;
 				_spawn_monsters.RemoveAt(i);
+			}
+		}
+
+		ASA_Projectile* spawn_proj = nullptr;
+		for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
+		{
+			spawn_proj = _spawn_projs[i];
+
+			/*Move*/
+			spawn_proj->PROJMove(DeltaTime, _data_game_cache->GetPROJSpeed());
+		}
+
+		if (_tick % 4 == 0)
+		{
+			for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
+			{
+				spawn_proj = _spawn_projs[i];
+
+				/*Find Target*/
+				for (ASA_Monster* monster : _spawn_monsters)
+				{
+					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
+					{
+						//Arrive!
+						_manager_battle->BattleCalcStart(spawn_proj, monster, _info_player.GetDMGTotal());
+
+						_manager_pool->PoolInPROJ(spawn_proj);
+						_spawn_projs.RemoveAt(i);
+						break;
+					}
+				}
 			}
 		}
 
@@ -172,6 +211,16 @@ void ASA_GM::WaveEndCheck()
 
 		_pc->PCWaveGameOver();
 	}
+}
+
+void ASA_GM::ShootPROJ(const FVector& v_dest)
+{
+	/*도착점을 통해 velocity를 계산합니다*/
+	FVector2D v_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
+
+	ASA_Projectile* spawn_proj = _manager_pool->PoolGetPROJByCode("PROJ00001");
+	spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d, v_velocity, USA_FunctionLibrary::GetLookRotatorYawByV3(_proj_loc_start_3d, v_dest));
+	_spawn_projs.Add(spawn_proj);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

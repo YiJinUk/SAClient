@@ -13,3 +13,8 @@ ASA_Actor::ASA_Actor()
 		RootComponent = _root_scene;
 	}
 }
+
+FVector2D ASA_Actor::GetActorLocation2D()
+{
+	return FVector2D(GetActorLocation().X, GetActorLocation().Y);
+}

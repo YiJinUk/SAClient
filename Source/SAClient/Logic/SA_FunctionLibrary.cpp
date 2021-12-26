@@ -9,7 +9,15 @@ float USA_FunctionLibrary::GetDistanceByV3(const FVector& v_loc_owner, const FVe
 {
 	return (v_loc_owner - v_loc_target).Size();
 }
+float USA_FunctionLibrary::GetDistanceByV2(const FVector2D& v_loc_owner, const FVector2D& v_loc_target)
+{
+	return (v_loc_owner - v_loc_target).Size();
+}
 FVector USA_FunctionLibrary::GetVelocityByV3(const FVector& v_loc_owner, const FVector& v_loc_target)
+{
+	return (v_loc_target - v_loc_owner).GetSafeNormal();
+}
+FVector2D USA_FunctionLibrary::GetVelocityByV2(const FVector2D& v_loc_owner, const FVector2D& v_loc_target)
 {
 	return (v_loc_target - v_loc_owner).GetSafeNormal();
 }

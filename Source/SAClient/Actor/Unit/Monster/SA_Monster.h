@@ -17,9 +17,18 @@ class SACLIENT_API ASA_Monster : public ASA_Unit
 {
 	GENERATED_BODY()
 	
+#pragma region Init
 protected:
 	ASA_Monster(FObjectInitializer const& object_initializer);
 
+protected:
+	UPROPERTY(EditAnywhere)
+		class UWidgetComponent* _ui_headup = nullptr;
+	UPROPERTY()
+		USA_UI_Headup_Monster* _ui_headup_monster = nullptr;
+#pragma endregion
+
+#pragma region MOB
 public:
 	//생성시 딱 한번만 호출합니다. 풀링에서 호출되지 않습니다
 	void MOBPostInit(const FDataMonster* s_data_monster);
@@ -27,16 +36,22 @@ public:
 	void MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
 	void MOBMove(const float f_delta_time);
 
-	void MOBSetPooling(const bool b_is_active);
+	void MOBSetPoolActive(const bool b_is_active);
+#pragma endregion
+
+#pragma region Stat
+public:
+	/*
+	* 체력을 변경합니다
+	* i_change_hp : 변경될 체력의 수치입니다. 해당값으로 변경하는게 아닌 add, sub로 현재체력에서 계산해야합니다
+	* b_is_add T : i_change_hp만큼 체력을 추가합니다
+	* return : 계산결과 남은 체력값 입니다
+	*/
+	int32 MOBChangeHP(const int32 i_change_hp, const bool b_is_add = false);
 
 	FORCEINLINE const FInfoMonster& GetInfoMonster() const;
-
-protected:
-	UPROPERTY(EditAnywhere)
-		class UWidgetComponent* _ui_headup = nullptr;
-	UPROPERTY()
-		USA_UI_Headup_Monster* _ui_headup_monster = nullptr;
-
+private:
 	UPROPERTY()
 		FInfoMonster _info_monster;
+#pragma endregion
 };

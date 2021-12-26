@@ -13,6 +13,7 @@ class ASA_Player;
 class ASA_Monster;
 class ASA_SpawnPoint;
 class ASA_Manager_Pool;
+class ASA_Manager_Battle;
 
 /**
  * 
@@ -60,6 +61,8 @@ protected:
 private:
 	UPROPERTY()
 		ASA_Manager_Pool* _manager_pool = nullptr;
+	UPROPERTY()
+		ASA_Manager_Battle* _manager_battle = nullptr;
 #pragma endregion
 
 #pragma region Game
@@ -106,4 +109,18 @@ private:
 		TArray<ASA_SpawnPoint*> _mob_spawn_points;
 #pragma endregion
 
+#pragma region Projectile
+public:
+	void ShootPROJ(const FVector& v_dest);
+private:
+	UPROPERTY()
+		TArray<ASA_Projectile*> _spawn_projs;
+
+	//발사체가 시작되는 위치입니다 3D
+	UPROPERTY()
+		FVector _proj_loc_start_3d = FVector::ZeroVector;
+	//발사체가 시작되는 위치입니다 2D
+	UPROPERTY()
+		FVector2D _proj_loc_start_2d = FVector2D::ZeroVector;
+#pragma endregion
 };

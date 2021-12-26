@@ -25,6 +25,7 @@ public:
 #pragma region DataFind,Get
 public:
 	FDataMonster* FindDataMonsterByCode(const FString& str_code_monster);
+	FDataProjectile* FindDataPROJByCode(const FString& str_code_proj);
 
 	FORCEINLINE FDataGame* GetDataGame();
 private:
@@ -32,7 +33,9 @@ private:
 		UDataTable* _dt_game = nullptr;
 	UPROPERTY()
 		UDataTable* _dt_monster = nullptr;
+	UPROPERTY()
+		UDataTable* _dt_projectile = nullptr;
 
-		FDataGame* _data_game = nullptr;
+	FDataGame* _data_game = nullptr;
 #pragma endregion
 };

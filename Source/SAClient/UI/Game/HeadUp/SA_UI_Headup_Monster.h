@@ -22,4 +22,7 @@ public:
 private:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _hp = nullptr;
+
+public:
+	void UIUpdateHP(const int32 i_hp);
 };

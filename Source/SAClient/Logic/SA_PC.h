@@ -18,6 +18,9 @@ class SACLIENT_API ASA_PC : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+	ASA_PC();
+
 #pragma region Init
 public:
 	void PCInit(ASA_GM* sagm, FInfoPlayer& s_info_player);
@@ -35,6 +38,16 @@ private:
 public:
 	void PCWaveStart();
 	void PCWaveGameOver();
+#pragma endregion
+
+#pragma region Input
+protected:
+	virtual void SetupInputComponent() override;
+private:
+	void TapPressed();
+private:
+	UPROPERTY()
+		FHitResult _tap_hit = FHitResult();
 #pragma endregion
 
 #pragma region UI
