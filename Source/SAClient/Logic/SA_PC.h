@@ -70,5 +70,9 @@ private:
 #pragma region UI.Player
 public:
 	void PCUIUpdatePlayerGold(const int32 i_gold_update);
+	void PCUIUpdatePlayerDMG(const int32 i_dmg_update);
+private:
+	UPROPERTY()
+		FInfoPlayer _ui_info_player;
 #pragma endregion
 };

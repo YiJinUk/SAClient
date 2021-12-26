@@ -98,7 +98,7 @@ void ASA_GM::InitInfoPlayerChr()
 {
 	/*플레이어정보 초기화*/
 	_info_player_chr.hp = _data_game_cache->GetPlayetHP();
-	_info_player_chr.dmg = 1;
+	_info_player_chr.dmg = _info_player.GetDMG();
 	_info_player_chr.as = 60;
 
 	_info_player_chr.as_wait = 0;
@@ -273,6 +273,8 @@ void ASA_GM::WaveStart()
 		}
 	}
 
+	InitInfoPlayerChr();
+
 	_pc->PCWaveStart();
 
 	SetWaveStatus(EWaveStatus::PLAY);
@@ -321,10 +323,28 @@ void ASA_GM::PoolInAllSpawnedMonsters()
 	_spawn_monsters.Empty(100);
 }
 
+void ASA_GM::UpgradeDMG()
+{
+	if (_info_player.GetGold() < 1)
+	{
+		return; // 소지금 부족
+	}
+
+	/*구매가능*/
+	PlayerChangeGold(1, false);
+	PlayerChangeDMG(1, true);
+}
+
 void ASA_GM::PlayerChangeGold(const int32 i_gold, const bool b_is_add)
 {
 	_info_player.ChangeGold(i_gold, b_is_add);
 	_pc->PCUIUpdatePlayerGold(_info_player.GetGold());
+}
+
+void ASA_GM::PlayerChangeDMG(const int32 i_dmg, const bool b_is_add)
+{
+	_info_player.ChangeDMG(i_dmg, b_is_add);
+	_pc->PCUIUpdatePlayerDMG(_info_player.GetDMG());
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

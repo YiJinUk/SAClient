@@ -126,6 +126,9 @@ struct FInfoPlayer
 private:
 	UPROPERTY()
 		int32 _gold = 0;
+
+	UPROPERTY()
+		int32 _dmg = 1;
 public:
 	void ChangeGold(const int32 i_gold, const bool b_is_add)
 	{
@@ -134,8 +137,19 @@ public:
 		else
 			_gold -= i_gold;
 	}
+	void ChangeDMG(const int32 i_dmg, const bool b_is_add)
+	{
+		if (b_is_add)
+			_dmg += i_dmg;
+		else
+			_dmg -= i_dmg;
+	}
 
 	FORCEINLINE const int32 GetGold() const { return _gold; }
+	FORCEINLINE const int32 GetDMG() const { return _dmg; }
+
+	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
+	FORCEINLINE void SetDMG(const int32 i_dmg) { _dmg = i_dmg; }
 };
 
 USTRUCT()

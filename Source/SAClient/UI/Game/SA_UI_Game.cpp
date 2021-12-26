@@ -12,10 +12,14 @@ void USA_UI_Game::UIGameInit(ASA_PC* pc)
 	_ui_game_over->SetVisibility(ESlateVisibility::Hidden);
 }
 
-
 void USA_UI_Game::UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible)
 {
 	_ui_game_over->SetVisibility(e_ui_visible);
+}
+
+void USA_UI_Game::UIGameUpdatePlayerDMG(const int32 i_dmg_update)
+{
+	_dmg->SetText(FText::AsNumber(i_dmg_update));
 }
 void USA_UI_Game::SetHP(const int32 i_hp)
 {

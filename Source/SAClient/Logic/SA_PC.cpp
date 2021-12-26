@@ -25,17 +25,20 @@ void ASA_PC::Tick(float DeltaTime)
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 {
 	_sagm = sagm;
-	_ui_info_player_chr = s_info_player_chr;
+	//_ui_info_player_chr = s_info_player_chr;
 	const FInfoPlayer& s_info_player = _sagm->GetInfoPlayer();
+	_ui_info_player = s_info_player;
 	//블루프린트에서 초기화해야하는것은 초기화합니다
 	PCBPInit();
 
 	//위젯을 생성 및 초기화합니다
 	_ui_main = PCCreateWidgetMain();
 	_ui_main->UIMainInit();
+	PCUIUpdateCheck();
 
 	/*위젯을 세부적으로 초기화합니다*/
-	_ui_main->UIMainUpdatePlayerGold(s_info_player.GetGold());
+	PCUIUpdatePlayerGold(_ui_info_player.GetGold());
+	PCUIUpdatePlayerDMG(_ui_info_player.GetDMG());
 }
 
 void ASA_PC::PCWaveStart()
@@ -81,5 +84,11 @@ void ASA_PC::PCReturnTitle()
 
 void ASA_PC::PCUIUpdatePlayerGold(const int32 i_gold_update)
 {
-	_ui_main->UIMainUpdatePlayerGold(i_gold_update);
+	_ui_info_player.SetGold(i_gold_update);
+	_ui_main->UIMainUpdatePlayerGold(_ui_info_player.GetGold());
+}
+void ASA_PC::PCUIUpdatePlayerDMG(const int32 i_dmg_update)
+{
+	_ui_info_player.SetDMG(i_dmg_update);
+	_ui_main->UIMainUpdatePlayerDMG(_ui_info_player.GetDMG());
 }

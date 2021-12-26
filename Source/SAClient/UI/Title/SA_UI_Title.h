@@ -31,7 +31,12 @@ private:
 
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
+
+
+
 public:
+	void UITitleUpdatePlayerDMG(const int32 i_dmg_update);
+
 	UFUNCTION(BlueprintCallable)
 		void ClickedShowUIUpgrade();
 };

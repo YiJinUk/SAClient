@@ -30,7 +30,13 @@ private:
 		USA_UI_GameOver* _ui_game_over = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _hp = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _dmg = nullptr;
+
+
 
 public:
+	void UIGameUpdatePlayerDMG(const int32 i_dmg_update);
+
 	FORCEINLINE void SetHP(const int32 i_hp);
 };

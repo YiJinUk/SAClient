@@ -51,4 +51,5 @@ private:
 
 public:
 	void UIMainUpdatePlayerGold(const int32 i_gold_update);
+	void UIMainUpdatePlayerDMG(const int32 i_dmg_update);
 };

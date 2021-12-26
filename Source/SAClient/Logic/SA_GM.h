@@ -148,10 +148,15 @@ private:
 		FVector2D _proj_velocity = FVector2D::ZeroVector;
 #pragma endregion
 
+#pragma region Upgrade
+public:
+	void UpgradeDMG();
+#pragma endregion
 
 #pragma region Player
 public:
 	void PlayerChangeGold(const int32 i_gold, const bool b_is_add);
+	void PlayerChangeDMG(const int32 i_dmg, const bool b_is_add);
 
 	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
 private:
