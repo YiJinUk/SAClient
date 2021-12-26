@@ -71,6 +71,53 @@ public:
 	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
 };
 
+USTRUCT(BlueprintType)
+struct FDataWaveMonster
+{
+	GENERATED_BODY()
+protected:
+	UPROPERTY(EditAnywhere, Category = "General")
+		FString _code_monster = "0";
+	UPROPERTY(EditAnywhere, Category = "General")
+		int32 _spawn_count = 0;
+public:
+	FORCEINLINE const FString& GetCodeMonster() const { return _code_monster; }
+	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
+
+	/*게임모드에서 복제한 웨이브데이터에서만 호출합니다*/
+	FORCEINLINE void SubSpawnCount() { --_spawn_count; }
+};
+
+USTRUCT(BlueprintType)
+struct FDataWave
+{
+	GENERATED_BODY()
+protected:
+	//한 틱에 생성될 수 있는 최대 값 입니다
+	UPROPERTY(EditAnywhere, Category = "General")
+		int16 _max_spawn_on_1_tick = 1;
+	//해당 틱 마다 몬스터를 생성합니다
+	UPROPERTY(EditAnywhere, Category = "General")
+		int16 _spawn_tick_interval = 12;
+	UPROPERTY(EditAnywhere, Category = "General")
+		TArray<FDataWaveMonster> _spawn_monsters;
+public:
+	FORCEINLINE const int16 GetMaxSpawnOn1Tick() const { return _max_spawn_on_1_tick; }
+	FORCEINLINE const int16 GetSpawnTickInterval() const { return _spawn_tick_interval; }
+	FORCEINLINE TArray<FDataWaveMonster>& GetSpawnMonsters() { return _spawn_monsters; }
+};
+
+USTRUCT(BlueprintType)
+struct FDataWaves : public FTableRowBase
+{
+	GENERATED_BODY()
+protected:
+	UPROPERTY(EditAnywhere, Category = "General")
+		TArray<FDataWave> _waves;
+public:
+	FORCEINLINE TArray<FDataWave>& GetWaves() { return _waves; }
+};
+
 USTRUCT()
 struct FInfoPlayer
 {

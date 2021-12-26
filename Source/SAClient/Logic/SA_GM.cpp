@@ -111,18 +111,8 @@ void ASA_GM::Tick(float DeltaTime)
 	{
 		++_tick;
 
-		if (_tick % 60 == 0)
-		{
-			ASA_SpawnPoint* spawn_point_rnd = nullptr;
-			ASA_Monster* spawn_monster = nullptr;
-			for (int32 i = 0; i < 1; ++i)
-			{
-				spawn_point_rnd = GetRandomSpawnPoint();
-				spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00001");
-				spawn_monster->MOBInit(GetNewId(), spawn_point_rnd->GetPointSpawnLocation(), spawn_point_rnd->GetPointVelocity(), spawn_point_rnd->GetPointRotator());
-				_spawn_monsters.Add(spawn_monster);
-			}
-		}
+		/*몬스터를 생성합니다*/
+		TickSpawnMonster();
 
 		/*발사체 발사 검사*/
 		++_info_player.as_wait;
@@ -192,35 +182,38 @@ void ASA_GM::Tick(float DeltaTime)
 		/*UI Update*/
 		_pc->PCUIUpdateCheck();
 
-		WaveEndCheck();
+		TickCheckWaveEnd();
 	}
 }
 
-void ASA_GM::ReturnTitle()
+void ASA_GM::TickSpawnMonster()
 {
-	ASA_Monster* spawn_monster = nullptr;
-	for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
+	if (_tick % _data_wave_current.GetSpawnTickInterval() == 0)
 	{
-		spawn_monster = _spawn_monsters[i];
-		_manager_pool->PoolInMonster(spawn_monster);
+		const int16 i_max_spawn_on_1_tick = _data_wave_current.GetMaxSpawnOn1Tick();
+		TArray<FDataWaveMonster>& arr_data_spawn_monster = _data_wave_current.GetSpawnMonsters();
+		ASA_SpawnPoint* spawn_point_rnd = nullptr;
+		ASA_Monster* spawn_monster = nullptr;
+		for (int16 i = 0; i < i_max_spawn_on_1_tick; ++i)
+		{
+			for (FDataWaveMonster& s_data_spawn_monster : arr_data_spawn_monster)
+			{
+				if (s_data_spawn_monster.GetSpawnCount() <= 0) continue;
+
+				/*생성 성공*/
+				s_data_spawn_monster.SubSpawnCount();
+				spawn_point_rnd = GetRandomSpawnPoint();
+				spawn_monster = _manager_pool->PoolGetMonsterByCode(s_data_spawn_monster.GetCodeMonster());
+				spawn_monster->MOBInit(GetNewId(), spawn_point_rnd->GetPointSpawnLocation(), spawn_point_rnd->GetPointVelocity(), spawn_point_rnd->GetPointRotator());
+				_spawn_monsters.Add(spawn_monster);
+				++_count_spawn_monster_current;
+				break;
+			}
+		}
 	}
-	_spawn_monsters.Empty(100);
-
-	InitInfoPlayer();
-
-	SetWaveStatus(EWaveStatus::TITLE);
 }
 
-void ASA_GM::WaveStart()
-{
-	_tick = 0;
-
-	_pc->PCWaveStart();
-
-	SetWaveStatus(EWaveStatus::PLAY);
-}
-
-void ASA_GM::WaveEndCheck()
+void ASA_GM::TickCheckWaveEnd()
 {
 	/*플레이어의 체력이 0이하로 떨어지면 게임이 종료됩니다*/
 	if (_info_player.hp <= 0)
@@ -230,6 +223,64 @@ void ASA_GM::WaveEndCheck()
 
 		_pc->PCWaveGameOver();
 	}
+	else
+	{
+		if (_tick % 30 == 0)
+		{
+			if (_count_spawn_monster_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
+			{
+				WaveClear();
+			}
+		}
+	}
+}
+
+void ASA_GM::ReturnTitle()
+{
+	PoolInAllSpawnedMonsters();
+	PoolInAllSpawnedPROJs();
+
+	InitInfoPlayer();
+
+	SetWaveStatus(EWaveStatus::TITLE);
+}
+
+void ASA_GM::WaveStart()
+{
+	_tick = 0;
+	_count_spawn_monster_current = 0;
+	_count_spawn_monster_max = 0;
+
+	/*해당 웨이브에서 생성되는 몬스터정보를 가져옵니다*/
+	FDataWave* s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+	if(s_data_wave)
+		_data_wave_current = *s_data_wave;
+	else
+	{
+		//Err 시작할 웨이브데이터가 없습니다. 1웨이브로 돌아갑니다
+		_wave_round_current = 1;
+		s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+		if (s_data_wave)
+			_data_wave_current = *s_data_wave;
+	}
+	if (s_data_wave)
+	{
+		const TArray<FDataWaveMonster>& arr_data_spawn_monster = _data_wave_current.GetSpawnMonsters();
+		for (const FDataWaveMonster& s_data_spawn_monster : arr_data_spawn_monster)
+		{
+			_count_spawn_monster_max += s_data_spawn_monster.GetSpawnCount();
+		}
+	}
+
+	_pc->PCWaveStart();
+
+	SetWaveStatus(EWaveStatus::PLAY);
+}
+
+void ASA_GM::WaveClear()
+{
+	++_wave_round_current;
+	_pc->PCReturnTitle();
 }
 
 void ASA_GM::ShootPROJ()
@@ -245,6 +296,28 @@ void ASA_GM::ShootPROJ()
 void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
 {
 	_proj_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
+}
+
+void ASA_GM::PoolInAllSpawnedPROJs()
+{
+	ASA_Projectile* spawn_proj = nullptr;
+	for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
+	{
+		spawn_proj = _spawn_projs[i];
+		_manager_pool->PoolInPROJ(spawn_proj);
+	}
+	_spawn_projs.Empty(100);
+}
+
+void ASA_GM::PoolInAllSpawnedMonsters()
+{
+	ASA_Monster* spawn_monster = nullptr;
+	for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
+	{
+		spawn_monster = _spawn_monsters[i];
+		_manager_pool->PoolInMonster(spawn_monster);
+	}
+	_spawn_monsters.Empty(100);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

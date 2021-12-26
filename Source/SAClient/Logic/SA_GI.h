@@ -27,15 +27,20 @@ public:
 	FDataMonster* FindDataMonsterByCode(const FString& str_code_monster);
 	FDataProjectile* FindDataPROJByCode(const FString& str_code_proj);
 
+	FDataWave* FindDataWaveByWaveRound(const int32 i_wave_round);
+
 	FORCEINLINE FDataGame* GetDataGame();
 private:
 	UPROPERTY()
 		UDataTable* _dt_game = nullptr;
+	UPROPERTY()
+		UDataTable* _dt_waves = nullptr;
 	UPROPERTY()
 		UDataTable* _dt_monster = nullptr;
 	UPROPERTY()
 		UDataTable* _dt_projectile = nullptr;
 
 	FDataGame* _data_game = nullptr;
+	FDataWaves* _data_waves = nullptr;
 #pragma endregion
 };

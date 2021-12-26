@@ -12,4 +12,5 @@ void USA_UI_GameOver::UIGameOverInit(ASA_PC* pc)
 void USA_UI_GameOver::ClickedReturnTitle()
 {
 	_pc->PCReturnTitle();
+	SetVisibility(ESlateVisibility::Hidden);
 }

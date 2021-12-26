@@ -55,6 +55,10 @@ private:
 #pragma region Tick
 protected:
 	virtual void Tick(float DeltaTime) override;
+private:
+	void TickSpawnMonster();
+	//웨이브종료를 체크합니다
+	void TickCheckWaveEnd();
 #pragma endregion
 
 #pragma region Manager
@@ -74,12 +78,24 @@ public:
 #pragma region Wave
 public:
 	void WaveStart();
-	//웨이브종료를 체크합니다
-	void WaveEndCheck();
+	void WaveClear();
 
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
 private:
-	EWaveStatus _wave_status = EWaveStatus::TITLE;
+	UPROPERTY()
+		EWaveStatus _wave_status = EWaveStatus::TITLE;
+	UPROPERTY()
+		int32 _wave_round_current = 1;
+	//웨이브중 몬스터가 생성된 횟수입니다
+	UPROPERTY()
+		int32 _count_spawn_monster_current = 0;
+	//현재웨이브에서 생성되야할 몬스터의 총 개수입니다
+	UPROPERTY()
+		int32 _count_spawn_monster_max = 0;
+
+	//새로 복제해서 사용하기 때문에 내용을 변경해도 상관없습니다
+	UPROPERTY()
+		FDataWave _data_wave_current;
 #pragma endregion
 
 #pragma region Player
@@ -101,6 +117,8 @@ private:
 
 #pragma region Monster
 private:
+	void PoolInAllSpawnedMonsters();
+
 	FORCEINLINE ASA_SpawnPoint* GetRandomSpawnPoint();
 private:
 	UPROPERTY()
@@ -113,6 +131,8 @@ private:
 public:
 	void ShootPROJ();
 	void ChangePROJVelocity(const FVector& v_dest);
+
+	void PoolInAllSpawnedPROJs();
 private:
 	UPROPERTY()
 		TArray<ASA_Projectile*> _spawn_projs;

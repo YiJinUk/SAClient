@@ -17,7 +17,6 @@ void USA_UI_Main::UIMainInit()
 
 void USA_UI_Main::UIMainRetunTitle()
 {
-	_game->UIGameSetVisibleGameOver(ESlateVisibility::Hidden);
 	UISwitchMainWidget(EUIMainStatus::TITLE);
 }
 
