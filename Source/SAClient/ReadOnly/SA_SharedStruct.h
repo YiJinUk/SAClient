@@ -69,8 +69,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "General")
 		FString _code = "0";
 
+	UPROPERTY(EditAnywhere, Category = "Stat")
+		int32 _hp = 100;
 public:
+	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
+	FORCEINLINE const int32& GetHP() const { return _hp; }
 };
 
 USTRUCT()
@@ -83,10 +87,16 @@ public:
 		int64 id = 0;
 	UPROPERTY()
 		FString code = "0";
+
 	UPROPERTY()
 		FVector velocity = FVector::ZeroVector;
 	UPROPERTY()
 		FRotator rot = FRotator::ZeroRotator;
+
+	UPROPERTY()
+		int32 hp = 0;
+	UPROPERTY()
+		int32 hp_max = 0;
 };
 
 USTRUCT()

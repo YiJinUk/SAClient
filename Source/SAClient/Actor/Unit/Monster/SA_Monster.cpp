@@ -2,25 +2,82 @@
 
 
 #include "Actor/Unit/Monster/SA_Monster.h"
+#include "UI/Game/HeadUp/SA_UI_Headup_Monster.h"
 
-void ASA_Monster::MOBPostInit(const FString& str_code_monster)
+#include "Components/WidgetComponent.h"
+
+ASA_Monster::ASA_Monster(FObjectInitializer const& object_initializer)
 {
-	_info_monster.code = str_code_monster;
+	_ui_headup = object_initializer.CreateDefaultSubobject<UWidgetComponent>(this, TEXT("_ui_headup"));
+	if (_ui_headup)
+	{
+		_ui_headup->SetupAttachment(GetRootComponent());
+		_ui_headup->SetGenerateOverlapEvents(false);
+		_ui_headup->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		_ui_headup->CanCharacterStepUpOn = ECB_No;
+		_ui_headup->SetWidgetSpace(EWidgetSpace::Screen);
+		_ui_headup->SetDrawAtDesiredSize(true);
+
+		static ConstructorHelpers::FClassFinder<UUserWidget> W_HEAD_UP_BP(TEXT("/Game/SAContent/UI/Game/HeadUp/SAWB_UI_HeadUp_Monster"));
+		if (W_HEAD_UP_BP.Succeeded())
+		{
+			if (_ui_headup)
+			{
+				_ui_headup->SetWidgetClass(W_HEAD_UP_BP.Class);
+			}
+		}
+	}
+}
+
+void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
+{
+	if (!s_data_monster) return;
+	_info_monster.code = s_data_monster->GetCode();
+	_info_monster.hp_max = s_data_monster->GetHP();
+
+	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
 }
 
 void ASA_Monster::MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
 {
+	/*풀링*/
+	MOBSetPooling(true);
+
+	/*정보 초기화*/
 	_info_monster.id = i_id;
+
+	/*이동관련 초기화*/
 	_info_monster.velocity = v_velocity;
 	_info_monster.rot = r_rot;
-
 	SetActorRotation(_info_monster.rot);
 	SetActorLocation(v_spawn_loc);
+
+	/*스탯 초기화*/
+	_info_monster.hp = _info_monster.hp_max;
+
+	/*UI 초기화*/
+	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
 void ASA_Monster::MOBMove(const float f_delta_time)
 {
 	AddActorWorldOffset(_info_monster.velocity * 1000 * f_delta_time);
+}
+
+void ASA_Monster::MOBSetPooling(const bool b_is_active)
+{
+	/*
+	* UI
+	* UI컴포넌트의 SetVisibility()를 호출하면 다음틱에서 Draw되는데
+	* 같은틱에서 UI컴포넌트의 틱을 비활성화하면 제대로 SetVisibility()함수의 작동이 Draw되지 않습니다
+	*/
+	_ui_headup->SetVisibility(b_is_active);
+
+	if (!b_is_active)
+	{
+		//풀에서 활성화될때의 위치변경은 다른곳에서 합니다
+		SetActorLocation(FVector(0.f, 0.f, -500.f));
+	}
 }
 
 const FInfoMonster& ASA_Monster::GetInfoMonster() const { return _info_monster; }

@@ -70,20 +70,16 @@ void ASA_GM::GMInit()
 		}
 	}
 
-	/*매니저를 생성 또는 레벨에서 가져옵니다*/
-	//풀링 매니저
-	UGameplayStatics::GetAllActorsOfClass(wld, ASA_Manager_Pool::StaticClass(), arr_found_actor);
-	if (arr_found_actor.Num() >= 1)
-		_manager_pool = Cast<ASA_Manager_Pool>(arr_found_actor[0]);
+	/*매니저를 생성합니다*/
+	//생성 객체 만들기
+	FActorSpawnParameters s_param;
+	s_param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
-	_manager_pool->PoolInit();
+	_manager_pool->PoolInit(_sagi);
 
-	//생성 객체 만들기
-	//FActorSpawnParameters s_param;
-	//s_param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	//_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 
 	/*플레이어를 초기화합니다*/
 	InitInfoPlayer();
@@ -99,7 +95,7 @@ void ASA_GM::InitInfoPlayer()
 void ASA_GM::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	if (_wave_status == EWaveStatus::PLAY)
 	{
 		++_tick;
