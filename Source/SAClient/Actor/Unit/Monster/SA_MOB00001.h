@@ -14,4 +14,6 @@ class SACLIENT_API ASA_MOB00001 : public ASA_Monster
 {
 	GENERATED_BODY()
 	
+protected:
+	void MOBSetPoolActiveChild(const bool b_is_active);
 };

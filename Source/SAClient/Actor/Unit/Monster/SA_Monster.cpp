@@ -69,6 +69,13 @@ void ASA_Monster::MOBMove(const float f_delta_time)
 void ASA_Monster::MOBSetPoolActive(const bool b_is_active)
 {
 	/*
+	* 스켈레탈매쉬
+	*/
+	_skeletal_mesh->SetComponentTickEnabled(b_is_active);
+	_skeletal_mesh->SetActive(b_is_active);
+	_skeletal_mesh->SetVisibility(b_is_active, true);
+
+	/*
 	* UI
 	* UI컴포넌트의 SetVisibility()를 호출하면 다음틱에서 Draw되는데
 	* 같은틱에서 UI컴포넌트의 틱을 비활성화하면 제대로 SetVisibility()함수의 작동이 Draw되지 않습니다
@@ -79,7 +86,23 @@ void ASA_Monster::MOBSetPoolActive(const bool b_is_active)
 	{
 		//풀에서 활성화될때의 위치변경은 다른곳에서 합니다
 		SetActorLocation(FVector(0.f, 0.f, -500.f));
+		GetWorldTimerManager().SetTimerForNextTick(this, &ASA_Monster::MOBTimerUIPool);
 	}
+	else
+	{
+		_ui_headup->SetComponentTickEnabled(true);
+	}
+
+	MOBSetPoolActiveChild(b_is_active);
+}
+void ASA_Monster::MOBTimerUIPool()
+{
+	_ui_headup->SetComponentTickEnabled(false);
+}
+
+void ASA_Monster::MOBSetPoolActiveChild(const bool b_is_active)
+{
+	//override
 }
 
 int32 ASA_Monster::MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const bool b_is_add)

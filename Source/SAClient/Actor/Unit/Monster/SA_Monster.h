@@ -37,6 +37,10 @@ public:
 	void MOBMove(const float f_delta_time);
 
 	void MOBSetPoolActive(const bool b_is_active);
+protected:
+	virtual void MOBSetPoolActiveChild(const bool b_is_active);
+private:
+	void MOBTimerUIPool();
 #pragma endregion
 
 #pragma region Stat

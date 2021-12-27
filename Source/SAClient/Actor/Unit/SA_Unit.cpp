@@ -13,6 +13,7 @@ ASA_Unit::ASA_Unit()
 		_skeletal_mesh->SetupAttachment(GetRootComponent());
 		_skeletal_mesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
+		_skeletal_mesh->SetSimulatePhysics(false);
 		_skeletal_mesh->SetGenerateOverlapEvents(false);
 		_skeletal_mesh->SetCanEverAffectNavigation(false);
 		_skeletal_mesh->bSkipKinematicUpdateWhenInterpolating = true;
