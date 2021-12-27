@@ -40,6 +40,12 @@ void ASA_GM::GMInit()
 	/*게임인스턴스 초기화*/
 	_sagi->GIInit();
 
+	/*Debug 나중에 세이브파일로 로드해야합니다*/
+	_info_player.SetGold(10);
+	_info_player.SetDMG(1);
+	_info_player.SetAS(60);
+	/*Debug*/
+
 	/*자주 사용하는 게임데이터를 캐싱합니다*/
 	_data_game_cache = _sagi->GetDataGame();
 
@@ -99,7 +105,7 @@ void ASA_GM::InitInfoPlayerChr()
 	/*플레이어정보 초기화*/
 	_info_player_chr.hp = _data_game_cache->GetPlayetHP();
 	_info_player_chr.dmg = _info_player.GetDMG();
-	_info_player_chr.as = 60;
+	_info_player_chr.as = _info_player.GetAS();
 
 	_info_player_chr.as_wait = 0;
 }
@@ -331,20 +337,53 @@ void ASA_GM::UpgradeDMG()
 	}
 
 	/*구매가능*/
-	PlayerChangeGold(1, false);
-	PlayerChangeDMG(1, true);
+	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::DMG, 1, true);
+}
+void ASA_GM::UpgradeAS()
+{
+	USA_FunctionLibrary::GPrintString(123, 2, "UpgradeAS");
+	if (_info_player.GetGold() < 1)
+	{
+		return; // 소지금 부족
+	}
+
+	/*구매가능*/
+	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::AS, 6, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
 }
 
-void ASA_GM::PlayerChangeGold(const int32 i_gold, const bool b_is_add)
+void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add)
 {
-	_info_player.ChangeGold(i_gold, b_is_add);
-	_pc->PCUIUpdatePlayerGold(_info_player.GetGold());
-}
+	switch (e_player_stat)
+	{
+	case EPlayerStat::GOLD:
+		if(b_is_add)
+			_info_player.SetGold(_info_player.GetGold() + i_value);
+		else
+			_info_player.SetGold(_info_player.GetGold() - i_value);
 
-void ASA_GM::PlayerChangeDMG(const int32 i_dmg, const bool b_is_add)
-{
-	_info_player.ChangeDMG(i_dmg, b_is_add);
-	_pc->PCUIUpdatePlayerDMG(_info_player.GetDMG());
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetGold());
+		break;
+	case EPlayerStat::DMG:
+		if (b_is_add)
+			_info_player.SetDMG(_info_player.GetDMG() + i_value);
+		else
+			_info_player.SetDMG(_info_player.GetDMG() - i_value);
+
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetDMG());
+		break;
+	case EPlayerStat::AS:
+		if (b_is_add)
+			_info_player.SetAS(_info_player.GetAS() + i_value);
+		else
+			_info_player.SetAS(_info_player.GetAS() - i_value);
+
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetAS());
+		break;
+	default:
+		break;
+	}
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

@@ -7,8 +7,9 @@
 #include "SA_UI_Title.generated.h"
 
 class ASA_PC;
-class USA_UI_Upgrade;
+class ASA_GM;
 class UButton;
+class UTextBlock;
 
 /**
  * 
@@ -18,25 +19,33 @@ class SACLIENT_API USA_UI_Title : public USA_UI_Master
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void NativeConstruct() override;
 public:
 	void UITitleInit(ASA_PC* pc);
 private:
 	UPROPERTY(Meta = (BindWidget))
-		USA_UI_Upgrade* _ui_upgrade = nullptr;
+		UButton* _wave_start = nullptr;
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* _wave_start = nullptr;
+		UButton* _dmg_upgrade_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* _show_ui_upgrade = nullptr;
+		UTextBlock* _dmg_upgrade = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _as_upgrade_btn = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _as_upgrade = nullptr;
 
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
-
-
-
+	UPROPERTY()
+		ASA_GM* _gm = nullptr;
 public:
 	void UITitleUpdatePlayerDMG(const int32 i_dmg_update);
+	void UITitleUpdatePlayerAS(const int32 i_as_update);
 
-	UFUNCTION(BlueprintCallable)
-		void ClickedShowUIUpgrade();
+	UFUNCTION()
+		void ClickedUpgradeDMG();
+	UFUNCTION()
+		void ClickedUpgradeAS();
 };

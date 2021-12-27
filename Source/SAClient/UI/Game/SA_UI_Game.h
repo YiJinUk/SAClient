@@ -32,11 +32,14 @@ private:
 		UTextBlock* _hp = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _dmg = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _as = nullptr;
 
 
 
 public:
 	void UIGameUpdatePlayerDMG(const int32 i_dmg_update);
+	void UIGameUpdatePlayerAS(const int32 i_as_update);
 
 	FORCEINLINE void SetHP(const int32 i_hp);
 };

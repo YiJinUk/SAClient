@@ -37,8 +37,9 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdateCheck();
 
 	/*위젯을 세부적으로 초기화합니다*/
-	PCUIUpdatePlayerGold(_ui_info_player.GetGold());
-	PCUIUpdatePlayerDMG(_ui_info_player.GetDMG());
+	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
+	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
+	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
 }
 
 void ASA_PC::PCWaveStart()
@@ -82,13 +83,23 @@ void ASA_PC::PCReturnTitle()
 	_ui_main->UIMainRetunTitle();
 }
 
-void ASA_PC::PCUIUpdatePlayerGold(const int32 i_gold_update)
+void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i_value)
 {
-	_ui_info_player.SetGold(i_gold_update);
-	_ui_main->UIMainUpdatePlayerGold(_ui_info_player.GetGold());
-}
-void ASA_PC::PCUIUpdatePlayerDMG(const int32 i_dmg_update)
-{
-	_ui_info_player.SetDMG(i_dmg_update);
-	_ui_main->UIMainUpdatePlayerDMG(_ui_info_player.GetDMG());
+	switch (e_player_stat)
+	{
+	case EPlayerStat::GOLD:
+		_ui_info_player.SetGold(i_value);
+		_ui_main->UIMainUpdatePlayerGold(_ui_info_player.GetGold());
+		break;
+	case EPlayerStat::DMG:
+		_ui_info_player.SetDMG(i_value);
+		_ui_main->UIMainUpdatePlayerDMG(_ui_info_player.GetDMG());
+		break;
+	case EPlayerStat::AS:
+		_ui_info_player.SetAS(i_value);
+		_ui_main->UIMainUpdatePlayerAS(_ui_info_player.GetAS());
+		break;
+	default:
+		break;
+	}
 }

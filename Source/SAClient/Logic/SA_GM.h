@@ -151,12 +151,12 @@ private:
 #pragma region Upgrade
 public:
 	void UpgradeDMG();
+	void UpgradeAS();
 #pragma endregion
 
 #pragma region Player
 public:
-	void PlayerChangeGold(const int32 i_gold, const bool b_is_add);
-	void PlayerChangeDMG(const int32 i_dmg, const bool b_is_add);
+	void PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add);
 
 	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
 private:

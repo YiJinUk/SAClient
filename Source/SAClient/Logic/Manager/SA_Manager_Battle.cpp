@@ -35,7 +35,7 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 
 
 	/*°ñµå È¹µæ*/
-	_sagm->PlayerChangeGold(i_pure_dmg, true);
+	_sagm->PlayerChangeStat(EPlayerStat::GOLD, i_pure_dmg, true);
 
 	return b_is_monster_death;
 }
