@@ -7,6 +7,7 @@
 #include "SA_PC.h"
 #include "Manager/SA_Manager_Pool.h"
 #include "Manager/SA_Manager_Battle.h"
+#include "Manager/SA_Manager_SFX.h"
 #include "Actor/Unit/Player/SA_Player.h"
 #include "Actor/Unit/Monster/SA_Monster.h"
 #include "Actor/Object/SA_SpawnPoint.h"
@@ -94,15 +95,20 @@ void ASA_GM::GMInit()
 
 	_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 	_manager_battle = wld->SpawnActor<ASA_Manager_Battle>(s_param); // 전투 매니저
+	_manager_sfx = wld->SpawnActor<ASA_Manager_SFX>(s_param); // 사운드 매니저
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
 	_manager_battle->BattleInit(this);
+	_manager_sfx->SFXInit(_sagi);
 
 	/*발사체 정보를 초기화합니다*/
 	_proj_loc_start_3d = FVector(_player_loc.X, _player_loc.Y, _data_game_cache->GetPROJZFixed());
 	_proj_loc_start_2d = FVector2D(_player_loc.X, _player_loc.Y);
 	_proj_velocity = FVector2D(1.f, 0.f);
+
+	/*배경음악 재생*/
+	_manager_sfx->SFXStart(ESFXType::BACKGROUND);
 
 	/*플레이어를 초기화합니다*/
 	InitInfoPlayerChr();
@@ -228,6 +234,7 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 			if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
 			{
 				//Arrive!
+				_manager_sfx->SFXStart(ESFXType::PROJ_HIT);
 				/*이미 공격한 몬스터인지 확인합니다*/
 				if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
 
@@ -330,6 +337,8 @@ void ASA_GM::ShootPROJ()
 		spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d + _data_game_cache->GetPROJShopLoc()[i], _proj_velocity, 0.f);
 		_spawn_projs.Add(spawn_proj);
 	}
+
+	_manager_sfx->SFXStart(ESFXType::PROJ_SHOT);
 }
 
 void ASA_GM::ChangePROJVelocity(const FVector& v_dest)

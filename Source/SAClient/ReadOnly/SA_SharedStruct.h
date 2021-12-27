@@ -10,6 +10,7 @@
 
 class ASA_Monster;
 class ASA_Projectile;
+class USoundBase;
 
 /**
  * 
@@ -45,6 +46,14 @@ enum class EPlayerStat : uint8
 	AS,
 	SHOT_NUMBER,
 	PENETRATE,
+};
+
+UENUM()
+enum class ESFXType : uint8
+{
+	BACKGROUND,
+	PROJ_SHOT,
+	PROJ_HIT,
 };
 
 UENUM()
@@ -86,6 +95,24 @@ public:
 	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
 	FORCEINLINE const TArray<FVector>& GetPROJShopLoc() const { return _proj_shot_loc; }
 	FORCEINLINE const int8 GetPROJMaxShotNumber() const { return _proj_max_shot_number; }
+};
+
+USTRUCT(BlueprintType)
+struct FDataSFX : public FTableRowBase
+{
+	GENERATED_BODY()
+protected:
+	UPROPERTY(EditAnywhere, Category = "Level")
+		USoundBase* _backgound = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		USoundBase* _proj_shot = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		USoundBase* _proj_hit = nullptr;
+
+public:
+	FORCEINLINE USoundBase* GetBackGround() const { return _backgound; }
+	FORCEINLINE USoundBase* GetPROJShot() const { return _proj_shot; }
+	FORCEINLINE USoundBase* GetPROJHit() const { return _proj_hit; }
 };
 
 USTRUCT(BlueprintType)

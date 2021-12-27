@@ -26,6 +26,7 @@ public:
 public:
 	FDataMonster* FindDataMonsterByCode(const FString& str_code_monster);
 	FDataProjectile* FindDataPROJByCode(const FString& str_code_proj);
+	FDataSFX* FindDataSFXByCode(const FString& str_code_sfx);
 
 	FDataWave* FindDataWaveByWaveRound(const int32 i_wave_round);
 
@@ -39,6 +40,8 @@ private:
 		UDataTable* _dt_monster = nullptr;
 	UPROPERTY()
 		UDataTable* _dt_projectile = nullptr;
+	UPROPERTY()
+		UDataTable* _dt_sfx = nullptr;
 
 	FDataGame* _data_game = nullptr;
 	FDataWaves* _data_waves = nullptr;
