@@ -59,6 +59,7 @@ private:
 	void TickSpawnMonster();
 	//웨이브종료를 체크합니다
 	void TickCheckWaveEnd();
+	void TickCheckShootPROJ();
 #pragma endregion
 
 #pragma region Manager
@@ -152,6 +153,8 @@ private:
 public:
 	void UpgradeDMG();
 	void UpgradeAS();
+	void UpgradeShotNum();
+	void UpgradePenetrate();
 #pragma endregion
 
 #pragma region Player

@@ -44,6 +44,8 @@ void ASA_GM::GMInit()
 	_info_player.SetGold(10);
 	_info_player.SetDMG(1);
 	_info_player.SetAS(60);
+	_info_player.SetShotNumber(1);
+	_info_player.SetPenetrate(1);
 	/*Debug*/
 
 	/*자주 사용하는 게임데이터를 캐싱합니다*/
@@ -122,14 +124,7 @@ void ASA_GM::Tick(float DeltaTime)
 		TickSpawnMonster();
 
 		/*발사체 발사 검사*/
-		++_info_player_chr.as_wait;
-		if (_info_player_chr.as_wait >= _info_player_chr.GetASTotal())
-		{
-			/*발사*/
-			_info_player_chr.as_wait = 0;
-			ShootPROJ();
-		}
-
+		TickCheckShootPROJ();
 
 		ASA_Monster* spawn_monster = nullptr;
 		for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
@@ -172,15 +167,26 @@ void ASA_GM::Tick(float DeltaTime)
 					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
 					{
 						//Arrive!
+						/*이미 공격한 몬스터인지 확인합니다*/
+						if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
+
+						/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
 						if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
 						{
 							_manager_pool->PoolInMonster(spawn_monster);
 							_spawn_monsters.RemoveAt(j);
 						}
 
-						_manager_pool->PoolInPROJ(spawn_proj);
-						_spawn_projs.RemoveAt(i);
-						break;
+						/*발사체가 풀에 들어가야하는지 검증합니다*/
+						if (spawn_proj->PROJIsDoPoolIn(_info_player.GetPenetrate()))
+						{
+							_manager_pool->PoolInPROJ(spawn_proj);
+							_spawn_projs.RemoveAt(i);
+							break;
+						}
+
+						
+						
 					}
 				}
 			}
@@ -217,6 +223,17 @@ void ASA_GM::TickSpawnMonster()
 				break;
 			}
 		}
+	}
+}
+
+void ASA_GM::TickCheckShootPROJ()
+{
+	++_info_player_chr.as_wait;
+	if (_info_player_chr.as_wait >= _info_player_chr.GetASTotal())
+	{
+		/*발사*/
+		_info_player_chr.as_wait = 0;
+		ShootPROJ();
 	}
 }
 
@@ -293,13 +310,13 @@ void ASA_GM::WaveClear()
 }
 
 void ASA_GM::ShootPROJ()
-{
-	/*도착점을 통해 velocity를 계산합니다*/
-	//FVector2D v_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
-
-	ASA_Projectile* spawn_proj = _manager_pool->PoolGetPROJByCode("PROJ00001");
-	spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d, _proj_velocity, 0.f);
-	_spawn_projs.Add(spawn_proj);
+{	
+	for (int32 i = 0; i < _info_player.GetShotNumber(); ++i)
+	{
+		ASA_Projectile* spawn_proj = _manager_pool->PoolGetPROJByCode("PROJ00001");
+		spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d + _data_game_cache->GetPROJShopLoc()[i], _proj_velocity, 0.f);
+		_spawn_projs.Add(spawn_proj);
+	}
 }
 
 void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
@@ -342,7 +359,6 @@ void ASA_GM::UpgradeDMG()
 }
 void ASA_GM::UpgradeAS()
 {
-	USA_FunctionLibrary::GPrintString(123, 2, "UpgradeAS");
 	if (_info_player.GetGold() < 1)
 	{
 		return; // 소지금 부족
@@ -351,6 +367,28 @@ void ASA_GM::UpgradeAS()
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
 	PlayerChangeStat(EPlayerStat::AS, 6, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
+}
+void ASA_GM::UpgradeShotNum()
+{
+	if (_info_player.GetGold() < 1)
+	{
+		return; // 소지금 부족
+	}
+
+	/*구매가능*/
+	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::SHOT_NUMBER, 1, true);
+}
+void ASA_GM::UpgradePenetrate()
+{
+	if (_info_player.GetGold() < 1)
+	{
+		return; // 소지금 부족
+	}
+
+	/*구매가능*/
+	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::PENETRATE, 1, true);
 }
 
 void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add)
@@ -380,6 +418,22 @@ void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_val
 			_info_player.SetAS(_info_player.GetAS() - i_value);
 
 		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetAS());
+		break;
+	case EPlayerStat::SHOT_NUMBER:
+		if (b_is_add)
+			_info_player.SetShotNumber(_info_player.GetShotNumber() + i_value);
+		else
+			_info_player.SetShotNumber(_info_player.GetShotNumber() - i_value);
+
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetShotNumber());
+		break;
+	case EPlayerStat::PENETRATE:
+		if (b_is_add)
+			_info_player.SetPenetrate(_info_player.GetPenetrate() + i_value);
+		else
+			_info_player.SetPenetrate(_info_player.GetPenetrate() - i_value);
+
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetPenetrate());
 		break;
 	default:
 		break;

@@ -40,6 +40,8 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
 	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
+	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
+	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 }
 
 void ASA_PC::PCWaveStart()
@@ -98,6 +100,14 @@ void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i
 	case EPlayerStat::AS:
 		_ui_info_player.SetAS(i_value);
 		_ui_main->UIMainUpdatePlayerAS(_ui_info_player.GetAS());
+		break;
+	case EPlayerStat::SHOT_NUMBER:
+		_ui_info_player.SetShotNumber(i_value);
+		_ui_main->UIMainUpdatePlayerShotNum(_ui_info_player.GetShotNumber());
+		break;
+	case EPlayerStat::PENETRATE:
+		_ui_info_player.SetPenetrate(i_value);
+		_ui_main->UIMainUpdatePlayerPenetrate(_ui_info_player.GetPenetrate());
 		break;
 	default:
 		break;

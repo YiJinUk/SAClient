@@ -4,6 +4,7 @@
 #include "Logic/Manager/SA_Manager_Battle.h"
 #include "Logic/SA_GM.h"
 #include "Actor/Unit/Monster/SA_Monster.h"
+#include "Actor/Object/Projectile/SA_Projectile.h"
 
 void ASA_Manager_Battle::BattleInit(ASA_GM* sagm)
 {
@@ -36,6 +37,9 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 
 	/*골드 획득*/
 	_sagm->PlayerChangeStat(EPlayerStat::GOLD, i_pure_dmg, true);
+
+	/*발사체에게 공격에 성공했다고 알립니다*/
+	proj->PROJAttackSuccess(monster->GetInfoMonster().id);
 
 	return b_is_monster_death;
 }

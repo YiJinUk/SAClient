@@ -43,6 +43,8 @@ enum class EPlayerStat : uint8
 	GOLD,
 	DMG,
 	AS,
+	SHOT_NUMBER,
+	PENETRATE,
 };
 
 UENUM()
@@ -70,6 +72,11 @@ protected:
 		int16 _proj_range = 100;
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int8 _proj_z_fixed = 50;
+	/*탄알 발사시 탄알의 위치값 입니다 해당 값은 베이스위치값에 더해서 사용합니다*/
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		TArray<FVector> _proj_shot_loc;
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		int8 _proj_max_shot_number = 7;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
 	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
@@ -77,6 +84,8 @@ public:
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
 	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
+	FORCEINLINE const TArray<FVector>& GetPROJShopLoc() const { return _proj_shot_loc; }
+	FORCEINLINE const int8 GetPROJMaxShotNumber() const { return _proj_max_shot_number; }
 };
 
 USTRUCT(BlueprintType)
@@ -139,14 +148,28 @@ private:
 		int32 _dmg = 1;
 	UPROPERTY()
 		int32 _as = 60;
+	UPROPERTY()
+		int8 _shot_number = 1;
+	/*
+	* 관통샷
+	* 해당 값이 1이면 한마리를 관통해서 총 두마리를 공격할 수 있는게 아니라
+	* 해당 값만큼 공격이 가능하다는 뜻 입니다
+	* 해당값이 5라면 최대5마리를 공격하고 실제 관통은 4번 합니다. 
+	*/
+	UPROPERTY()
+		int8 _penetrate = 0;
 public:
 	FORCEINLINE const int32 GetGold() const { return _gold; }
 	FORCEINLINE const int32 GetDMG() const { return _dmg; }
 	FORCEINLINE const int32 GetAS() const { return _as; }
+	FORCEINLINE const int8 GetShotNumber() const { return _shot_number; }
+	FORCEINLINE const int8 GetPenetrate() const { return _penetrate; }
 
 	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
 	FORCEINLINE void SetDMG(const int32 i_dmg) { _dmg = i_dmg; }
 	FORCEINLINE void SetAS(const int32 i_as) { _as = i_as; }
+	FORCEINLINE void SetShotNumber(const int8 i_shot_number) { _shot_number = i_shot_number; }
+	FORCEINLINE void SetPenetrate(const int8 i_penetrate) { _penetrate = i_penetrate; }
 };
 
 USTRUCT()
@@ -249,4 +272,7 @@ public:
 
 	UPROPERTY()
 		FVector velocity = FVector::ZeroVector;
+
+	UPROPERTY()
+		int8 penetrate_current = 0;
 };

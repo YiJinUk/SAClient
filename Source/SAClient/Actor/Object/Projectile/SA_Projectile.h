@@ -20,7 +20,11 @@ public:
 	void PROJPostInit(const FDataProjectile* s_data_proj);
 	//풀에서 나올 때 마다 호출됩니다
 	void PROJInit(const int64 i_id, const FVector& v_spawn_loc, const FVector2D& v2_velocity, const int32 i_yaw);
+	//공격했던 몬스터인지 확인합니다 return T : 공격한 몬스터입니다
+	bool PROJIsAttackedMonsterByMOBId(const int64 i_id_monster);
 	void PROJMove(const float f_delta_time, const int32 i_move_speed);
+	void PROJAttackSuccess(const int64 i_id_atk_monster);
+	bool PROJIsDoPoolIn(const int8 i_proj_max_penetrate);
 
 	void PROJSetPoolActive(const bool b_is_active);
 
@@ -28,4 +32,8 @@ public:
 private:
 	UPROPERTY()
 		FInfoProjectile _info_proj;
+
+	//공격한 몬스터의 아이디를 저장합니다. 관통할 때 사용합니다
+	UPROPERTY()
+		TSet<int64> _id_atk_monster;
 };

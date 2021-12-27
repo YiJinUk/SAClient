@@ -35,6 +35,14 @@ private:
 		UButton* _as_upgrade_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _as_upgrade = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _shot_num_upgrade_btn = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _shot_num_upgrade = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _penetrate_upgrade_btn = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _penetrate_upgrade = nullptr;
 
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
@@ -43,9 +51,15 @@ private:
 public:
 	void UITitleUpdatePlayerDMG(const int32 i_dmg_update);
 	void UITitleUpdatePlayerAS(const int32 i_as_update);
+	void UITitleUpdatePlayerShotNum(const int8 i_shot_num_update);
+	void UITitleUpdatePlayerPenetrate(const int8 i_penetrate);
 
 	UFUNCTION()
 		void ClickedUpgradeDMG();
 	UFUNCTION()
 		void ClickedUpgradeAS();
+	UFUNCTION()
+		void ClickedUpgradeShotNum();
+	UFUNCTION()
+		void ClickedUpgradePenetrate();
 };

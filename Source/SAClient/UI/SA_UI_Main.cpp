@@ -71,3 +71,11 @@ void USA_UI_Main::UIMainUpdatePlayerAS(const int32 i_as_update)
 	_title->UITitleUpdatePlayerAS(i_as_update);
 	_game->UIGameUpdatePlayerAS(i_as_update);
 }
+void USA_UI_Main::UIMainUpdatePlayerShotNum(const int8 i_shot_num_update)
+{
+	_title->UITitleUpdatePlayerShotNum(i_shot_num_update);
+}
+void USA_UI_Main::UIMainUpdatePlayerPenetrate(const int8 i_penetrate_update)
+{
+	_title->UITitleUpdatePlayerPenetrate(i_penetrate_update);
+}

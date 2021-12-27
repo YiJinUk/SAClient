@@ -53,4 +53,6 @@ public:
 	void UIMainUpdatePlayerGold(const int32 i_gold_update);
 	void UIMainUpdatePlayerDMG(const int32 i_dmg_update);
 	void UIMainUpdatePlayerAS(const int32 i_as_update);
+	void UIMainUpdatePlayerShotNum(const int8 i_shot_num_update);
+	void UIMainUpdatePlayerPenetrate(const int8 i_penetrate_update);
 };
