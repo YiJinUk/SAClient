@@ -86,6 +86,15 @@ protected:
 		TArray<FVector> _proj_shot_loc;
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int8 _proj_max_shot_number = 7;
+
+	UPROPERTY(EditAnywhere, Category = "Player")
+		int32 _player_base_dmg = 1;
+	UPROPERTY(EditAnywhere, Category = "Player")
+		int32 _player_base_as = 60;
+	UPROPERTY(EditAnywhere, Category = "Player")
+		int8 _player_base_shot_num = 1;
+	UPROPERTY(EditAnywhere, Category = "Player")
+		int8 _player_base_penetrate = 1;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
 	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
@@ -95,6 +104,11 @@ public:
 	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
 	FORCEINLINE const TArray<FVector>& GetPROJShopLoc() const { return _proj_shot_loc; }
 	FORCEINLINE const int8 GetPROJMaxShotNumber() const { return _proj_max_shot_number; }
+
+	FORCEINLINE const int32 GetPlayerBaseDMG() const { return _player_base_dmg; }
+	FORCEINLINE const int32 GetPlayerBaseAS() const { return _player_base_as; }
+	FORCEINLINE const int32 GetPlayerBaseShotNum() const { return _player_base_shot_num; }
+	FORCEINLINE const int32 GetPlayerBasePenetrate() const { return _player_base_penetrate; }
 };
 
 USTRUCT(BlueprintType)

@@ -15,6 +15,7 @@ class ASA_SpawnPoint;
 class ASA_Manager_Pool;
 class ASA_Manager_Battle;
 class ASA_Manager_SFX;
+class ASA_Manager_SaveLoad;
 
 /**
  * 
@@ -74,6 +75,8 @@ private:
 		ASA_Manager_Battle* _manager_battle = nullptr;
 	UPROPERTY()
 		ASA_Manager_SFX* _manager_sfx = nullptr;
+	UPROPERTY()
+		ASA_Manager_SaveLoad* _manager_saveload = nullptr;
 #pragma endregion
 
 #pragma region Game

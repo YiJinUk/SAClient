@@ -8,6 +8,7 @@
 #include "Manager/SA_Manager_Pool.h"
 #include "Manager/SA_Manager_Battle.h"
 #include "Manager/SA_Manager_SFX.h"
+#include "Manager/SA_Manager_SaveLoad.h"
 #include "Actor/Unit/Player/SA_Player.h"
 #include "Actor/Unit/Monster/SA_Monster.h"
 #include "Actor/Object/SA_SpawnPoint.h"
@@ -47,14 +48,6 @@ void ASA_GM::GMInit()
 
 	/*게임인스턴스 초기화*/
 	_sagi->GIInit();
-
-	/*Debug 나중에 세이브파일로 로드해야합니다*/
-	_info_player.SetGold(10);
-	_info_player.SetDMG(1);
-	_info_player.SetAS(60);
-	_info_player.SetShotNumber(1);
-	_info_player.SetPenetrate(1);
-	/*Debug*/
 
 	/*자주 사용하는 게임데이터를 캐싱합니다*/
 	_data_game_cache = _sagi->GetDataGame();
@@ -96,6 +89,8 @@ void ASA_GM::GMInit()
 	_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 	_manager_battle = wld->SpawnActor<ASA_Manager_Battle>(s_param); // 전투 매니저
 	_manager_sfx = wld->SpawnActor<ASA_Manager_SFX>(s_param); // 사운드 매니저
+	_manager_saveload = wld->SpawnActor<ASA_Manager_SaveLoad>(s_param); // 세이브로드 매니저
+	
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
@@ -109,6 +104,14 @@ void ASA_GM::GMInit()
 
 	/*배경음악 재생*/
 	_manager_sfx->SFXStart(ESFXType::BACKGROUND);
+
+	/*플레이어의 세이브데이터를 불러옵니다*/
+	_manager_saveload->ReadStart(_info_player);
+	//_info_player.SetGold(10);
+	//_info_player.SetDMG(1);
+	//_info_player.SetAS(60);
+	//_info_player.SetShotNumber(1);
+	//_info_player.SetPenetrate(1);
 
 	/*플레이어를 초기화합니다*/
 	InitInfoPlayerChr();
@@ -281,6 +284,9 @@ void ASA_GM::TickCheckWaveEnd()
 
 void ASA_GM::ReturnTitle()
 {
+	//세이브
+	_manager_saveload->SaveStart(_info_player);
+
 	PoolInAllSpawnedMonsters();
 	PoolInAllSpawnedPROJs();
 
@@ -315,6 +321,9 @@ void ASA_GM::WaveStart()
 			_count_spawn_monster_max += s_data_spawn_monster.GetSpawnCount();
 		}
 	}
+
+	//세이브
+	_manager_saveload->SaveStart(_info_player);
 
 	InitInfoPlayerChr();
 
