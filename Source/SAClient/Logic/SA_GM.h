@@ -47,6 +47,7 @@ private:
 
 #pragma region Init
 protected:
+	ASA_GM();
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 private:
 	void GMInit();
@@ -57,9 +58,11 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 private:
 	void TickSpawnMonster();
+	void TickCheckShootPROJ();
+	void TickMoveMonster(const float f_delta_time);
+	void TickMovePROJ(const float f_delta_time);
 	//웨이브종료를 체크합니다
 	void TickCheckWaveEnd();
-	void TickCheckShootPROJ();
 #pragma endregion
 
 #pragma region Manager

@@ -15,9 +15,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#include "DrawDebugHelpers.h"
+
 void ASA_GM::DebugWaveStart()
 {
 	WaveStart();
+}
+
+ASA_GM::ASA_GM()
+{
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ASA_GM::PostLogin(APlayerController* NewPlayer)
@@ -126,71 +133,12 @@ void ASA_GM::Tick(float DeltaTime)
 		/*발사체 발사 검사*/
 		TickCheckShootPROJ();
 
-		ASA_Monster* spawn_monster = nullptr;
-		for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
-		{
-			spawn_monster = _spawn_monsters[i];
+		/*몬스터 이동 및 도착*/
+		TickMoveMonster(DeltaTime);
 
-			/*Move*/
-			spawn_monster->MOBMove(DeltaTime);
+		/*발사체 이동 및 공격*/
+		TickMovePROJ(DeltaTime);
 
-			/*Check Arrive*/
-			if (USA_FunctionLibrary::GetDistanceByV3(spawn_monster->GetActorLocation(), _player_loc) <= _data_game_cache->GetDestRadius())
-			{
-				//Arrive!
-				_manager_pool->PoolInMonster(spawn_monster);
-				--_info_player_chr.hp;
-				_spawn_monsters.RemoveAt(i);
-			}
-		}
-
-		ASA_Projectile* spawn_proj = nullptr;
-		for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
-		{
-			spawn_proj = _spawn_projs[i];
-
-			/*Move*/
-			spawn_proj->PROJMove(DeltaTime, _data_game_cache->GetPROJSpeed());
-		}
-
-		if (_tick % 4 == 0)
-		{
-			for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
-			{
-				spawn_proj = _spawn_projs[i];
-
-				/*Find Target*/
-				for (int32 j = _spawn_monsters.Num() - 1; j >= 0; --j)
-				{
-					spawn_monster = _spawn_monsters[j];
-
-					if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
-					{
-						//Arrive!
-						/*이미 공격한 몬스터인지 확인합니다*/
-						if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
-
-						/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
-						if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
-						{
-							_manager_pool->PoolInMonster(spawn_monster);
-							_spawn_monsters.RemoveAt(j);
-						}
-
-						/*발사체가 풀에 들어가야하는지 검증합니다*/
-						if (spawn_proj->PROJIsDoPoolIn(_info_player.GetPenetrate()))
-						{
-							_manager_pool->PoolInPROJ(spawn_proj);
-							_spawn_projs.RemoveAt(i);
-							break;
-						}
-
-						
-						
-					}
-				}
-			}
-		}
 
 		/*UI Update*/
 		_pc->PCUIUpdateCheck();
@@ -234,6 +182,71 @@ void ASA_GM::TickCheckShootPROJ()
 		/*발사*/
 		_info_player_chr.as_wait = 0;
 		ShootPROJ();
+	}
+}
+
+void ASA_GM::TickMoveMonster(const float f_delta_time)
+{
+	ASA_Monster* spawn_monster = nullptr;
+	for (int32 i = _spawn_monsters.Num() - 1; i >= 0; --i)
+	{
+		spawn_monster = _spawn_monsters[i];
+
+		/*Move*/
+		spawn_monster->MOBMove(f_delta_time);
+
+		/*Check Arrive*/
+		if (USA_FunctionLibrary::GetDistanceByV3(spawn_monster->GetActorLocation(), _player_loc) <= _data_game_cache->GetDestRadius())
+		{
+			//Arrive!
+			_manager_pool->PoolInMonster(spawn_monster);
+			--_info_player_chr.hp;
+			_spawn_monsters.RemoveAt(i);
+		}
+	}
+}
+
+void ASA_GM::TickMovePROJ(const float f_delta_time)
+{
+	ASA_Projectile* spawn_proj = nullptr;
+	ASA_Monster* spawn_monster = nullptr;
+	for (int32 i = _spawn_projs.Num() - 1; i >= 0; --i)
+	{
+		spawn_proj = _spawn_projs[i];
+
+		/*Debug*/
+		DrawDebugCircle(GetWorld(), spawn_proj->GetActorLocation(), _data_game_cache->GetPROJRange(), 30, FColor::Red, false, -1.f, 0, 0.f, FVector(1.f, 0.f, 0.f), FVector(0.f, 1.f, 0.f));
+
+		/*Move*/
+		spawn_proj->PROJMove(f_delta_time, _data_game_cache->GetPROJSpeed());
+
+		/*Find Target*/
+		for (int32 j = _spawn_monsters.Num() - 1; j >= 0; --j)
+		{
+			spawn_monster = _spawn_monsters[j];
+
+			if (USA_FunctionLibrary::GetDistanceByV2(spawn_proj->GetActorLocation2D(), spawn_monster->GetActorLocation2D()) <= _data_game_cache->GetPROJRange())
+			{
+				//Arrive!
+				/*이미 공격한 몬스터인지 확인합니다*/
+				if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
+
+				/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
+				if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
+				{
+					_manager_pool->PoolInMonster(spawn_monster);
+					_spawn_monsters.RemoveAt(j);
+				}
+
+				/*발사체가 풀에 들어가야하는지 검증합니다*/
+				if (spawn_proj->PROJIsDoPoolIn(_info_player.GetPenetrate()))
+				{
+					_manager_pool->PoolInPROJ(spawn_proj);
+					_spawn_projs.RemoveAt(i);
+					break;
+				}
+			}
+		}
 	}
 }
 

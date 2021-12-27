@@ -29,12 +29,6 @@ bool ASA_Projectile::PROJIsAttackedMonsterByMOBId(const int64 i_id_monster)
 {
 	if (_id_atk_monster.Num() <= 0) return false;
 	return _id_atk_monster.Contains(i_id_monster);
-	//for (const int64 i_id_atk_monster : _id_atk_monster)
-	//{
-	//	if (i_id_atk_monster == i_id_monster)
-	//		return true;
-	//}
-	//return false;
 }
 
 void ASA_Projectile::PROJMove(const float f_delta_time, const int32 i_move_speed)
