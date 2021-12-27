@@ -319,7 +319,7 @@ void ASA_GM::WaveStart()
 void ASA_GM::WaveClear()
 {
 	++_wave_round_current;
-	_pc->PCReturnTitle();
+	_pc->PCWaveClear();
 }
 
 void ASA_GM::ShootPROJ()

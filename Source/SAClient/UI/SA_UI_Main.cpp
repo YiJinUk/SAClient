@@ -19,6 +19,7 @@ void USA_UI_Main::UIMainInit()
 
 void USA_UI_Main::UIMainRetunTitle()
 {
+	_game->UIGameSetVisibleWaveClear(ESlateVisibility::Hidden);
 	UISwitchMainWidget(EUIMainStatus::TITLE);
 }
 
@@ -26,7 +27,10 @@ void USA_UI_Main::UIMainWaveStart()
 {
 	UISwitchMainWidget(EUIMainStatus::GAME);
 }
-
+void USA_UI_Main::UIMainWaveClear()
+{
+	_game->UIGameWaveClear();
+}
 void USA_UI_Main::UIMainWaveGameOver()
 {
 	_game->UIGameSetVisibleGameOver(ESlateVisibility::Visible);

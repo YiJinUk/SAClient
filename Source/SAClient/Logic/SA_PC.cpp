@@ -49,6 +49,11 @@ void ASA_PC::PCWaveStart()
 	_ui_main->UIMainWaveStart();
 }
 
+void ASA_PC::PCWaveClear()
+{
+	_ui_main->UIMainWaveClear();
+}
+
 void ASA_PC::PCWaveGameOver()
 {
 	_ui_main->UIMainWaveGameOver();

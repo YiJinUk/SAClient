@@ -9,6 +9,7 @@
 
 class ASA_PC;
 class USA_UI_GameOver;
+class USA_UI_WaveClear;
 class UTextBlock;
 
 /**
@@ -21,13 +22,12 @@ class SACLIENT_API USA_UI_Game : public USA_UI_Master
 
 public:
 	void UIGameInit(ASA_PC* pc);
-
-public:
-	void UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible);
 	
 private:
 	UPROPERTY(Meta = (BindWidget))
 		USA_UI_GameOver* _ui_game_over = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		USA_UI_WaveClear* _ui_wave_clear = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _hp = nullptr;
 	UPROPERTY(Meta = (BindWidget))
@@ -38,6 +38,11 @@ private:
 
 
 public:
+	void UIGameWaveClear();
+
+	void UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible);
+	void UIGameSetVisibleWaveClear(const ESlateVisibility e_ui_visible);
+
 	void UIGameUpdatePlayerDMG(const int32 i_dmg_update);
 	void UIGameUpdatePlayerAS(const int32 i_as_update);
 

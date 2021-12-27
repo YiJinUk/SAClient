@@ -40,6 +40,7 @@ private:
 		ASA_PC* _pc = nullptr;
 public:
 	void UIMainWaveStart();
+	void UIMainWaveClear();
 	void UIMainWaveGameOver();
 	void UIMainRetunTitle();
 

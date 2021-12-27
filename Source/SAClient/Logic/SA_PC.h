@@ -38,6 +38,7 @@ private:
 #pragma region Wave
 public:
 	void PCWaveStart();
+	void PCWaveClear();
 	void PCWaveGameOver();
 #pragma endregion
 
