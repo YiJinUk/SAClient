@@ -16,7 +16,7 @@ class SACLIENT_API USA_SG : public USaveGame
 	GENERATED_BODY()
 	
 public:
-	void SGSaveData(const FInfoPlayer& s_info_player);
+	void SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wave_round);
 
 public:
 	UPROPERTY()
@@ -30,4 +30,7 @@ public:
 		int8 shot_num = 0;
 	UPROPERTY()
 		int8 penetrate = 0;
+
+	UPROPERTY()
+		int32 wave_round = 1;
 };

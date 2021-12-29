@@ -106,7 +106,7 @@ void ASA_GM::GMInit()
 	_manager_sfx->SFXStart(ESFXType::BACKGROUND);
 
 	/*플레이어의 세이브데이터를 불러옵니다*/
-	_manager_saveload->ReadStart(_info_player);
+	_manager_saveload->ReadStart(_info_player, _wave_round_current);
 	//_info_player.SetGold(10);
 	//_info_player.SetDMG(1);
 	//_info_player.SetAS(60);
@@ -328,7 +328,7 @@ void ASA_GM::WaveStart()
 	}
 
 	//세이브
-	_manager_saveload->SaveStart(_info_player);
+	_manager_saveload->SaveStart(_info_player, _wave_round_current);
 
 	InitInfoPlayerChr();
 
@@ -344,13 +344,13 @@ void ASA_GM::WaveClear()
 	_pc->PCWaveClear(_wave_round_current);
 
 	//세이브
-	_manager_saveload->SaveStart(_info_player);
+	_manager_saveload->SaveStart(_info_player, _wave_round_current);
 }
 
 void ASA_GM::WaveGameOver()
 {
 	//세이브
-	_manager_saveload->SaveStart(_info_player);
+	_manager_saveload->SaveStart(_info_player, _wave_round_current);
 
 	/*게임오버*/
 	SetWaveStatus(EWaveStatus::GAMEOVER);

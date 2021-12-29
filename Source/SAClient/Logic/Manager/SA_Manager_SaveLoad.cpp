@@ -7,17 +7,17 @@
 
 #include "Kismet/GameplayStatics.h"
 
-void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player)
+void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round)
 {
 	USA_SG* save_file = Cast<USA_SG>(UGameplayStatics::CreateSaveGameObject(USA_SG::StaticClass()));
 	if (!save_file) return;
 
-	save_file->SGSaveData(s_info_player);
+	save_file->SGSaveData(s_info_player, i_wave_round);
 
 	UGameplayStatics::SaveGameToSlot(save_file, "SASave", 0);
 }
 
-void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player)
+void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round)
 {
 	USA_SG* save_file = Cast<USA_SG>(UGameplayStatics::LoadGameFromSlot("SASave", 0));
 	if (save_file)
@@ -27,6 +27,8 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player)
 		s_info_player.SetAS(save_file->as);
 		s_info_player.SetShotNumber(save_file->shot_num);
 		s_info_player.SetPenetrate(save_file->penetrate);
+
+		i_wave_round = save_file->wave_round;
 	}
 	else
 	{
@@ -39,5 +41,7 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player)
 		s_info_player.SetAS(s_data_game->GetPlayerBaseAS());
 		s_info_player.SetShotNumber(s_data_game->GetPlayerBaseShotNum());
 		s_info_player.SetPenetrate(s_data_game->GetPlayerBasePenetrate());
+
+		i_wave_round = 1;
 	}
 }
