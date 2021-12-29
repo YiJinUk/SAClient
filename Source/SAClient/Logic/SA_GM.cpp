@@ -106,7 +106,7 @@ void ASA_GM::GMInit()
 	_manager_sfx->SFXStart(ESFXType::BACKGROUND);
 
 	/*플레이어의 세이브데이터를 불러옵니다*/
-	_manager_saveload->ReadStart(_info_player, _wave_round_current);
+	GameLoad();
 	//_info_player.SetGold(10);
 	//_info_player.SetDMG(1);
 	//_info_player.SetAS(60);
@@ -115,6 +115,10 @@ void ASA_GM::GMInit()
 
 	/*플레이어를 초기화합니다*/
 	_pc->PCInit(this, _info_player_chr);
+
+	/*로드한 정보를 통해 사운드를 초기화합니다*/
+	_info_option.is_sfx_on = !_info_option.is_sfx_on;
+	SFXToggle();
 
 	ReturnTitle();
 }
@@ -328,7 +332,7 @@ void ASA_GM::WaveStart()
 	}
 
 	//세이브
-	_manager_saveload->SaveStart(_info_player, _wave_round_current);
+	GameSave();
 
 	InitInfoPlayerChr();
 
@@ -344,13 +348,12 @@ void ASA_GM::WaveClear()
 	_pc->PCWaveClear(_wave_round_current);
 
 	//세이브
-	_manager_saveload->SaveStart(_info_player, _wave_round_current);
+	GameSave();
 }
 
 void ASA_GM::WaveGameOver()
 {
-	//세이브
-	_manager_saveload->SaveStart(_info_player, _wave_round_current);
+	GameSave();
 
 	/*게임오버*/
 	SetWaveStatus(EWaveStatus::GAMEOVER);
@@ -414,6 +417,13 @@ void ASA_GM::PoolInAllSpawnedMonsters()
 		_manager_pool->PoolInMonster(spawn_monster);
 	}
 	_spawn_monsters.Empty(100);
+}
+
+void ASA_GM::SFXToggle()
+{
+	_info_option.is_sfx_on = !_info_option.is_sfx_on;
+	BPSFXToggle(_info_option.is_sfx_on);
+	GameSaveOption();
 }
 
 void ASA_GM::UpgradeDMG()
@@ -508,6 +518,19 @@ void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_val
 	default:
 		break;
 	}
+}
+
+void ASA_GM::GameSave()
+{
+	_manager_saveload->SaveStart(_info_player, _wave_round_current);
+}
+void ASA_GM::GameSaveOption()
+{
+	_manager_saveload->SaveOptionStart(_info_option);
+}
+void ASA_GM::GameLoad()
+{
+	_manager_saveload->ReadStart(_info_player, _wave_round_current, _info_option);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

@@ -17,5 +17,7 @@ class SACLIENT_API ASA_Manager_SaveLoad : public ASA_Manager_Master
 	
 public:
 	void SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round);
-	void ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round);
+	void SaveOptionStart(const FInfoOption& s_info_option);
+
+	void ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, FInfoOption& s_info_option);
 };

@@ -5,9 +5,17 @@
 #include "Logic/SA_PC.h"
 #include "Game/SA_UI_Game.h"
 #include "Title/SA_UI_Title.h"
+#include "SA_UI_Option.h"
 
 #include "Components/WidgetSwitcher.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
+
+void USA_UI_Main::NativeConstruct()
+{
+	Super::NativeConstruct();
+	_option_show->OnClicked.AddDynamic(this, &USA_UI_Main::ClickedOptionShow);
+}
 
 void USA_UI_Main::UIMainInit()
 {
@@ -15,6 +23,7 @@ void USA_UI_Main::UIMainInit()
 	UISwitchMainWidget(EUIMainStatus::TITLE);
 	_game->UIGameInit(_pc);
 	_title->UITitleInit(_pc);
+	_option->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void USA_UI_Main::UIMainRetunTitle()
@@ -64,6 +73,11 @@ void USA_UI_Main::UISwitchMainWidget(const EUIMainStatus e_ui_main_status)
 	default:
 		break;
 	}
+}
+void USA_UI_Main::ClickedOptionShow()
+{
+	_pc->SetPause(true);
+	_option->SetVisibility(ESlateVisibility::Visible);
 }
 
 void USA_UI_Main::UIMainUpdatePlayerGold(const int32 i_gold_update)

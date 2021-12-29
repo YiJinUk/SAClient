@@ -5,6 +5,7 @@
 #include "Logic/SA_GI.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 void ASA_Manager_SFX::SFXInit(USA_GI* sagi)
 {
@@ -16,7 +17,7 @@ void ASA_Manager_SFX::SFXStart(const ESFXType e_sfx_type)
 	switch (e_sfx_type)
 	{
 	case ESFXType::BACKGROUND:
-		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetBackGround());
+		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetBackGround())->SetUISound(true);
 		break;
 	case ESFXType::PROJ_SHOT:
 		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetPROJShot());

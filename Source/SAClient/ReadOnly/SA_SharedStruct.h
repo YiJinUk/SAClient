@@ -73,6 +73,18 @@ enum class EUIMainStatus : uint8
 	GAME,
 };
 
+
+USTRUCT()
+struct FInfoOption
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		bool is_sfx_on = true;
+
+};
+
 USTRUCT(BlueprintType)
 struct FDataGame : public FTableRowBase
 {

@@ -2,33 +2,44 @@
 
 
 #include "Logic/Manager/SA_Manager_SaveLoad.h"
-#include "Logic/SA_SG.h"
+#include "Logic/SaveLoad/SA_SG_Game.h"
+#include "Logic/SaveLoad/SA_SG_Option.h"
 #include "Logic/SA_GI.h"
 
 #include "Kismet/GameplayStatics.h"
 
 void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round)
 {
-	USA_SG* save_file = Cast<USA_SG>(UGameplayStatics::CreateSaveGameObject(USA_SG::StaticClass()));
+	USA_SG_Game* save_file = Cast<USA_SG_Game>(UGameplayStatics::CreateSaveGameObject(USA_SG_Game::StaticClass()));
 	if (!save_file) return;
 
 	save_file->SGSaveData(s_info_player, i_wave_round);
 
-	UGameplayStatics::SaveGameToSlot(save_file, "SASave", 0);
+	UGameplayStatics::SaveGameToSlot(save_file, "SG_Game", 0);
+}
+void ASA_Manager_SaveLoad::SaveOptionStart(const FInfoOption& s_info_option)
+{
+	USA_SG_Option* save_file = Cast<USA_SG_Option>(UGameplayStatics::CreateSaveGameObject(USA_SG_Option::StaticClass()));
+	if (!save_file) return;
+
+	save_file->SGSaveData(s_info_option);
+
+	UGameplayStatics::SaveGameToSlot(save_file, "SG_Option", 0);
 }
 
-void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round)
+void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, FInfoOption& s_info_option)
 {
-	USA_SG* save_file = Cast<USA_SG>(UGameplayStatics::LoadGameFromSlot("SASave", 0));
-	if (save_file)
+	USA_SG_Game* save_file_game = Cast<USA_SG_Game>(UGameplayStatics::LoadGameFromSlot("SG_Game", 0));
+	USA_SG_Option* save_file_option = Cast<USA_SG_Option>(UGameplayStatics::LoadGameFromSlot("SG_Option", 0));
+	if (save_file_game)
 	{
-		s_info_player.SetGold(save_file->gold);
-		s_info_player.SetDMG(save_file->dmg);
-		s_info_player.SetAS(save_file->as);
-		s_info_player.SetShotNumber(save_file->shot_num);
-		s_info_player.SetPenetrate(save_file->penetrate);
+		s_info_player.SetGold(save_file_game->gold);
+		s_info_player.SetDMG(save_file_game->dmg);
+		s_info_player.SetAS(save_file_game->as);
+		s_info_player.SetShotNumber(save_file_game->shot_num);
+		s_info_player.SetPenetrate(save_file_game->penetrate);
 
-		i_wave_round = save_file->wave_round;
+		i_wave_round = save_file_game->wave_round;
 	}
 	else
 	{
@@ -43,5 +54,14 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetPenetrate(s_data_game->GetPlayerBasePenetrate());
 
 		i_wave_round = 1;
+	}
+
+	if (save_file_option)
+	{
+		s_info_option.is_sfx_on = save_file_option->is_sfx_on;
+	}
+	else
+	{
+		s_info_option.is_sfx_on = true;
 	}
 }

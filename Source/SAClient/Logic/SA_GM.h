@@ -178,4 +178,25 @@ private:
 	UPROPERTY()
 		FInfoPlayer _info_player;
 #pragma endregion
+
+#pragma region SFX
+public:
+	void SFXToggle();
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+		void BPSFXToggle(const bool b_is_sfx_on);
+#pragma endregion
+
+#pragma region Option
+private:
+	FInfoOption _info_option;
+#pragma endregion
+
+#pragma region SaveLoad
+private:
+	void GameSave();
+	void GameSaveOption();
+
+	void GameLoad();
+#pragma endregion
 };

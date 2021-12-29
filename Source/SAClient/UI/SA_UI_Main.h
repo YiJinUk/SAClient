@@ -9,9 +9,11 @@
 
 class USA_UI_Game;
 class USA_UI_Title;
+class USA_UI_Option;
 class ASA_PC;
 class UWidgetSwitcher;
 class UTextBlock;
+class UButton;
 
 /**
  * 
@@ -21,6 +23,8 @@ class SACLIENT_API USA_UI_Main : public USA_UI_Master
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void NativeConstruct() override;
 public:
 	void UIMainInit();
 private:
@@ -31,9 +35,13 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		USA_UI_Title* _title = nullptr;
 	UPROPERTY(Meta = (BindWidget))
+		USA_UI_Option* _option = nullptr;
+	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _gold = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _wave_round = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _option_show = nullptr;
 
 	UPROPERTY()
 		EUIMainStatus _main_status = EUIMainStatus::TITLE;
@@ -50,7 +58,8 @@ public:
 	void UIMainUpdateWaveRound(const int32 i_wave_current);
 private:
 	void UISwitchMainWidget(const EUIMainStatus e_ui_main_status);
-
+	UFUNCTION()
+		void ClickedOptionShow();
 
 
 public:
