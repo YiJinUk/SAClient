@@ -127,6 +127,7 @@ private:
 
 #pragma region Monster
 private:
+	void SpawnMonsterClone(ASA_Monster* monster_origin);
 	void PoolInAllSpawnedMonsters();
 
 	FORCEINLINE ASA_SpawnPoint* GetRandomSpawnPoint();

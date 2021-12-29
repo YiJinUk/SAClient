@@ -174,7 +174,7 @@ void ASA_GM::TickSpawnMonster()
 				s_data_spawn_monster.SubSpawnCount();
 				spawn_point_rnd = GetRandomSpawnPoint();
 				spawn_monster = _manager_pool->PoolGetMonsterByCode(s_data_spawn_monster.GetCodeMonster());
-				spawn_monster->MOBInit(GetNewId(), spawn_point_rnd->GetPointSpawnLocation(), spawn_point_rnd->GetPointVelocity(), spawn_point_rnd->GetPointRotator());
+				spawn_monster->MOBInit(GetNewId(), s_data_spawn_monster.GetMonsterHP(), spawn_point_rnd->GetPointSpawnLocation(), spawn_point_rnd->GetPointVelocity(), spawn_point_rnd->GetPointRotator());
 				_spawn_monsters.Add(spawn_monster);
 				++_count_spawn_monster_current;
 				break;
@@ -229,6 +229,14 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 		/*Move*/
 		spawn_proj->PROJMove(f_delta_time, _data_game_cache->GetPROJSpeed());
 
+		/*Max_Distance*/
+		if (USA_FunctionLibrary::GetDistanceByV3(spawn_proj->GetActorLocation(), _player_loc) >= 2500.f)
+		{
+			_manager_pool->PoolInPROJ(spawn_proj);
+			_spawn_projs.RemoveAt(i);
+			break;
+		}
+
 		/*Find Target*/
 		for (int32 j = _spawn_monsters.Num() - 1; j >= 0; --j)
 		{
@@ -244,6 +252,8 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 				/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
 				if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
 				{
+					SpawnMonsterClone(spawn_monster);
+
 					_manager_pool->PoolInMonster(spawn_monster);
 					_spawn_monsters.RemoveAt(j);
 				}
@@ -353,6 +363,25 @@ void ASA_GM::ShootPROJ()
 void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
 {
 	_proj_velocity = USA_FunctionLibrary::GetVelocityByV2(_proj_loc_start_2d, FVector2D(v_dest.X, v_dest.Y));
+}
+
+void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
+{
+	const EMonsterHP e_monster_hp_origin = monster_origin->GetDownMonsterHP();
+	if (e_monster_hp_origin == EMonsterHP::HP_NO) return;
+
+	const FVector& v_loc_spawn_origin = monster_origin->GetActorLocation();
+	FVector v_loc_spawn_new = FVector(v_loc_spawn_origin.X, v_loc_spawn_origin.Y + _data_game_cache->GetMonsterCloneLocY(), 0.f);
+	
+	for (int32 i = 0; i < 2; ++i)
+	{
+		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode(monster_origin->GetInfoMonster().code);
+		if (i == 1)
+			v_loc_spawn_new.Y = -v_loc_spawn_new.Y;
+		FVector v_velocity_new = USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc);
+		spawn_monster_new->MOBInit(GetNewId(), monster_origin->GetDownMonsterHP(), v_loc_spawn_new, v_velocity_new, FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
+		_spawn_monsters.Add(spawn_monster_new);
+	}
 }
 
 void ASA_GM::PoolInAllSpawnedPROJs()

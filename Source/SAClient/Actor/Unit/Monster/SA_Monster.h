@@ -33,7 +33,7 @@ public:
 	//생성시 딱 한번만 호출합니다. 풀링에서 호출되지 않습니다
 	void MOBPostInit(const FDataMonster* s_data_monster);
 	//풀에서 나올 때 마다 호출됩니다
-	void MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
+	void MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
 	void MOBMove(const float f_delta_time);
 
 	void MOBSetPoolActive(const bool b_is_active);
@@ -54,6 +54,10 @@ public:
 	int32 MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const bool b_is_add = false);
 
 	FORCEINLINE const FInfoMonster& GetInfoMonster() const;
+	const EMonsterHP GetDownMonsterHP() const;
+
+private:
+	const int32 GetMonsterHPByEnum(const EMonsterHP e_monster_hp);
 private:
 	UPROPERTY()
 		FInfoMonster _info_monster;

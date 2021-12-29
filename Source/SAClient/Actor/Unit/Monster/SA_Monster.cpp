@@ -33,14 +33,13 @@ void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
 {
 	if (!s_data_monster) return;
 	_info_monster.code = s_data_monster->GetCode();
-	_info_monster.hp_max = s_data_monster->GetHP();
 	_info_monster.move_speed = s_data_monster->GetMoveSpeed();
 	_info_monster.bonus_gold = s_data_monster->GetBonusGold();
 
 	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
 }
 
-void ASA_Monster::MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
+void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
 {
 	/*풀링*/
 	MOBSetPoolActive(true);
@@ -55,6 +54,8 @@ void ASA_Monster::MOBInit(const int64 i_id, const FVector& v_spawn_loc, const FV
 	SetActorLocation(v_spawn_loc);
 
 	/*스탯 초기화*/
+	_info_monster.mob_hp = e_monster_hp;
+	_info_monster.hp_max = GetMonsterHPByEnum(e_monster_hp);
 	_info_monster.hp = _info_monster.hp_max;
 
 	/*UI 초기화*/
@@ -85,7 +86,7 @@ void ASA_Monster::MOBSetPoolActive(const bool b_is_active)
 	if (!b_is_active)
 	{
 		//풀에서 활성화될때의 위치변경은 다른곳에서 합니다
-		SetActorLocation(FVector(0.f, 0.f, -500.f));
+		SetActorLocation(FVector(0.f, -1000.f, -500.f));
 		GetWorldTimerManager().SetTimerForNextTick(this, &ASA_Monster::MOBTimerUIPool);
 	}
 	else
@@ -127,4 +128,52 @@ int32 ASA_Monster::MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const
 	return _info_monster.hp;
 }
 
+const int32 ASA_Monster::GetMonsterHPByEnum(const EMonsterHP e_monster_hp)
+{
+	switch (e_monster_hp)
+	{
+	case EMonsterHP::HP_2:
+		return 2;
+		break;
+	case EMonsterHP::HP_4:
+		return 4;
+		break;
+	case EMonsterHP::HP_8:
+		return 8;
+		break;
+	case EMonsterHP::HP_16:
+		return 16;
+		break;
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+const EMonsterHP ASA_Monster::GetDownMonsterHP() const
+{
+	switch (_info_monster.mob_hp)
+	{
+	case EMonsterHP::HP_2:
+		return EMonsterHP::HP_NO;
+		break;
+	case EMonsterHP::HP_4:
+		return EMonsterHP::HP_2;
+		break;
+	case EMonsterHP::HP_8:
+		return EMonsterHP::HP_4;
+		break;
+	case EMonsterHP::HP_16:
+		return EMonsterHP::HP_8;
+		break;
+	default:
+		break;
+	}
+
+	return EMonsterHP::HP_NO;
+}
+
+
 const FInfoMonster& ASA_Monster::GetInfoMonster() const { return _info_monster; }
+

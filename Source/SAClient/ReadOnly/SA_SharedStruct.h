@@ -49,6 +49,16 @@ enum class EPlayerStat : uint8
 };
 
 UENUM()
+enum class EMonsterHP : uint8
+{
+	HP_NO,
+	HP_2,
+	HP_4,
+	HP_8,
+	HP_16,
+};
+
+UENUM()
 enum class ESFXType : uint8
 {
 	BACKGROUND,
@@ -72,9 +82,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Wave")
 		int16 _dest_radius = 100;
 
-	UPROPERTY(EditAnywhere, Category = "Player")
-		int16 _player_hp = 100;
-
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int16 _proj_speed = 1000;
 	UPROPERTY(EditAnywhere, Category = "Projectile")
@@ -88,6 +95,8 @@ protected:
 		int8 _proj_max_shot_number = 7;
 
 	UPROPERTY(EditAnywhere, Category = "Player")
+		int16 _player_hp = 100;
+	UPROPERTY(EditAnywhere, Category = "Player")
 		int32 _player_base_dmg = 1;
 	UPROPERTY(EditAnywhere, Category = "Player")
 		int32 _player_base_as = 60;
@@ -95,9 +104,11 @@ protected:
 		int8 _player_base_shot_num = 1;
 	UPROPERTY(EditAnywhere, Category = "Player")
 		int8 _player_base_penetrate = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Monster")
+		int8 _monster_clone_loc_y = 100;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
-	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
 
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
@@ -105,10 +116,13 @@ public:
 	FORCEINLINE const TArray<FVector>& GetPROJShopLoc() const { return _proj_shot_loc; }
 	FORCEINLINE const int8 GetPROJMaxShotNumber() const { return _proj_max_shot_number; }
 
+	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
 	FORCEINLINE const int32 GetPlayerBaseDMG() const { return _player_base_dmg; }
 	FORCEINLINE const int32 GetPlayerBaseAS() const { return _player_base_as; }
 	FORCEINLINE const int32 GetPlayerBaseShotNum() const { return _player_base_shot_num; }
 	FORCEINLINE const int32 GetPlayerBasePenetrate() const { return _player_base_penetrate; }
+
+	FORCEINLINE const int8 GetMonsterCloneLocY() const { return _monster_clone_loc_y; }
 };
 
 USTRUCT(BlueprintType)
@@ -138,9 +152,12 @@ protected:
 		FString _code_monster = "0";
 	UPROPERTY(EditAnywhere, Category = "General")
 		int32 _spawn_count = 0;
+	UPROPERTY(EditAnywhere, Category = "General")
+		EMonsterHP _mob_hp = EMonsterHP::HP_2;
 public:
 	FORCEINLINE const FString& GetCodeMonster() const { return _code_monster; }
 	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
+	FORCEINLINE const EMonsterHP GetMonsterHP() const { return _mob_hp; }
 
 	/*게임모드에서 복제한 웨이브데이터에서만 호출합니다*/
 	FORCEINLINE void SubSpawnCount() { --_spawn_count; }
@@ -244,8 +261,6 @@ protected:
 		FString _code = "0";
 
 	UPROPERTY(EditAnywhere, Category = "Stat")
-		int32 _hp = 100;
-	UPROPERTY(EditAnywhere, Category = "Stat")
 		int16 _move_speed = 500;
 
 	UPROPERTY(EditAnywhere, Category = "Bonus")
@@ -253,7 +268,6 @@ protected:
 public:
 	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
-	FORCEINLINE const int32& GetHP() const { return _hp; }
 	FORCEINLINE const int16& GetMoveSpeed() const { return _move_speed; }
 	FORCEINLINE const int32& GetBonusGold() const { return _bonus_gold; }
 };
@@ -274,6 +288,8 @@ public:
 	UPROPERTY()
 		FRotator rot = FRotator::ZeroRotator;
 
+	UPROPERTY()
+		EMonsterHP mob_hp = EMonsterHP::HP_2;
 	UPROPERTY()
 		int32 hp = 0;
 	UPROPERTY()
