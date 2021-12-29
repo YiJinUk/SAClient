@@ -114,8 +114,9 @@ void ASA_GM::GMInit()
 	//_info_player.SetPenetrate(1);
 
 	/*플레이어를 초기화합니다*/
-	InitInfoPlayerChr();
 	_pc->PCInit(this, _info_player_chr);
+
+	ReturnTitle();
 }
 
 void ASA_GM::InitInfoPlayerChr()
@@ -275,10 +276,7 @@ void ASA_GM::TickCheckWaveEnd()
 	/*플레이어의 체력이 0이하로 떨어지면 게임이 종료됩니다*/
 	if (_info_player_chr.hp <= 0)
 	{
-		/*게임오버*/
-		SetWaveStatus(EWaveStatus::GAMEOVER);
-
-		_pc->PCWaveGameOver();
+		WaveGameOver();
 	}
 	else
 	{
@@ -294,9 +292,6 @@ void ASA_GM::TickCheckWaveEnd()
 
 void ASA_GM::ReturnTitle()
 {
-	//세이브
-	_manager_saveload->SaveStart(_info_player);
-
 	PoolInAllSpawnedMonsters();
 	PoolInAllSpawnedPROJs();
 
@@ -344,8 +339,23 @@ void ASA_GM::WaveStart()
 
 void ASA_GM::WaveClear()
 {
+	SetWaveStatus(EWaveStatus::CLEAR);
 	++_wave_round_current;
-	_pc->PCWaveClear();
+	_pc->PCWaveClear(_wave_round_current);
+
+	//세이브
+	_manager_saveload->SaveStart(_info_player);
+}
+
+void ASA_GM::WaveGameOver()
+{
+	//세이브
+	_manager_saveload->SaveStart(_info_player);
+
+	/*게임오버*/
+	SetWaveStatus(EWaveStatus::GAMEOVER);
+
+	_pc->PCWaveGameOver();
 }
 
 void ASA_GM::ShootPROJ()
@@ -505,3 +515,4 @@ ASA_SpawnPoint* ASA_GM::GetRandomSpawnPoint() { return _mob_spawn_points[UKismet
 const FInfoPlayerCharacter& ASA_GM::GetInfoPlayerChr() const { return _info_player_chr; }
 const FInfoPlayer& ASA_GM::GetInfoPlayer() const { return _info_player; }
 void ASA_GM::SetWaveStatus(const EWaveStatus e_wave_status) { _wave_status = e_wave_status; }
+const int32 ASA_GM::GetWaveRoundCurrent() const { return _wave_round_current; }

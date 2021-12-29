@@ -89,8 +89,10 @@ public:
 public:
 	void WaveStart();
 	void WaveClear();
+	void WaveGameOver();
 
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
+	FORCEINLINE const int32 GetWaveRoundCurrent() const;
 private:
 	UPROPERTY()
 		EWaveStatus _wave_status = EWaveStatus::TITLE;

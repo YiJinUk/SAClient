@@ -45,6 +45,11 @@ void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_
 	}
 }
 
+void USA_UI_Main::UIMainUpdateWaveRound(const int32 i_wave_current)
+{
+	_wave_round->SetText(FText::AsNumber(i_wave_current));
+}
+
 void USA_UI_Main::UISwitchMainWidget(const EUIMainStatus e_ui_main_status)
 {
 	_main_status = e_ui_main_status;

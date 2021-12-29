@@ -38,7 +38,7 @@ private:
 #pragma region Wave
 public:
 	void PCWaveStart();
-	void PCWaveClear();
+	void PCWaveClear(const int32 i_wave_round);
 	void PCWaveGameOver();
 #pragma endregion
 
@@ -71,6 +71,7 @@ private:
 #pragma region UI.Player
 public:
 	void PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i_value);
+	void PCUIUpdateWaveRound(const int32 i_wave_round);
 private:
 	UPROPERTY()
 		FInfoPlayer _ui_info_player;

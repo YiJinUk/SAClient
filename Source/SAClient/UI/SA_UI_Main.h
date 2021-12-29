@@ -32,6 +32,8 @@ private:
 		USA_UI_Title* _title = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _gold = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _wave_round = nullptr;
 
 	UPROPERTY()
 		EUIMainStatus _main_status = EUIMainStatus::TITLE;
@@ -45,6 +47,7 @@ public:
 	void UIMainRetunTitle();
 
 	void UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old);
+	void UIMainUpdateWaveRound(const int32 i_wave_current);
 private:
 	void UISwitchMainWidget(const EUIMainStatus e_ui_main_status);
 

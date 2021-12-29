@@ -42,6 +42,7 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
+	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
 }
 
 void ASA_PC::PCWaveStart()
@@ -49,9 +50,10 @@ void ASA_PC::PCWaveStart()
 	_ui_main->UIMainWaveStart();
 }
 
-void ASA_PC::PCWaveClear()
+void ASA_PC::PCWaveClear(const int32 i_wave_round)
 {
 	_ui_main->UIMainWaveClear();
+	PCUIUpdateWaveRound(i_wave_round);
 }
 
 void ASA_PC::PCWaveGameOver()
@@ -117,4 +119,9 @@ void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i
 	default:
 		break;
 	}
+}
+
+void ASA_PC::PCUIUpdateWaveRound(const int32 i_wave_round)
+{
+	_ui_main->UIMainUpdateWaveRound(i_wave_round);
 }

@@ -34,7 +34,7 @@ enum class EWaveStatus : uint8
 {
 	TITLE, // 게임시작전 UI화면 입니다
 	PLAY, // 웨이브중
-	STAND_BY, // 웨이브가 끝나고 쉬는시간
+	CLEAR, // 웨이브클리어
 	GAMEOVER, // 게임오버
 };
 
