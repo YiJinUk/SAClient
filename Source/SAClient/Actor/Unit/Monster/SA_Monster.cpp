@@ -2,6 +2,8 @@
 
 
 #include "Actor/Unit/Monster/SA_Monster.h"
+#include "Logic/SA_GI.h"
+#include "Actor/Object/SA_SpawnPoint.h"
 #include "UI/Game/HeadUp/SA_UI_Headup_Monster.h"
 
 #include "Components/WidgetComponent.h"
@@ -31,15 +33,50 @@ ASA_Monster::ASA_Monster(FObjectInitializer const& object_initializer)
 
 void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
 {
+	_sagi = GetWorld()->GetGameInstance<USA_GI>();
 	if (!s_data_monster) return;
 	_info_monster.code = s_data_monster->GetCode();
 	_info_monster.move_speed = s_data_monster->GetMoveSpeed();
 	_info_monster.bonus_gold = s_data_monster->GetBonusGold();
 
 	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
+
+	MOBPostInitChild(s_data_monster);
 }
 
-void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
+void ASA_Monster::MOBPostInitChild(const FDataMonster* s_data_monster)
+{
+	//override
+}
+
+void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, ASA_SpawnPoint* obj_spawn_point)
+{
+	//override
+
+	if (!obj_spawn_point) return;
+
+	/*풀링*/
+	MOBSetPoolActive(true);
+
+	/*정보 초기화*/
+	_info_monster.id = i_id;
+
+	/*이동관련 초기화*/
+	_info_monster.velocity = obj_spawn_point->GetPointVelocity();
+	_info_monster.rot = obj_spawn_point->GetPointRotator();
+	SetActorRotation(_info_monster.rot);
+	SetActorLocation(obj_spawn_point->GetPointSpawnLocation());
+
+	/*스탯 초기화*/
+	_info_monster.mob_hp = e_monster_hp;
+	_info_monster.hp_max = _sagi->GetMonsterHPByEnum(e_monster_hp);
+	_info_monster.hp = _info_monster.hp_max;
+
+	/*UI 초기화*/
+	_ui_headup_monster->UIInit(_info_monster.hp);
+}
+
+void ASA_Monster::MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
 {
 	/*풀링*/
 	MOBSetPoolActive(true);
@@ -51,12 +88,31 @@ void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, const
 	_info_monster.velocity = v_velocity;
 	_info_monster.rot = r_rot;
 	SetActorRotation(_info_monster.rot);
-	SetActorLocation(v_spawn_loc);
+	SetActorLocation(s_spawn_loc);
 
 	/*스탯 초기화*/
 	_info_monster.mob_hp = e_monster_hp;
-	_info_monster.hp_max = GetMonsterHPByEnum(e_monster_hp);
+	_info_monster.hp_max = _sagi->GetMonsterHPByEnum(e_monster_hp);
 	_info_monster.hp = _info_monster.hp_max;
+
+	/*UI 초기화*/
+	_ui_headup_monster->UIInit(_info_monster.hp);
+}
+
+void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc)
+{
+	/*풀링*/
+	MOBSetPoolActive(true);
+
+	/*정보 초기화*/
+	_info_monster.id = i_id;
+
+	/*이동관련 정보는 PostInit에서 설정했기 때문에 여기서 설정하지 않습니다*/
+	SetActorLocation(s_spawn_loc);
+
+	/*스탯 초기화*/
+	_info_monster.hp_max = i_hp;
+	_info_monster.hp = i_hp;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);
@@ -126,29 +182,6 @@ int32 ASA_Monster::MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const
 	_ui_headup_monster->UIUpdateHP(_info_monster.hp);
 
 	return _info_monster.hp;
-}
-
-const int32 ASA_Monster::GetMonsterHPByEnum(const EMonsterHP e_monster_hp)
-{
-	switch (e_monster_hp)
-	{
-	case EMonsterHP::HP_2:
-		return 2;
-		break;
-	case EMonsterHP::HP_4:
-		return 4;
-		break;
-	case EMonsterHP::HP_8:
-		return 8;
-		break;
-	case EMonsterHP::HP_16:
-		return 16;
-		break;
-	default:
-		break;
-	}
-
-	return 0;
 }
 
 const EMonsterHP ASA_Monster::GetDownMonsterHP() const

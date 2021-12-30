@@ -55,4 +55,27 @@ FDataWave* USA_GI::FindDataWaveByWaveRound(const int32 i_wave_round)
 	return nullptr;
 }
 
+const int32 USA_GI::GetMonsterHPByEnum(const EMonsterHP e_monster_hp) const
+{
+	switch (e_monster_hp)
+	{
+	case EMonsterHP::HP_2:
+		return 2;
+		break;
+	case EMonsterHP::HP_4:
+		return 4;
+		break;
+	case EMonsterHP::HP_8:
+		return 8;
+		break;
+	case EMonsterHP::HP_16:
+		return 16;
+		break;
+	default:
+		break;
+	}
+
+	return 0;
+}
+
 FDataGame* USA_GI::GetDataGame() { return _data_game; }

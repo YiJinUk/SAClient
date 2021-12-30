@@ -93,6 +93,8 @@ protected:
 	//목표지점 반경입니다
 	UPROPERTY(EditAnywhere, Category = "Wave")
 		int16 _dest_radius = 100;
+	UPROPERTY(EditAnywhere, Category = "Wave")
+		FVector _treasure_chest_spawn_loc = FVector(-1500.f, 0.f, 0.f);
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int16 _proj_speed = 1000;
@@ -121,6 +123,7 @@ protected:
 		int8 _monster_clone_loc_y = 100;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
+	FORCEINLINE const FVector GetTreasureChestSpawnLoc() const { return _treasure_chest_spawn_loc; }
 
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
@@ -312,6 +315,9 @@ public:
 
 	UPROPERTY()
 		int32 bonus_gold = 0;
+
+	UPROPERTY()
+		bool is_treasure_chest = false;
 };
 
 USTRUCT(BlueprintType)

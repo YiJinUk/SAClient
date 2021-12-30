@@ -8,6 +8,8 @@
 #include "SA_Monster.generated.h"
 
 class USA_UI_Headup_Monster;
+class ASA_SpawnPoint;
+class USA_GI;
 
 /**
  * 
@@ -26,14 +28,21 @@ protected:
 		class UWidgetComponent* _ui_headup = nullptr;
 	UPROPERTY()
 		USA_UI_Headup_Monster* _ui_headup_monster = nullptr;
+
+	UPROPERTY()
+		USA_GI* _sagi = nullptr;
 #pragma endregion
 
 #pragma region MOB
 public:
 	//생성시 딱 한번만 호출합니다. 풀링에서 호출되지 않습니다
 	void MOBPostInit(const FDataMonster* s_data_monster);
+	virtual void MOBPostInitChild(const FDataMonster* s_data_monster);
 	//풀에서 나올 때 마다 호출됩니다
-	void MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& v_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
+	void MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, ASA_SpawnPoint* obj_spawn_point);
+	void MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
+	void MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc);
+
 	void MOBMove(const float f_delta_time);
 
 	void MOBSetPoolActive(const bool b_is_active);
@@ -56,9 +65,7 @@ public:
 	FORCEINLINE const FInfoMonster& GetInfoMonster() const;
 	const EMonsterHP GetDownMonsterHP() const;
 
-private:
-	const int32 GetMonsterHPByEnum(const EMonsterHP e_monster_hp);
-private:
+protected:
 	UPROPERTY()
 		FInfoMonster _info_monster;
 #pragma endregion

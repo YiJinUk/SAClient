@@ -153,6 +153,9 @@ void ASA_GM::Tick(float DeltaTime)
 		/*발사체 이동 및 공격*/
 		TickMovePROJ(DeltaTime);
 
+		/*트레저체스트를 생성하는지*/
+		TickCheckSpawnTreasuerChest();
+
 
 		/*UI Update*/
 		_pc->PCUIUpdateCheck();
@@ -179,7 +182,7 @@ void ASA_GM::TickSpawnMonster()
 				s_data_spawn_monster.SubSpawnCount();
 				spawn_point_rnd = GetRandomSpawnPoint();
 				spawn_monster = _manager_pool->PoolGetMonsterByCode(s_data_spawn_monster.GetCodeMonster());
-				spawn_monster->MOBInit(GetNewId(), s_data_spawn_monster.GetMonsterHP(), spawn_point_rnd->GetPointSpawnLocation(), spawn_point_rnd->GetPointVelocity(), spawn_point_rnd->GetPointRotator());
+				spawn_monster->MOBInit(GetNewId(), s_data_spawn_monster.GetMonsterHP(), spawn_point_rnd);
 				_spawn_monsters.Add(spawn_monster);
 				++_count_spawn_monster_current;
 				break;
@@ -213,8 +216,16 @@ void ASA_GM::TickMoveMonster(const float f_delta_time)
 		if (USA_FunctionLibrary::GetDistanceByV3(spawn_monster->GetActorLocation(), _player_loc) <= _data_game_cache->GetDestRadius())
 		{
 			//Arrive!
+			if (spawn_monster->GetInfoMonster().is_treasure_chest)
+			{
+				_is_death_treasure_chest = true;
+			}
+			else
+			{
+				--_info_player_chr.hp;
+			}
+			
 			_manager_pool->PoolInMonster(spawn_monster);
-			--_info_player_chr.hp;
 			_spawn_monsters.RemoveAt(i);
 		}
 	}
@@ -257,7 +268,14 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 				/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
 				if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
 				{
-					SpawnMonsterClone(spawn_monster);
+					if (spawn_monster->GetInfoMonster().is_treasure_chest)
+					{
+						_is_death_treasure_chest = true;
+					}
+					else
+					{
+						SpawnMonsterClone(spawn_monster);
+					}
 
 					_manager_pool->PoolInMonster(spawn_monster);
 					_spawn_monsters.RemoveAt(j);
@@ -275,6 +293,28 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 	}
 }
 
+void ASA_GM::TickCheckSpawnTreasuerChest()
+{
+	if (_is_death_treasure_chest) return;
+
+	if (_tick % 60 == 0)
+	{
+		if (_count_spawn_monster_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
+		{
+			/*Spawn TreasureChest*/
+			int32 i_hp_treasure_chest = 0;
+			for (const FDataWaveMonster& s_data_wave_monster : _data_wave_current.GetSpawnMonsters())
+			{
+				//s_data_wave.
+				i_hp_treasure_chest += _sagi->GetMonsterHPByEnum(s_data_wave_monster.GetMonsterHP());
+			}
+			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
+			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _data_game_cache->GetTreasureChestSpawnLoc());
+			_spawn_monsters.Add(spawn_treasure_chest);
+		}
+	}
+}
+
 void ASA_GM::TickCheckWaveEnd()
 {
 	/*플레이어의 체력이 0이하로 떨어지면 게임이 종료됩니다*/
@@ -286,7 +326,7 @@ void ASA_GM::TickCheckWaveEnd()
 	{
 		if (_tick % 30 == 0)
 		{
-			if (_count_spawn_monster_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
+			if (_is_death_treasure_chest)
 			{
 				WaveClear();
 			}
@@ -309,6 +349,7 @@ void ASA_GM::WaveStart()
 	_tick = 0;
 	_count_spawn_monster_current = 0;
 	_count_spawn_monster_max = 0;
+	_is_death_treasure_chest = false;
 
 	/*해당 웨이브에서 생성되는 몬스터정보를 가져옵니다*/
 	FDataWave* s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
@@ -391,8 +432,7 @@ void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
 		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode(monster_origin->GetInfoMonster().code);
 		if (i == 1)
 			v_loc_spawn_new.Y = -v_loc_spawn_new.Y;
-		FVector v_velocity_new = USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc);
-		spawn_monster_new->MOBInit(GetNewId(), monster_origin->GetDownMonsterHP(), v_loc_spawn_new, v_velocity_new, FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
+		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetDownMonsterHP(), v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
 		_spawn_monsters.Add(spawn_monster_new);
 	}
 }

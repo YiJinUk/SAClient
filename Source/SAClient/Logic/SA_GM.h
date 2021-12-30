@@ -63,6 +63,7 @@ private:
 	void TickCheckShootPROJ();
 	void TickMoveMonster(const float f_delta_time);
 	void TickMovePROJ(const float f_delta_time);
+	void TickCheckSpawnTreasuerChest();
 	//웨이브종료를 체크합니다
 	void TickCheckWaveEnd();
 #pragma endregion
@@ -104,6 +105,9 @@ private:
 	//현재웨이브에서 생성되야할 몬스터의 총 개수입니다
 	UPROPERTY()
 		int32 _count_spawn_monster_max = 0;
+	// T : 트레져체스트를 부셨거나, 부시지못한채로 클리어 했습니다
+	UPROPERTY()
+		bool _is_death_treasure_chest = false;
 
 	//새로 복제해서 사용하기 때문에 내용을 변경해도 상관없습니다
 	UPROPERTY()
