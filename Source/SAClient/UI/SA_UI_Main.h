@@ -39,6 +39,8 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _gold = nullptr;
 	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _gem = nullptr;
+	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _wave_round = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _option_show = nullptr;
@@ -64,6 +66,7 @@ private:
 
 public:
 	void UIMainUpdatePlayerGold(const int32 i_gold_update);
+	void UIMainUpdatePlayerGem(const int32 i_gem_update);
 	void UIMainUpdatePlayerDMG(const int32 i_dmg_update);
 	void UIMainUpdatePlayerAS(const int32 i_as_update);
 	void UIMainUpdatePlayerShotNum(const int8 i_shot_num_update);

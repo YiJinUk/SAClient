@@ -84,6 +84,10 @@ void USA_UI_Main::UIMainUpdatePlayerGold(const int32 i_gold_update)
 {
 	_gold->SetText(FText::AsNumber(i_gold_update));
 }
+void USA_UI_Main::UIMainUpdatePlayerGem(const int32 i_gem_update)
+{
+	_gem->SetText(FText::AsNumber(i_gem_update));
+}
 void USA_UI_Main::UIMainUpdatePlayerDMG(const int32 i_dmg_update)
 {
 	_title->UITitleUpdatePlayerDMG(i_dmg_update);

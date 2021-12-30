@@ -21,6 +21,8 @@ public:
 public:
 	UPROPERTY()
 		int32 gold = 0;
+	UPROPERTY()
+		int32 gem = 0;
 
 	UPROPERTY()
 		int32 dmg = 0;

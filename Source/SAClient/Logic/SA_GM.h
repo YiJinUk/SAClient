@@ -29,6 +29,8 @@ class SACLIENT_API ASA_GM : public AGameModeBase
 public:
 	UFUNCTION(BlueprintCallable)
 		void DebugWaveStart();
+	UFUNCTION(BlueprintCallable)
+		void DebugInitPlayer();
 #pragma endregion
 
 #pragma region General

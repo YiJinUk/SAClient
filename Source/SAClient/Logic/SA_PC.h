@@ -22,6 +22,11 @@ protected:
 	ASA_PC();
 	virtual void Tick(float DeltaTime) override;
 
+#pragma region Debug
+public:
+	void DebugRefreshTitle();
+#pragma endregion
+
 #pragma region Init
 public:
 	void PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr);

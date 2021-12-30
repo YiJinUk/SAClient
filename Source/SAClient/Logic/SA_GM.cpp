@@ -23,6 +23,24 @@ void ASA_GM::DebugWaveStart()
 {
 	WaveStart();
 }
+void ASA_GM::DebugInitPlayer()
+{
+	_info_player.SetGold(10);
+	_info_player.SetGem(5);
+
+	_info_player.SetDMG(_data_game_cache->GetPlayerBaseDMG());
+	_info_player.SetAS(_data_game_cache->GetPlayerBaseAS());
+	_info_player.SetShotNumber(_data_game_cache->GetPlayerBaseShotNum());
+	_info_player.SetPenetrate(_data_game_cache->GetPlayerBasePenetrate());
+
+	_wave_round_current = 1;
+
+	InitInfoPlayerChr();
+
+	_pc->DebugRefreshTitle();
+
+	GameSave();
+}
 
 ASA_GM::ASA_GM()
 {
@@ -522,6 +540,14 @@ void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_val
 			_info_player.SetGold(_info_player.GetGold() - i_value);
 
 		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetGold());
+		break;
+	case EPlayerStat::GEM:
+		if (b_is_add)
+			_info_player.SetGem(_info_player.GetGem() + i_value);
+		else
+			_info_player.SetGem(_info_player.GetGem() - i_value);
+
+		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetGem());
 		break;
 	case EPlayerStat::DMG:
 		if (b_is_add)

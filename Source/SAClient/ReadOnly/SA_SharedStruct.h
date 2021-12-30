@@ -42,6 +42,7 @@ UENUM()
 enum class EPlayerStat : uint8
 {
 	GOLD,
+	GEM,
 	DMG,
 	AS,
 	SHOT_NUMBER,
@@ -216,6 +217,8 @@ struct FInfoPlayer
 private:
 	UPROPERTY()
 		int32 _gold = 0;
+	UPROPERTY()
+		int32 _gem = 0;
 
 	UPROPERTY()
 		int32 _dmg = 1;
@@ -233,12 +236,16 @@ private:
 		int8 _penetrate = 0;
 public:
 	FORCEINLINE const int32 GetGold() const { return _gold; }
+	FORCEINLINE const int32 GetGem() const { return _gem; }
+
 	FORCEINLINE const int32 GetDMG() const { return _dmg; }
 	FORCEINLINE const int32 GetAS() const { return _as; }
 	FORCEINLINE const int8 GetShotNumber() const { return _shot_number; }
 	FORCEINLINE const int8 GetPenetrate() const { return _penetrate; }
 
 	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
+	FORCEINLINE void SetGem(const int32 i_gem) { _gem = i_gem; }
+
 	FORCEINLINE void SetDMG(const int32 i_dmg) { _dmg = i_dmg; }
 	FORCEINLINE void SetAS(const int32 i_as) { _as = i_as; }
 	FORCEINLINE void SetShotNumber(const int8 i_shot_number) { _shot_number = i_shot_number; }
@@ -274,6 +281,8 @@ protected:
 		TSubclassOf<ASA_Monster> _class_monster;
 	UPROPERTY(EditAnywhere, Category = "General")
 		FString _code = "0";
+	//UPROPERTY(EditAnywhere, Category = "General")
+		//bool _is_treasure_chest = false;
 
 	UPROPERTY(EditAnywhere, Category = "Stat")
 		int16 _move_speed = 500;
@@ -283,8 +292,10 @@ protected:
 public:
 	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
-	FORCEINLINE const int16& GetMoveSpeed() const { return _move_speed; }
-	FORCEINLINE const int32& GetBonusGold() const { return _bonus_gold; }
+	//FORCEINLINE const bool GetisTreasureChest() const { return _is_treasure_chest; }
+
+	FORCEINLINE const int16 GetMoveSpeed() const { return _move_speed; }
+	FORCEINLINE const int32 GetBonusGold() const { return _bonus_gold; }
 };
 
 USTRUCT()

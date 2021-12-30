@@ -22,6 +22,21 @@ void ASA_PC::Tick(float DeltaTime)
 	}
 }
 
+void ASA_PC::DebugRefreshTitle()
+{
+	const FInfoPlayer& s_info_player = _sagm->GetInfoPlayer();
+	_ui_info_player = s_info_player;
+
+	/*위젯을 세부적으로 초기화합니다*/
+	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
+	PCUIUpdatePlayerStat(EPlayerStat::GEM, _ui_info_player.GetGem());
+	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
+	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
+	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
+	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
+	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
+}
+
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 {
 	_sagm = sagm;
@@ -38,6 +53,7 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 
 	/*위젯을 세부적으로 초기화합니다*/
 	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
+	PCUIUpdatePlayerStat(EPlayerStat::GEM, _ui_info_player.GetGem());
 	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
@@ -99,6 +115,10 @@ void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i
 	case EPlayerStat::GOLD:
 		_ui_info_player.SetGold(i_value);
 		_ui_main->UIMainUpdatePlayerGold(_ui_info_player.GetGold());
+		break;
+	case EPlayerStat::GEM:
+		_ui_info_player.SetGem(i_value);
+		_ui_main->UIMainUpdatePlayerGem(_ui_info_player.GetGem());
 		break;
 	case EPlayerStat::DMG:
 		_ui_info_player.SetDMG(i_value);

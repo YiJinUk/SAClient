@@ -118,6 +118,7 @@ void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const
 	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
+
 void ASA_Monster::MOBMove(const float f_delta_time)
 {
 	AddActorWorldOffset(_info_monster.velocity * _info_monster.move_speed * f_delta_time);

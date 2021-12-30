@@ -21,13 +21,17 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 	*/
 	bool b_is_monster_death = false;
 	int32 i_pure_dmg = 0; // 몬스터에게 실제로 피해를 준 값
+	int32 i_bonus = 0;
 	int32 i_remain_hp = monster->MOBChangeHP(i_dmg, i_pure_dmg);	
 
 	/*몬스터가 죽었다면 풀링*/
 	if (i_remain_hp <= 0)
 	{
-		i_pure_dmg += monster->GetInfoMonster().bonus_gold;
+		i_bonus = monster->GetInfoMonster().bonus_gold;
 		b_is_monster_death = true;
+
+		/*골드 획득*/
+		_sagm->PlayerChangeStat(EPlayerStat::GOLD, 1, true);
 	}
 	else
 	{
@@ -35,8 +39,9 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 	}
 
 
-	/*골드 획득*/
-	_sagm->PlayerChangeStat(EPlayerStat::GOLD, i_pure_dmg, true);
+	/*Gem 획득*/
+	if(monster->GetInfoMonster().is_treasure_chest)
+		_sagm->PlayerChangeStat(EPlayerStat::GEM, i_bonus, true);
 
 	/*발사체에게 공격에 성공했다고 알립니다*/
 	proj->PROJAttackSuccess(monster->GetInfoMonster().id);

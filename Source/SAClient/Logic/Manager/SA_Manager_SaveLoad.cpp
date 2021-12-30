@@ -34,6 +34,8 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 	if (save_file_game)
 	{
 		s_info_player.SetGold(save_file_game->gold);
+		s_info_player.SetGem(save_file_game->gem);
+
 		s_info_player.SetDMG(save_file_game->dmg);
 		s_info_player.SetAS(save_file_game->as);
 		s_info_player.SetShotNumber(save_file_game->shot_num);
@@ -48,6 +50,8 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		const FDataGame* s_data_game = sagi->GetDataGame();
 
 		s_info_player.SetGold(10);
+		s_info_player.SetGem(5);
+
 		s_info_player.SetDMG(s_data_game->GetPlayerBaseDMG());
 		s_info_player.SetAS(s_data_game->GetPlayerBaseAS());
 		s_info_player.SetShotNumber(s_data_game->GetPlayerBaseShotNum());
