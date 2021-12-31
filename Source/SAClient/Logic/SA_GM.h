@@ -94,6 +94,11 @@ public:
 	void WaveClear();
 	void WaveGameOver();
 
+	void UpdateInfoWaveClearByGold(const int32 i_gold_obtain);
+	void UpdateInfoWaveClearByGem(const int32 i_gem_obtain);
+	void UpdateInfoWaveClearByKillEnemy();
+	void UpdateInfoWaveClearByScore(const int32 i_score);
+
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
 	FORCEINLINE const int32 GetWaveRoundCurrent() const;
 private:
@@ -114,6 +119,9 @@ private:
 	//새로 복제해서 사용하기 때문에 내용을 변경해도 상관없습니다
 	UPROPERTY()
 		FDataWave _data_wave_current;
+	//웨이브클리어정보 입니다
+	UPROPERTY()
+		FInfoWaveClear _info_wave_clear;
 #pragma endregion
 
 #pragma region PlayerChr

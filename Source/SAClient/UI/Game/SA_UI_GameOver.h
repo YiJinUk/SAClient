@@ -17,11 +17,15 @@ class SACLIENT_API USA_UI_GameOver : public USA_UI_Master
 	GENERATED_BODY()
 
 public:
-		void UIGameOverInit(ASA_PC* pc);
+	void UIGameOverInit(ASA_PC* pc);
 private:
+	UPROPERTY(Meta = (BindWidgetAnim), Transient, Meta = (AllowPrivateAccess = true))
+		UWidgetAnimation* _game_over = nullptr;
+
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 public:
+	void UIGameOverUpdate();
 	UFUNCTION(BlueprintCallable)
 		void ClickedReturnTitle();
 };

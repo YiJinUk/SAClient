@@ -52,11 +52,12 @@ private:
 		ASA_PC* _pc = nullptr;
 public:
 	void UIMainWaveStart();
-	void UIMainWaveClear();
+	void UIMainWaveClear(const FInfoWaveClear& s_info_wave_clear);
 	void UIMainWaveGameOver();
 	void UIMainRetunTitle();
 
 	void UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old);
+	void UIMainSetCheckBoxSFX(const bool b_is_checked);
 	void UIMainUpdateWaveRound(const int32 i_wave_current);
 private:
 	void UISwitchMainWidget(const EUIMainStatus e_ui_main_status);

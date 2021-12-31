@@ -38,7 +38,8 @@ private:
 
 
 public:
-	void UIGameWaveClear();
+	void UIGameWaveClear(const FInfoWaveClear& s_info_wave_clear);
+	void UIGameWaveGameOver();
 
 	void UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible);
 	void UIGameSetVisibleWaveClear(const ESlateVisibility e_ui_visible);

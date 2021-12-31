@@ -66,10 +66,10 @@ void ASA_PC::PCWaveStart()
 	_ui_main->UIMainWaveStart();
 }
 
-void ASA_PC::PCWaveClear(const int32 i_wave_round)
+void ASA_PC::PCWaveClear(const FInfoWaveClear& s_info_wave_clear)
 {
-	_ui_main->UIMainWaveClear();
-	PCUIUpdateWaveRound(i_wave_round);
+	_ui_main->UIMainWaveClear(s_info_wave_clear);
+	PCUIUpdateWaveRound(s_info_wave_clear.clear_wave_round);
 }
 
 void ASA_PC::PCWaveGameOver()
@@ -101,6 +101,10 @@ void ASA_PC::PCUIUpdateCheck()
 	_ui_main->UIPlayerUpdateCheck(s_info_player_chr, _ui_info_player_chr);
 
 	//_ui_info_player_chr = s_info_player_chr;
+}
+void ASA_PC::PCUISetCheckBoxSFX(const bool b_is_checked)
+{
+	_ui_main->UIMainSetCheckBoxSFX(b_is_checked);
 }
 void ASA_PC::PCReturnTitle()
 {

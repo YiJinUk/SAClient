@@ -9,6 +9,11 @@ void USA_UI_GameOver::UIGameOverInit(ASA_PC* pc)
 	_pc = pc;
 }
 
+void USA_UI_GameOver::UIGameOverUpdate()
+{
+	PlayAnimation(_game_over);
+}
+
 void USA_UI_GameOver::ClickedReturnTitle()
 {
 	_pc->PCReturnTitle();

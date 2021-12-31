@@ -31,17 +31,19 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 		b_is_monster_death = true;
 
 		/*°ñµå È¹µæ*/
-		_sagm->PlayerChangeStat(EPlayerStat::GOLD, 1, true);
+		_sagm->UpdateInfoWaveClearByGold(1);
+		_sagm->UpdateInfoWaveClearByKillEnemy();
 	}
 	else
 	{
 		b_is_monster_death = false;
 	}
 
+	_sagm->UpdateInfoWaveClearByScore(i_pure_dmg);
 
 	/*Gem È¹µæ*/
-	if(monster->GetInfoMonster().is_treasure_chest)
-		_sagm->PlayerChangeStat(EPlayerStat::GEM, i_bonus, true);
+	if (monster->GetInfoMonster().is_treasure_chest)
+		_sagm->UpdateInfoWaveClearByGem(i_bonus);
 
 	/*¹ß»çÃ¼¿¡°Ô °ø°Ý¿¡ ¼º°øÇß´Ù°í ¾Ë¸³´Ï´Ù*/
 	proj->PROJAttackSuccess(monster->GetInfoMonster().id);

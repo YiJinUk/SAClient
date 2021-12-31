@@ -362,3 +362,31 @@ public:
 	UPROPERTY()
 		int8 penetrate_current = 0;
 };
+
+USTRUCT()
+struct FInfoWaveClear
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		int32 clear_wave_round = 0;
+	UPROPERTY()
+		int32 obtain_gold = 0;
+	UPROPERTY()
+		int32 obtain_gem = 0;
+	UPROPERTY()
+		int32 kill_enemies = 0;
+	UPROPERTY()
+		int32 score = 0;
+
+public:
+	void InitStruct()
+	{
+		clear_wave_round = 0;
+		obtain_gold = 0;
+		obtain_gem = 0;
+		kill_enemies = 0;
+		score = 0;
+	}
+};

@@ -36,13 +36,13 @@ void USA_UI_Main::UIMainWaveStart()
 {
 	UISwitchMainWidget(EUIMainStatus::GAME);
 }
-void USA_UI_Main::UIMainWaveClear()
+void USA_UI_Main::UIMainWaveClear(const FInfoWaveClear& s_info_wave_clear)
 {
-	_game->UIGameWaveClear();
+	_game->UIGameWaveClear(s_info_wave_clear);
 }
 void USA_UI_Main::UIMainWaveGameOver()
 {
-	_game->UIGameSetVisibleGameOver(ESlateVisibility::Visible);
+	_game->UIGameWaveGameOver();
 }
 
 void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old)
@@ -52,6 +52,10 @@ void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_
 		_game->SetHP(s_info_player_new.hp);
 		s_info_player_old.hp = s_info_player_new.hp;
 	}
+}
+void USA_UI_Main::UIMainSetCheckBoxSFX(const bool b_is_checked)
+{
+	_option->UIOptionSetCheckBoxSFX(b_is_checked);
 }
 
 void USA_UI_Main::UIMainUpdateWaveRound(const int32 i_wave_current)

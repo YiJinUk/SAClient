@@ -43,7 +43,7 @@ private:
 #pragma region Wave
 public:
 	void PCWaveStart();
-	void PCWaveClear(const int32 i_wave_round);
+	void PCWaveClear(const FInfoWaveClear& s_info_wave_clear);
 	void PCWaveGameOver();
 #pragma endregion
 
@@ -64,6 +64,8 @@ private:
 public:
 	//매 프레임이 종료될 때 마다 호출합니다. 변경된 정보만 업데이트 합니다
 	void PCUIUpdateCheck();
+
+	void PCUISetCheckBoxSFX(const bool b_is_checked);
 
 	void PCReturnTitle();
 private:

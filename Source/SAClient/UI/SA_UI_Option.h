@@ -9,6 +9,7 @@
 class ASA_GM;
 class ASA_PC;
 class UButton;
+class UCheckBox;
 
 /**
  * 
@@ -24,16 +25,18 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _background_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* _sfx_toggle = nullptr;
+		UCheckBox* _sfx_toggle = nullptr;
 
 	UPROPERTY()
 		ASA_GM* _sagm = nullptr;
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 
+public:
+	void UIOptionSetCheckBoxSFX(const bool b_is_checked);
 private:
 	UFUNCTION()
 		void ClickedBackGroundBTN();
 	UFUNCTION()
-		void ClickedSFXToggle();
+		void ClickedSFXToggle(const bool b_is_checked);
 };

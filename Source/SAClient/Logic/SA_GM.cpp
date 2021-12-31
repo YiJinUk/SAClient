@@ -368,6 +368,8 @@ void ASA_GM::WaveStart()
 	_count_spawn_monster_current = 0;
 	_count_spawn_monster_max = 0;
 	_is_death_treasure_chest = false;
+	_info_wave_clear.InitStruct();
+	_info_wave_clear.clear_wave_round = _wave_round_current;
 
 	/*해당 웨이브에서 생성되는 몬스터정보를 가져옵니다*/
 	FDataWave* s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
@@ -404,7 +406,7 @@ void ASA_GM::WaveClear()
 {
 	SetWaveStatus(EWaveStatus::CLEAR);
 	++_wave_round_current;
-	_pc->PCWaveClear(_wave_round_current);
+	_pc->PCWaveClear(_info_wave_clear);
 
 	//세이브
 	GameSave();
@@ -418,6 +420,25 @@ void ASA_GM::WaveGameOver()
 	SetWaveStatus(EWaveStatus::GAMEOVER);
 
 	_pc->PCWaveGameOver();
+}
+
+void ASA_GM::UpdateInfoWaveClearByGold(const int32 i_gold_obtain)
+{
+	_info_wave_clear.obtain_gold += i_gold_obtain;
+	PlayerChangeStat(EPlayerStat::GOLD, i_gold_obtain, true);
+}
+void ASA_GM::UpdateInfoWaveClearByGem(const int32 i_gem_obtain)
+{
+	_info_wave_clear.obtain_gem += i_gem_obtain;
+	PlayerChangeStat(EPlayerStat::GEM, i_gem_obtain, true);
+}
+void ASA_GM::UpdateInfoWaveClearByKillEnemy()
+{
+	++_info_wave_clear.kill_enemies;
+}
+void ASA_GM::UpdateInfoWaveClearByScore(const int32 i_score)
+{
+	_info_wave_clear.score += i_score;
 }
 
 void ASA_GM::ShootPROJ()
@@ -481,6 +502,7 @@ void ASA_GM::SFXToggle()
 {
 	_info_option.is_sfx_on = !_info_option.is_sfx_on;
 	BPSFXToggle(_info_option.is_sfx_on);
+	_pc->PCUISetCheckBoxSFX(_info_option.is_sfx_on);
 	GameSaveOption();
 }
 
