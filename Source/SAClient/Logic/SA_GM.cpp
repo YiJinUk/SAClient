@@ -50,9 +50,15 @@ ASA_GM::ASA_GM()
 void ASA_GM::PostLogin(APlayerController* NewPlayer)
 {
 	/*앱을 최초로 실행시켰습니다 초기화를 진행합니다*/
-	_pc = Cast<ASA_PC>(NewPlayer);
+	//_pc = Cast<ASA_PC>(NewPlayer);
+}
 
-	GMInit();
+void ASA_GM::BeginPlay()
+{
+	Super::BeginPlay();
+
+	return;
+	//GMInit();
 }
 
 void ASA_GM::GMInit()

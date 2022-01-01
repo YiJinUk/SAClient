@@ -7,10 +7,10 @@ public class SAClient : ModuleRules
 	public SAClient(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "Niagara" });
+
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		PublicIncludePaths.Add(ModuleDirectory);
 

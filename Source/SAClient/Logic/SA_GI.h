@@ -30,7 +30,7 @@ public:
 
 	FDataWave* FindDataWaveByWaveRound(const int32 i_wave_round);
 
-	FORCEINLINE FDataGame* GetDataGame();
+	FDataGame* GetDataGame();
 private:
 	UPROPERTY()
 		UDataTable* _dt_game = nullptr;

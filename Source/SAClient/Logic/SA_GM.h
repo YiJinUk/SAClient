@@ -53,6 +53,7 @@ private:
 protected:
 	ASA_GM();
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void BeginPlay() override;
 private:
 	void GMInit();
 #pragma endregion
@@ -100,7 +101,7 @@ public:
 	void UpdateInfoWaveClearByScore(const int32 i_score);
 
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
-	FORCEINLINE const int32 GetWaveRoundCurrent() const;
+	const int32 GetWaveRoundCurrent() const;
 private:
 	UPROPERTY()
 		EWaveStatus _wave_status = EWaveStatus::TITLE;
@@ -127,7 +128,7 @@ private:
 #pragma region PlayerChr
 public:
 	void InitInfoPlayerChr();
-	FORCEINLINE const FInfoPlayerCharacter& GetInfoPlayerChr() const;
+	const FInfoPlayerCharacter& GetInfoPlayerChr() const;
 private:
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
@@ -146,7 +147,7 @@ private:
 	void SpawnMonsterClone(ASA_Monster* monster_origin);
 	void PoolInAllSpawnedMonsters();
 
-	FORCEINLINE ASA_SpawnPoint* GetRandomSpawnPoint();
+	ASA_SpawnPoint* GetRandomSpawnPoint();
 private:
 	UPROPERTY()
 		TArray<ASA_Monster*> _spawn_monsters;
@@ -187,7 +188,7 @@ public:
 public:
 	void PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add);
 
-	FORCEINLINE const FInfoPlayer& GetInfoPlayer() const;
+	const FInfoPlayer& GetInfoPlayer() const;
 private:
 	UPROPERTY()
 		FInfoPlayer _info_player;

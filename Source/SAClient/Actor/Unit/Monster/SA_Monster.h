@@ -62,7 +62,7 @@ public:
 	*/
 	int32 MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const bool b_is_add = false);
 
-	FORCEINLINE const FInfoMonster& GetInfoMonster() const;
+	const FInfoMonster& GetInfoMonster() const;
 	const EMonsterHP GetDownMonsterHP() const;
 
 protected:
