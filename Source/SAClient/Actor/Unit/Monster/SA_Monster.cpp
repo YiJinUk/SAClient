@@ -20,14 +20,14 @@ ASA_Monster::ASA_Monster(FObjectInitializer const& object_initializer)
 		_ui_headup->SetWidgetSpace(EWidgetSpace::Screen);
 		_ui_headup->SetDrawAtDesiredSize(true);
 
-		static ConstructorHelpers::FClassFinder<UUserWidget> W_HEAD_UP_BP(TEXT("/Game/SAContent/UI/Game/HeadUp/SAWB_UI_HeadUp_Monster"));
-		if (W_HEAD_UP_BP.Succeeded())
-		{
-			if (_ui_headup)
-			{
-				_ui_headup->SetWidgetClass(W_HEAD_UP_BP.Class);
-			}
-		}
+		//static ConstructorHelpers::FClassFinder<UUserWidget> W_HEAD_UP_BP(TEXT("/Game/SAContent/UI/Game/HeadUp/SAWB_UI_HeadUp_Monster"));
+		//if (W_HEAD_UP_BP.Succeeded())
+		//{
+		//	if (_ui_headup)
+		//	{
+		//		_ui_headup->SetWidgetClass(W_HEAD_UP_BP.Class);
+		//	}
+		//}
 	}
 }
 

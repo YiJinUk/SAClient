@@ -17,9 +17,9 @@ class SACLIENT_API ASA_SpawnPoint : public ASA_Object
 public:
 	void SpawnPointInit(const FVector& v_dest);
 
-	FORCEINLINE const FRotator& GetPointRotator() const;
-	FORCEINLINE const FVector& GetPointVelocity() const;
-	FORCEINLINE const FVector& GetPointSpawnLocation() const;
+	const FRotator& GetPointRotator() const;
+	const FVector& GetPointVelocity() const;
+	const FVector& GetPointSpawnLocation() const;
 private:
 	UPROPERTY()
 		FRotator _rot = FRotator::ZeroRotator;
