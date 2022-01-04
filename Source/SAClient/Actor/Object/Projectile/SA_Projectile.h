@@ -14,6 +14,12 @@ UCLASS()
 class SACLIENT_API ASA_Projectile : public ASA_Object
 {
 	GENERATED_BODY()
+
+protected:
+	ASA_Projectile();
+protected:
+	UPROPERTY(EditAnywhere)
+		class UParticleSystemComponent* _particle = nullptr;
 	
 public:
 	//생성시 딱 한번만 호출합니다. 풀링에서 호출되지 않습니다

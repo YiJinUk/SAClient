@@ -4,6 +4,17 @@
 #include "Actor/Object/Projectile/SA_Projectile.h"
 #include "Logic/SA_FunctionLibrary.h"
 
+#include "Particles/ParticleSystemComponent.h"
+
+ASA_Projectile::ASA_Projectile()
+{
+	_particle = CreateDefaultSubobject<UParticleSystemComponent>("_particle");
+	if (_particle)
+	{
+		_particle->SetupAttachment(GetRootComponent());
+	}
+}
+
 void ASA_Projectile::PROJPostInit(const FDataProjectile* s_data_proj)
 {
 	if (!s_data_proj) return;
@@ -49,8 +60,14 @@ bool ASA_Projectile::PROJIsDoPoolIn(const int8 i_proj_max_penetrate)
 
 void ASA_Projectile::PROJSetPoolActive(const bool b_is_active)
 {
-	if (!b_is_active)
+	if (b_is_active)
 	{
+		_particle->SetActive(true, true);
+	}
+	else
+	{
+		_particle->Deactivate();
+
 		//풀에서 활성화될때의 위치변경은 다른곳에서 합니다
 		SetActorLocation(FVector(0.f, 0.f, -500.f));
 
