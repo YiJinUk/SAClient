@@ -14,6 +14,7 @@ class ASA_Monster;
 class ASA_SpawnPoint;
 class ASA_Manager_Pool;
 class ASA_Manager_Battle;
+class ASA_Manager_VFX;
 class ASA_Manager_SFX;
 class ASA_Manager_SaveLoad;
 
@@ -77,6 +78,8 @@ private:
 		ASA_Manager_Pool* _manager_pool = nullptr;
 	UPROPERTY()
 		ASA_Manager_Battle* _manager_battle = nullptr;
+	UPROPERTY()
+		ASA_Manager_VFX* _manager_vfx = nullptr;
 	UPROPERTY()
 		ASA_Manager_SFX* _manager_sfx = nullptr;
 	UPROPERTY()

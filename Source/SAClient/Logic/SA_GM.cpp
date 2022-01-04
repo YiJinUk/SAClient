@@ -7,6 +7,7 @@
 #include "SA_PC.h"
 #include "Manager/SA_Manager_Pool.h"
 #include "Manager/SA_Manager_Battle.h"
+#include "Manager/SA_Manager_VFX.h"
 #include "Manager/SA_Manager_SFX.h"
 #include "Manager/SA_Manager_SaveLoad.h"
 #include "Actor/Unit/Player/SA_Player.h"
@@ -112,14 +113,16 @@ void ASA_GM::GMInit()
 
 	_manager_pool = wld->SpawnActor<ASA_Manager_Pool>(s_param); // 풀링 매니저
 	_manager_battle = wld->SpawnActor<ASA_Manager_Battle>(s_param); // 전투 매니저
+	_manager_vfx = wld->SpawnActor<ASA_Manager_VFX>(s_param); // 사운드 매니저
 	_manager_sfx = wld->SpawnActor<ASA_Manager_SFX>(s_param); // 사운드 매니저
 	_manager_saveload = wld->SpawnActor<ASA_Manager_SaveLoad>(s_param); // 세이브로드 매니저
 	
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
-	_manager_battle->BattleInit(this);
+	_manager_battle->BattleInit(this, _manager_vfx);
 	_manager_sfx->SFXInit(_sagi);
+	_manager_vfx->VFXInit(_sagi);
 
 	/*발사체 정보를 초기화합니다*/
 	_proj_loc_start_3d = FVector(_player_loc.X, _player_loc.Y, _data_game_cache->GetPROJZFixed());

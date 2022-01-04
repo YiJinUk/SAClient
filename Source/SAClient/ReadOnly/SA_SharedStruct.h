@@ -11,6 +11,7 @@
 class ASA_Monster;
 class ASA_Projectile;
 class USoundBase;
+class UParticleSystem;
 
 /**
  * 
@@ -57,6 +58,12 @@ enum class EMonsterHP : uint8
 	HP_4,
 	HP_8,
 	HP_16,
+};
+
+UENUM()
+enum class EVFXType : uint8
+{
+	PROJ_HIT,
 };
 
 UENUM()
@@ -139,6 +146,18 @@ public:
 	FORCEINLINE const int32 GetPlayerBasePenetrate() const { return _player_base_penetrate; }
 
 	FORCEINLINE const int8 GetMonsterCloneLocY() const { return _monster_clone_loc_y; }
+};
+
+USTRUCT(BlueprintType)
+struct FDataVFX : public FTableRowBase
+{
+	GENERATED_BODY()
+protected:
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+		UParticleSystem* _proj_hit = nullptr;
+
+public:
+	FORCEINLINE UParticleSystem* GetPROJHit() const { return _proj_hit; }
 };
 
 USTRUCT(BlueprintType)

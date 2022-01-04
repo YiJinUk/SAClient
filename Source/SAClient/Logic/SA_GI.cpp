@@ -21,6 +21,10 @@ USA_GI::USA_GI()
 	if (DT_WAVES.Succeeded())
 		_dt_waves = DT_WAVES.Object;
 
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_VFX(TEXT("/Game/SAContent/ReadOnly/Data/SADT_VFX.SADT_VFX"));
+	if (DT_VFX.Succeeded())
+		_dt_vfx = DT_VFX.Object;
+
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_SFX(TEXT("/Game/SAContent/ReadOnly/Data/SADT_SFX.SADT_SFX"));
 	if (DT_SFX.Succeeded())
 		_dt_sfx = DT_SFX.Object;
@@ -41,6 +45,11 @@ FDataProjectile* USA_GI::FindDataPROJByCode(const FString& str_code_proj)
 {
 	if (!_dt_projectile) return nullptr;
 	return _dt_projectile->FindRow<FDataProjectile>(*str_code_proj, "0");
+}
+FDataVFX* USA_GI::FindDataVFXByCode(const FString& str_code_vfx)
+{
+	if (!_dt_vfx) return nullptr;
+	return _dt_vfx->FindRow<FDataVFX>(*str_code_vfx, "0");
 }
 FDataSFX* USA_GI::FindDataSFXByCode(const FString& str_code_sfx)
 {
