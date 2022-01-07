@@ -6,6 +6,8 @@
 #include "Actor/SA_Actor.h"
 #include "SA_Unit.generated.h"
 
+class USA_AM;
+
 /**
  * 
  */
@@ -20,4 +22,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class USkeletalMeshComponent* _skeletal_mesh = nullptr;
+
+public:
+	USA_AM* GetSAAM();
 };

@@ -15,10 +15,15 @@ void USA_UI_Upgrade::UIUpgradeInit(ASA_PC* pc)
 
 void USA_UI_Upgrade::UIUpgradeUpdatePlayerDMG(const int32 i_dmg_update)
 {
-	_dmg_upgrade->SetText(FText::AsNumber(i_dmg_update));
+	_dmg_upgrade_cost_1->SetText(FText::AsNumber(i_dmg_update));
 }
 
-void USA_UI_Upgrade::ClickedUpgradeDMG()
+void USA_UI_Upgrade::ClickedUpgradeDMGCost1()
 {
-	_gm->UpgradeDMG();
+	_gm->UpgradeDMG(1);
+}
+
+void USA_UI_Upgrade::ClickedUpgradeDMGCost10()
+{
+	_gm->UpgradeDMG(10);
 }

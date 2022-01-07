@@ -2,6 +2,7 @@
 
 
 #include "Actor/Unit/SA_Unit.h"
+#include "Logic/Animation/SA_AM.h"
 
 #include "Components/SkeletalMeshComponent.h"
 
@@ -21,4 +22,9 @@ ASA_Unit::ASA_Unit()
 		_skeletal_mesh->bComponentUseFixedSkelBounds = true;
 		_skeletal_mesh->bEnableUpdateRateOptimizations = true;
 	}
+}
+
+USA_AM* ASA_Unit::GetSAAM()
+{
+	return Cast<USA_AM>(_skeletal_mesh->GetAnimInstance());
 }

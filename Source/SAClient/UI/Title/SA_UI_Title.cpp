@@ -11,7 +11,8 @@
 void USA_UI_Title::NativeConstruct()
 {
 	Super::NativeConstruct();
-	_dmg_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMG);
+	_dmg_upgrade_cost1_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMGCost1);
+	_dmg_upgrade_cost10_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMGCost10);
 	_as_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeAS);
 	_shot_num_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeShotNum);
 	_penetrate_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradePenetrate);
@@ -39,9 +40,13 @@ void USA_UI_Title::UITitleUpdatePlayerPenetrate(const int8 i_penetrate)
 	_penetrate_upgrade->SetText(FText::AsNumber(i_penetrate));
 }
 
-void USA_UI_Title::ClickedUpgradeDMG()
+void USA_UI_Title::ClickedUpgradeDMGCost1()
 {
-	_gm->UpgradeDMG();
+	_gm->UpgradeDMG(1);
+}
+void USA_UI_Title::ClickedUpgradeDMGCost10()
+{
+	_gm->UpgradeDMG(10);
 }
 void USA_UI_Title::ClickedUpgradeAS()
 {

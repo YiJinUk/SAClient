@@ -5,6 +5,7 @@
 #include "SA_FunctionLibrary.h"
 #include "SA_GI.h"
 #include "SA_PC.h"
+#include "Animation/SA_AM.h"
 #include "Manager/SA_Manager_Pool.h"
 #include "Manager/SA_Manager_Battle.h"
 #include "Manager/SA_Manager_VFX.h"
@@ -143,6 +144,10 @@ void ASA_GM::GMInit()
 	/*플레이어를 초기화합니다*/
 	_pc->PCInit(this, _info_player_chr);
 
+	/*플레이어 애니메이션인스턴스 초기화*/
+	_player_am = _player_chr->GetSAAM();
+	_player_am->InitSAAM(this);
+
 	/*로드한 정보를 통해 사운드를 초기화합니다*/
 	_info_option.is_sfx_on = !_info_option.is_sfx_on;
 	SFXToggle();
@@ -225,7 +230,8 @@ void ASA_GM::TickCheckShootPROJ()
 	{
 		/*발사*/
 		_info_player_chr.as_wait = 0;
-		ShootPROJ();
+		PlayAnimAttack();
+		//ShootPROJ();
 	}
 }
 
@@ -267,7 +273,7 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 		spawn_proj = _spawn_projs[i];
 
 		/*Debug*/
-		DrawDebugCircle(GetWorld(), spawn_proj->GetActorLocation(), _data_game_cache->GetPROJRange(), 30, FColor::Red, false, -1.f, 0, 0.f, FVector(1.f, 0.f, 0.f), FVector(0.f, 1.f, 0.f));
+		//DrawDebugCircle(GetWorld(), spawn_proj->GetActorLocation(), _data_game_cache->GetPROJRange(), 30, FColor::Red, false, -1.f, 0, 0.f, FVector(1.f, 0.f, 0.f), FVector(0.f, 1.f, 0.f));
 
 		/*Move*/
 		spawn_proj->PROJMove(f_delta_time, _data_game_cache->GetPROJSpeed());
@@ -450,12 +456,19 @@ void ASA_GM::UpdateInfoWaveClearByScore(const int32 i_score)
 	_info_wave_clear.score += i_score;
 }
 
+void ASA_GM::PlayAnimAttack()
+{
+	_player_am->Montage_Play(_data_game_cache->GetPlayerAttackMontage());
+}
 void ASA_GM::ShootPROJ()
 {	
+	FVector2D v2_proj_velocity;
 	for (int32 i = 0; i < _info_player.GetShotNumber(); ++i)
 	{
 		ASA_Projectile* spawn_proj = _manager_pool->PoolGetPROJByCode("PROJ00001");
-		spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d + _data_game_cache->GetPROJShopLoc()[i], _proj_velocity, 0.f);
+		v2_proj_velocity = _proj_velocity.GetRotated(_data_game_cache->GetPROJShotAngle()[i]);
+		//spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d + _data_game_cache->GetPROJShopLoc()[i], _proj_velocity, 0.f);
+		spawn_proj->PROJInit(GetNewId(), _proj_loc_start_3d, v2_proj_velocity, USA_FunctionLibrary::GetLookRotatorYawByV3(_proj_loc_start_3d, FVector(v2_proj_velocity.X+ _proj_loc_start_3d.X, v2_proj_velocity.Y+ _proj_loc_start_3d.Y, 0.f)));
 		_spawn_projs.Add(spawn_proj);
 	}
 
@@ -515,16 +528,16 @@ void ASA_GM::SFXToggle()
 	GameSaveOption();
 }
 
-void ASA_GM::UpgradeDMG()
+void ASA_GM::UpgradeDMG(const int32 i_cost)
 {
-	if (_info_player.GetGold() < 1)
+	if (_info_player.GetGold() < i_cost)
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
-	PlayerChangeStat(EPlayerStat::DMG, 1, true);
+	PlayerChangeStat(EPlayerStat::GOLD, i_cost, false);
+	PlayerChangeStat(EPlayerStat::DMG, i_cost, true);
 }
 void ASA_GM::UpgradeAS()
 {

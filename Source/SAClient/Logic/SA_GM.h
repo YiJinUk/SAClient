@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "SA_GM.generated.h"
 
+class USA_AM;
 class USA_GI;
 class ASA_PC;
 class ASA_Player;
@@ -133,10 +134,14 @@ public:
 	void InitInfoPlayerChr();
 	const FInfoPlayerCharacter& GetInfoPlayerChr() const;
 private:
+	void PlayAnimAttack();
+private:
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 	UPROPERTY()
 		ASA_Player* _player_chr = nullptr;
+	UPROPERTY()
+		USA_AM* _player_am = nullptr;
 	//몬스터들의 도착점입니다
 	UPROPERTY()
 		FVector _player_loc = FVector::ZeroVector;
@@ -181,7 +186,7 @@ private:
 
 #pragma region Upgrade
 public:
-	void UpgradeDMG();
+	void UpgradeDMG(const int32 i_cost);
 	void UpgradeAS();
 	void UpgradeShotNum();
 	void UpgradePenetrate();

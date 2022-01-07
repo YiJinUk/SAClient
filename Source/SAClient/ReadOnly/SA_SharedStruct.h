@@ -12,6 +12,7 @@ class ASA_Monster;
 class ASA_Projectile;
 class USoundBase;
 class UParticleSystem;
+class UAnimMontage;
 
 /**
  * 
@@ -110,9 +111,9 @@ protected:
 		int16 _proj_range = 100;
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int8 _proj_z_fixed = 50;
-	/*탄알 발사시 탄알의 위치값 입니다 해당 값은 베이스위치값에 더해서 사용합니다*/
+	/*탄알 발사시 탄알의 각도 입니다 해당 값은 기본velocity값에서 각도를 구한후 사용합니다*/
 	UPROPERTY(EditAnywhere, Category = "Projectile")
-		TArray<FVector> _proj_shot_loc;
+		TArray<int16> _proj_shot_angle;
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int8 _proj_max_shot_number = 7;
 
@@ -126,6 +127,8 @@ protected:
 		int8 _player_base_shot_num = 1;
 	UPROPERTY(EditAnywhere, Category = "Player")
 		int8 _player_base_penetrate = 1;
+	UPROPERTY(EditAnywhere, Category = "Player")
+		UAnimMontage* _player_attack_montage = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 		int8 _monster_clone_loc_y = 100;
@@ -136,9 +139,10 @@ public:
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
 	FORCEINLINE const int8 GetPROJZFixed() const { return _proj_z_fixed; }
-	FORCEINLINE const TArray<FVector>& GetPROJShopLoc() const { return _proj_shot_loc; }
+	FORCEINLINE const TArray<int16>& GetPROJShotAngle() const { return _proj_shot_angle; }
 	FORCEINLINE const int8 GetPROJMaxShotNumber() const { return _proj_max_shot_number; }
 
+	FORCEINLINE UAnimMontage* GetPlayerAttackMontage() { return _player_attack_montage; }
 	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
 	FORCEINLINE const int32 GetPlayerBaseDMG() const { return _player_base_dmg; }
 	FORCEINLINE const int32 GetPlayerBaseAS() const { return _player_base_as; }

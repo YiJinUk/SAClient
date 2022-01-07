@@ -28,7 +28,9 @@ private:
 		UButton* _wave_start = nullptr;
 
 	UPROPERTY(Meta = (BindWidget))
-		UButton* _dmg_upgrade_btn = nullptr;
+		UButton* _dmg_upgrade_cost1_btn = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _dmg_upgrade_cost10_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _dmg_upgrade = nullptr;
 	UPROPERTY(Meta = (BindWidget))
@@ -55,7 +57,9 @@ public:
 	void UITitleUpdatePlayerPenetrate(const int8 i_penetrate);
 
 	UFUNCTION()
-		void ClickedUpgradeDMG();
+		void ClickedUpgradeDMGCost1();
+	UFUNCTION()
+		void ClickedUpgradeDMGCost10();
 	UFUNCTION()
 		void ClickedUpgradeAS();
 	UFUNCTION()

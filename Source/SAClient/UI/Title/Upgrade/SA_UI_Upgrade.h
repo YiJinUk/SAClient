@@ -22,7 +22,9 @@ public:
 	void UIUpgradeInit(ASA_PC* pc);
 private:
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _dmg_upgrade = nullptr;
+		UTextBlock* _dmg_upgrade_cost_1 = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _dmg_upgrade_cost_10 = nullptr;
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 	UPROPERTY()
@@ -32,6 +34,8 @@ private:
 public:
 	void UIUpgradeUpdatePlayerDMG(const int32 i_dmg_update);
 
-	UFUNCTION(BlueprintCallable)
-		void ClickedUpgradeDMG();
+	UFUNCTION()
+		void ClickedUpgradeDMGCost1();
+	UFUNCTION()
+		void ClickedUpgradeDMGCost10();
 };
