@@ -150,9 +150,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_as = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
-		int8 _upgrade_cost_shot_num = 10;
+		int32 _upgrade_cost_shot_num = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
-		int8 _upgrade_cost_penetrate = 10;
+		int32 _upgrade_cost_penetrate = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_as_cost_increase = 1.5;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
@@ -181,8 +181,8 @@ public:
 	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
 	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
 	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
-	FORCEINLINE const int8 GetUpgradeCostShotNum() const { return _upgrade_cost_shot_num; }
-	FORCEINLINE const int8 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
+	FORCEINLINE const int32 GetUpgradeCostShotNum() const { return _upgrade_cost_shot_num; }
+	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
 	FORCEINLINE const float GetUpgradeASCostIncrease() const { return _upgrade_as_cost_increase; }
 	FORCEINLINE const float GetUpgradeShotNumCostIncrease() const { return _upgrade_shot_num_cost_increase; }
 	FORCEINLINE const float GetUpgradePenetrateCostIncrease() const { return _upgrade_penetrate_cost_increase; }
@@ -316,8 +316,8 @@ public:
 	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
 	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
 	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
-	FORCEINLINE const int8 GetUpgradeCostShotNumber() const { return _upgrade_cost_shot_num; }
-	FORCEINLINE const int8 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
+	FORCEINLINE const int32 GetUpgradeCostShotNumber() const { return _upgrade_cost_shot_num; }
+	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
 
 	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
 	FORCEINLINE void SetGem(const int32 i_gem) { _gem = i_gem; }
@@ -330,8 +330,8 @@ public:
 	FORCEINLINE void SetUpgradeCostDMG1(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_1 = i_upgrade_cost_dmg; }
 	FORCEINLINE void SetUpgradeCostDMG10(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_10 = i_upgrade_cost_dmg; }
 	FORCEINLINE void SetUpgradeCostAS(const int32 i_upgrade_cost_as) { _upgrade_cost_as = i_upgrade_cost_as; }
-	FORCEINLINE void SetUpgradeCostShotNumber(const int8 i_upgrade_cost_shot_number) { _upgrade_cost_shot_num = i_upgrade_cost_shot_number; }
-	FORCEINLINE void SetUpgradeCostPenetrate(const int8 i_upgrade_cost_penetrate) { _upgrade_cost_penetrate = i_upgrade_cost_penetrate; }
+	FORCEINLINE void SetUpgradeCostShotNumber(const int32 i_upgrade_cost_shot_number) { _upgrade_cost_shot_num = i_upgrade_cost_shot_number; }
+	FORCEINLINE void SetUpgradeCostPenetrate(const int32 i_upgrade_cost_penetrate) { _upgrade_cost_penetrate = i_upgrade_cost_penetrate; }
 };
 
 USTRUCT()

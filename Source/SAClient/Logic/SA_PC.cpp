@@ -164,18 +164,23 @@ void ASA_PC::PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int3
 	switch (e_upgrade_cost)
 	{
 	case EUpgradeStat::DMG_1:
+		_ui_info_player.SetUpgradeCostDMG1(i_value);
 		_ui_main->UIMainUpdateUgradeCostDMG1(i_value);
 		break;
 	case EUpgradeStat::DMG_10:
+		_ui_info_player.SetUpgradeCostDMG10(i_value);
 		_ui_main->UIMainUpdateUgradeCostDMG10(i_value);
 		break;
 	case EUpgradeStat::AS:
+		_ui_info_player.SetUpgradeCostAS(i_value);
 		_ui_main->UIMainUpdateUgradeCostAS(i_value);
 		break;
 	case EUpgradeStat::SHOT_NUMBER:
+		_ui_info_player.SetUpgradeCostShotNumber(i_value);
 		_ui_main->UIMainUpdateUgradeCostShotNum(i_value);
 		break;
 	case EUpgradeStat::PENETRATE:
+		_ui_info_player.SetUpgradeCostPenetrate(i_value);
 		_ui_main->UIMainUpdateUgradeCostPenetrate(i_value);
 		break;
 	default:

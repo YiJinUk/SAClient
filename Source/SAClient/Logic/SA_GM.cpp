@@ -547,37 +547,37 @@ void ASA_GM::UpgradeDMG(const int32 i_cost)
 }
 void ASA_GM::UpgradeAS()
 {
-	if (_info_player.GetGold() < 1)
+	if (_info_player.GetGold() < _info_player.GetUpgradeCostAS())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostAS(), false);
 	PlayerChangeStat(EPlayerStat::AS, 6, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
 {
-	if (_info_player.GetGold() < 1)
+	if (_info_player.GetGold() < _info_player.GetUpgradeCostShotNumber())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostShotNumber(), false);
 	PlayerChangeStat(EPlayerStat::SHOT_NUMBER, 1, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::SHOT_NUMBER);
 }
 void ASA_GM::UpgradePenetrate()
 {
-	if (_info_player.GetGold() < 1)
+	if (_info_player.GetGold() < _info_player.GetUpgradeCostPenetrate())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
+	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostPenetrate(), false);
 	PlayerChangeStat(EPlayerStat::PENETRATE, 1, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::PENETRATE);
 }

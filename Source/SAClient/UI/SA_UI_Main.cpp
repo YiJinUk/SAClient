@@ -39,10 +39,12 @@ void USA_UI_Main::UIMainWaveStart()
 void USA_UI_Main::UIMainWaveClear(const FInfoWaveClear& s_info_wave_clear)
 {
 	_game->UIGameWaveClear(s_info_wave_clear);
+	_title->UITitleUpdateButtons();
 }
 void USA_UI_Main::UIMainWaveGameOver()
 {
 	_game->UIGameWaveGameOver();
+	_title->UITitleUpdateButtons();
 }
 
 void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old)
