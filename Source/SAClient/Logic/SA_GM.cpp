@@ -35,6 +35,12 @@ void ASA_GM::DebugInitPlayer()
 	_info_player.SetShotNumber(_data_game_cache->GetPlayerBaseShotNum());
 	_info_player.SetPenetrate(_data_game_cache->GetPlayerBasePenetrate());
 
+	_info_player.SetUpgradeCostDMG1(_data_game_cache->GetUpgradeCostDMG1());
+	_info_player.SetUpgradeCostDMG10(_data_game_cache->GetUpgradeCostDMG10());
+	_info_player.SetUpgradeCostAS(_data_game_cache->GetUpgradeCostAS());
+	_info_player.SetUpgradeCostShotNumber(_data_game_cache->GetUpgradeCostShotNum());
+	_info_player.SetUpgradeCostPenetrate(_data_game_cache->GetUpgradeCostPenetrate());
+
 	_wave_round_current = 1;
 
 	InitInfoPlayerChr();
@@ -549,6 +555,7 @@ void ASA_GM::UpgradeAS()
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
 	PlayerChangeStat(EPlayerStat::AS, 6, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
+	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
 {
@@ -560,6 +567,7 @@ void ASA_GM::UpgradeShotNum()
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
 	PlayerChangeStat(EPlayerStat::SHOT_NUMBER, 1, true);
+	PlayerIncreaseUpgradeCost(EUpgradeStat::SHOT_NUMBER);
 }
 void ASA_GM::UpgradePenetrate()
 {
@@ -571,6 +579,7 @@ void ASA_GM::UpgradePenetrate()
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GOLD, 1, false);
 	PlayerChangeStat(EPlayerStat::PENETRATE, 1, true);
+	PlayerIncreaseUpgradeCost(EUpgradeStat::PENETRATE);
 }
 
 void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add)
@@ -626,6 +635,27 @@ void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_val
 		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetPenetrate());
 		break;
 	default:
+		break;
+	}
+}
+void ASA_GM::PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat)
+{
+	switch (e_upgrade_stat)
+	{
+	case EUpgradeStat::AS:
+		_info_player.SetUpgradeCostAS(_info_player.GetUpgradeCostAS() * _data_game_cache->GetUpgradeASCostIncrease());
+		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostAS());
+		break;
+	case EUpgradeStat::SHOT_NUMBER:
+		_info_player.SetUpgradeCostShotNumber(_info_player.GetUpgradeCostShotNumber() * _data_game_cache->GetUpgradeShotNumCostIncrease());
+		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostShotNumber());
+		break;
+	case EUpgradeStat::PENETRATE:
+		_info_player.SetUpgradeCostPenetrate(_info_player.GetUpgradeCostPenetrate() * _data_game_cache->GetUpgradePenetrateCostIncrease());
+		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostPenetrate());
+		break;
+	default:
+		return;
 		break;
 	}
 }

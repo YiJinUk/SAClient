@@ -34,6 +34,13 @@ void ASA_PC::DebugRefreshTitle()
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
+
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
+	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
+	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
+	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
+
 	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
 }
 
@@ -58,6 +65,13 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
+
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
+	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
+	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
+	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
+
 	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
 }
 
@@ -145,7 +159,33 @@ void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i
 	}
 }
 
+void ASA_PC::PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int32 i_value)
+{
+	switch (e_upgrade_cost)
+	{
+	case EUpgradeStat::DMG_1:
+		_ui_main->UIMainUpdateUgradeCostDMG1(i_value);
+		break;
+	case EUpgradeStat::DMG_10:
+		_ui_main->UIMainUpdateUgradeCostDMG10(i_value);
+		break;
+	case EUpgradeStat::AS:
+		_ui_main->UIMainUpdateUgradeCostAS(i_value);
+		break;
+	case EUpgradeStat::SHOT_NUMBER:
+		_ui_main->UIMainUpdateUgradeCostShotNum(i_value);
+		break;
+	case EUpgradeStat::PENETRATE:
+		_ui_main->UIMainUpdateUgradeCostPenetrate(i_value);
+		break;
+	default:
+		break;
+	}
+}
+
 void ASA_PC::PCUIUpdateWaveRound(const int32 i_wave_round)
 {
 	_ui_main->UIMainUpdateWaveRound(i_wave_round);
 }
+
+const FInfoPlayer& ASA_PC::GetUIInfoPlayer() const { return _ui_info_player; }

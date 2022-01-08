@@ -78,7 +78,10 @@ private:
 #pragma region UI.Player
 public:
 	void PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i_value);
+	void PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int32 i_value);
 	void PCUIUpdateWaveRound(const int32 i_wave_round);
+
+	const FInfoPlayer& GetUIInfoPlayer() const;
 private:
 	UPROPERTY()
 		FInfoPlayer _ui_info_player;

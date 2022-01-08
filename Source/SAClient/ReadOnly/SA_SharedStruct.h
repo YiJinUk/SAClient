@@ -52,6 +52,16 @@ enum class EPlayerStat : uint8
 };
 
 UENUM()
+enum class EUpgradeStat : uint8
+{
+	DMG_1,
+	DMG_10,
+	AS,
+	SHOT_NUMBER,
+	PENETRATE,
+};
+
+UENUM()
 enum class EMonsterHP : uint8
 {
 	HP_NO,
@@ -132,6 +142,23 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 		int8 _monster_clone_loc_y = 100;
+
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		int32 _upgrade_cost_dmg_1 = 1;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		int32 _upgrade_cost_dmg_10 = 10;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		int32 _upgrade_cost_as = 10;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		int8 _upgrade_cost_shot_num = 10;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		int8 _upgrade_cost_penetrate = 10;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		float _upgrade_as_cost_increase = 1.5;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		float _upgrade_shot_num_cost_increase = 1.5;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		float _upgrade_penetrate_cost_increase = 1.5;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
 	FORCEINLINE const FVector GetTreasureChestSpawnLoc() const { return _treasure_chest_spawn_loc; }
@@ -150,6 +177,15 @@ public:
 	FORCEINLINE const int32 GetPlayerBasePenetrate() const { return _player_base_penetrate; }
 
 	FORCEINLINE const int8 GetMonsterCloneLocY() const { return _monster_clone_loc_y; }
+
+	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
+	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
+	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
+	FORCEINLINE const int8 GetUpgradeCostShotNum() const { return _upgrade_cost_shot_num; }
+	FORCEINLINE const int8 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
+	FORCEINLINE const float GetUpgradeASCostIncrease() const { return _upgrade_as_cost_increase; }
+	FORCEINLINE const float GetUpgradeShotNumCostIncrease() const { return _upgrade_shot_num_cost_increase; }
+	FORCEINLINE const float GetUpgradePenetrateCostIncrease() const { return _upgrade_penetrate_cost_increase; }
 };
 
 USTRUCT(BlueprintType)
@@ -257,6 +293,17 @@ private:
 	*/
 	UPROPERTY()
 		int8 _penetrate = 0;
+
+	UPROPERTY()
+		int32 _upgrade_cost_dmg_1 = 1;
+	UPROPERTY()
+		int32 _upgrade_cost_dmg_10 = 1;
+	UPROPERTY()
+		int32 _upgrade_cost_as = 1;
+	UPROPERTY()
+		int32 _upgrade_cost_shot_num = 1;
+	UPROPERTY()
+		int32 _upgrade_cost_penetrate = 1;
 public:
 	FORCEINLINE const int32 GetGold() const { return _gold; }
 	FORCEINLINE const int32 GetGem() const { return _gem; }
@@ -266,6 +313,12 @@ public:
 	FORCEINLINE const int8 GetShotNumber() const { return _shot_number; }
 	FORCEINLINE const int8 GetPenetrate() const { return _penetrate; }
 
+	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
+	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
+	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
+	FORCEINLINE const int8 GetUpgradeCostShotNumber() const { return _upgrade_cost_shot_num; }
+	FORCEINLINE const int8 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
+
 	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
 	FORCEINLINE void SetGem(const int32 i_gem) { _gem = i_gem; }
 
@@ -273,6 +326,12 @@ public:
 	FORCEINLINE void SetAS(const int32 i_as) { _as = i_as; }
 	FORCEINLINE void SetShotNumber(const int8 i_shot_number) { _shot_number = i_shot_number; }
 	FORCEINLINE void SetPenetrate(const int8 i_penetrate) { _penetrate = i_penetrate; }
+
+	FORCEINLINE void SetUpgradeCostDMG1(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_1 = i_upgrade_cost_dmg; }
+	FORCEINLINE void SetUpgradeCostDMG10(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_10 = i_upgrade_cost_dmg; }
+	FORCEINLINE void SetUpgradeCostAS(const int32 i_upgrade_cost_as) { _upgrade_cost_as = i_upgrade_cost_as; }
+	FORCEINLINE void SetUpgradeCostShotNumber(const int8 i_upgrade_cost_shot_number) { _upgrade_cost_shot_num = i_upgrade_cost_shot_number; }
+	FORCEINLINE void SetUpgradeCostPenetrate(const int8 i_upgrade_cost_penetrate) { _upgrade_cost_penetrate = i_upgrade_cost_penetrate; }
 };
 
 USTRUCT()

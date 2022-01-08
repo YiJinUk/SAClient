@@ -195,6 +195,7 @@ public:
 #pragma region Player
 public:
 	void PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_value, const bool b_is_add);
+	void PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat);
 
 	const FInfoPlayer& GetInfoPlayer() const;
 private:

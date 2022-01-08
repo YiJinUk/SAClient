@@ -46,15 +46,34 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _penetrate_upgrade = nullptr;
 
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _cost_dmg_1 = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _cost_dmg_10 = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _cost_as = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _cost_shot_num = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UTextBlock* _cost_penetrate = nullptr;
+
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 	UPROPERTY()
 		ASA_GM* _gm = nullptr;
 public:
+	void UITitleUpdateButtons();
+
 	void UITitleUpdatePlayerDMG(const int32 i_dmg_update);
 	void UITitleUpdatePlayerAS(const int32 i_as_update);
 	void UITitleUpdatePlayerShotNum(const int8 i_shot_num_update);
 	void UITitleUpdatePlayerPenetrate(const int8 i_penetrate);
+
+	void UITitleUpdateUpgradeCostDMG1(const int32 i_upgrade_cost_dmg_1);
+	void UITitleUpdateUpgradeCostDMG10(const int32 i_upgrade_cost_dmg_10);
+	void UITitleUpdateUpgradeCostAS(const int32 i_upgrade_cost_as);
+	void UITitleUpdateUpgradeCostShotNum(const int32 i_upgrade_cost_shot_num);
+	void UITitleUpdateUpgradeCostPenetrate(const int32 i_upgrade_cost_penetrate);
 
 	UFUNCTION()
 		void ClickedUpgradeDMGCost1();

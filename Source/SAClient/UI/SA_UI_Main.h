@@ -72,4 +72,10 @@ public:
 	void UIMainUpdatePlayerAS(const int32 i_as_update);
 	void UIMainUpdatePlayerShotNum(const int8 i_shot_num_update);
 	void UIMainUpdatePlayerPenetrate(const int8 i_penetrate_update);
+
+	void UIMainUpdateUgradeCostDMG1(const int32 i_upgrade_cost_dmg_1);
+	void UIMainUpdateUgradeCostDMG10(const int32 i_upgrade_cost_dmg_10);
+	void UIMainUpdateUgradeCostAS(const int32 i_upgrade_cost_as);
+	void UIMainUpdateUgradeCostShotNum(const int32 i_upgrade_cost_shot_num);
+	void UIMainUpdateUgradeCostPenetrate(const int32 i_upgrade_cost_penetrate);
 };

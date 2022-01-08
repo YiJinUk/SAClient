@@ -41,6 +41,12 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetShotNumber(save_file_game->shot_num);
 		s_info_player.SetPenetrate(save_file_game->penetrate);
 
+		s_info_player.SetUpgradeCostDMG1(save_file_game->cost_dmg_1);
+		s_info_player.SetUpgradeCostDMG10(save_file_game->cost_dmg_10);
+		s_info_player.SetUpgradeCostAS(save_file_game->cost_as);
+		s_info_player.SetUpgradeCostShotNumber(save_file_game->cost_shot_num);
+		s_info_player.SetUpgradeCostPenetrate(save_file_game->cost_penetrate);
+
 		i_wave_round = save_file_game->wave_round;
 	}
 	else
@@ -56,6 +62,12 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetAS(s_data_game->GetPlayerBaseAS());
 		s_info_player.SetShotNumber(s_data_game->GetPlayerBaseShotNum());
 		s_info_player.SetPenetrate(s_data_game->GetPlayerBasePenetrate());
+
+		s_info_player.SetUpgradeCostDMG1(s_data_game->GetUpgradeCostDMG1());
+		s_info_player.SetUpgradeCostDMG10(s_data_game->GetUpgradeCostDMG10());
+		s_info_player.SetUpgradeCostAS(s_data_game->GetUpgradeCostAS());
+		s_info_player.SetUpgradeCostShotNumber(s_data_game->GetUpgradeCostShotNum());
+		s_info_player.SetUpgradeCostPenetrate(s_data_game->GetUpgradeCostPenetrate());
 
 		i_wave_round = 1;
 	}

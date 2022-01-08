@@ -34,5 +34,16 @@ public:
 		int8 penetrate = 0;
 
 	UPROPERTY()
+		int32 cost_dmg_1 = 0;
+	UPROPERTY()
+		int32 cost_dmg_10 = 0;
+	UPROPERTY()
+		int32 cost_as = 0;
+	UPROPERTY()
+		int8 cost_shot_num = 0;
+	UPROPERTY()
+		int8 cost_penetrate = 0;
+
+	UPROPERTY()
 		int32 wave_round = 1;
 };
