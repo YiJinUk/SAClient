@@ -66,7 +66,7 @@ void USA_UI_Title::UITitleUpdatePlayerDMG(const int32 i_dmg_update)
 }
 void USA_UI_Title::UITitleUpdatePlayerAS(const int32 i_as_update)
 {
-	_as_upgrade->SetText(FText::AsNumber(i_as_update));
+	_as_upgrade->SetText(FText::AsNumber(60.f / (float)i_as_update));
 }
 void USA_UI_Title::UITitleUpdatePlayerShotNum(const int8 i_shot_num_update)
 {

@@ -554,7 +554,7 @@ void ASA_GM::UpgradeAS()
 
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostAS(), false);
-	PlayerChangeStat(EPlayerStat::AS, 6, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
+	PlayerChangeStat(EPlayerStat::AS, 1, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
