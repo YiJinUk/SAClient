@@ -30,8 +30,6 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _dmg_upgrade_cost1_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
-		UButton* _dmg_upgrade_cost10_btn = nullptr;
-	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _dmg_upgrade = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _as_upgrade_btn = nullptr;
@@ -48,8 +46,6 @@ private:
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _cost_dmg_1 = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _cost_dmg_10 = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _cost_as = nullptr;
 	UPROPERTY(Meta = (BindWidget))
@@ -77,8 +73,6 @@ public:
 
 	UFUNCTION()
 		void ClickedUpgradeDMGCost1();
-	UFUNCTION()
-		void ClickedUpgradeDMGCost10();
 	UFUNCTION()
 		void ClickedUpgradeAS();
 	UFUNCTION()

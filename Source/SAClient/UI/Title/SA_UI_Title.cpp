@@ -12,7 +12,6 @@ void USA_UI_Title::NativeConstruct()
 {
 	Super::NativeConstruct();
 	_dmg_upgrade_cost1_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMGCost1);
-	_dmg_upgrade_cost10_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMGCost10);
 	_as_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeAS);
 	_shot_num_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeShotNum);
 	_penetrate_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradePenetrate);
@@ -31,17 +30,17 @@ void USA_UI_Title::UITitleUpdateButtons()
 	if (s_ui_info_player.GetUpgradeCostDMG10() <= s_ui_info_player.GetGold())
 	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
-		_dmg_upgrade_cost10_btn->SetIsEnabled(true);
+		//_dmg_upgrade_cost10_btn->SetIsEnabled(true);
 	}
 	else if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGold())
 	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
-		_dmg_upgrade_cost10_btn->SetIsEnabled(false);
+		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
 	}
 	else
 	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(false);
-		_dmg_upgrade_cost10_btn->SetIsEnabled(false);
+		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
 	}
 
 	if (s_ui_info_player.GetUpgradeCostAS() <= s_ui_info_player.GetGold())
@@ -82,7 +81,7 @@ void USA_UI_Title::UITitleUpdateUpgradeCostDMG1(const int32 i_upgrade_cost_dmg_1
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostDMG10(const int32 i_upgrade_cost_dmg_10)
 {
-	_cost_dmg_10->SetText(FText::AsNumber(i_upgrade_cost_dmg_10));
+	//_cost_dmg_10->SetText(FText::AsNumber(i_upgrade_cost_dmg_10));
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostAS(const int32 i_upgrade_cost_as)
 {
@@ -100,11 +99,6 @@ void USA_UI_Title::UITitleUpdateUpgradeCostPenetrate(const int32 i_upgrade_cost_
 void USA_UI_Title::ClickedUpgradeDMGCost1()
 {
 	_gm->UpgradeDMG(1);
-	UITitleUpdateButtons();
-}
-void USA_UI_Title::ClickedUpgradeDMGCost10()
-{
-	_gm->UpgradeDMG(10);
 	UITitleUpdateButtons();
 }
 void USA_UI_Title::ClickedUpgradeAS()
