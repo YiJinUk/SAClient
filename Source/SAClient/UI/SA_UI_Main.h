@@ -58,6 +58,7 @@ public:
 
 	void UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_new, FInfoPlayerCharacter& s_info_player_old);
 	void UIMainSetCheckBoxSFX(const bool b_is_checked);
+	void UIMainSetLanguageBtn(const bool b_is_ko);
 	void UIMainUpdateWaveRound(const int32 i_wave_current);
 private:
 	void UISwitchMainWidget(const EUIMainStatus e_ui_main_status);

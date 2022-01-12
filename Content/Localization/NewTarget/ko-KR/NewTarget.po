@@ -1,0 +1,162 @@
+﻿# NewTarget Korean (South Korea) translation.
+# Copyright Epic Games, Inc. All Rights Reserved.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: NewTarget\n"
+"POT-Creation-Date: 2022-01-12 09:07\n"
+"PO-Revision-Date: 2022-01-12 09:07\n"
+"Language-Team: \n"
+"Language: ko-KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Key:	0DA9A93A49682A95A8AA7BB50AA52DD1
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree._cost_dmg_1.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree._cost_dmg_1.Text
+msgctxt ",0DA9A93A49682A95A8AA7BB50AA52DD1"
+msgid "1"
+msgstr "1"
+
+#. Key:	11C486E54AA2976D03B8E7BF0FA51F90
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_41.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_41.Text
+msgctxt ",11C486E54AA2976D03B8E7BF0FA51F90"
+msgid "+"
+msgstr "+"
+
+#. Key:	153A74384278F0AE07A65A90DF1CAD4F
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gold.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gold.Text
+msgctxt ",153A74384278F0AE07A65A90DF1CAD4F"
+msgid "99"
+msgstr "99"
+
+#. Key:	280341104510394AB774639315537BE2
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gold.Text
+#: /Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gold.Text
+msgctxt ",280341104510394AB774639315537BE2"
+msgid "256"
+msgstr "256"
+
+#. Key:	3DAE0A3E43D19734F528C293E235A037
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._wave_round_1.Text
+#: /Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._wave_round_1.Text
+msgctxt ",3DAE0A3E43D19734F528C293E235A037"
+msgid "Wave "
+msgstr "Wave "
+
+#. Key:	41A70A824D320E670DD11E9A3784FBA0
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree._dmg_upgrade.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree._dmg_upgrade.Text
+msgctxt ",41A70A824D320E670DD11E9A3784FBA0"
+msgid "999"
+msgstr "999"
+
+#. Key:	4FC9F170467E474EC1DAF9B23BC03973
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_GameOver.SAWB_UI_GameOver_C:WidgetTree.TextBlock_402.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_GameOver.SAWB_UI_GameOver_C:WidgetTree.TextBlock_402.Text
+msgctxt ",4FC9F170467E474EC1DAF9B23BC03973"
+msgid "재도전"
+msgstr "재도전"
+
+#. Key:	59212CFE49F2768F570F069AE83A8439
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._as.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._as.Text
+msgctxt ",59212CFE49F2768F570F069AE83A8439"
+msgid "as"
+msgstr "as"
+
+#. Key:	5C1E523846956946CBEAAA991B0B5434
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_190.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_190.Text
+msgctxt ",5C1E523846956946CBEAAA991B0B5434"
+msgid "획득 골드"
+msgstr "획득 골드"
+
+#. Key:	65E049234927816802808281D4B68721
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_2.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_2.Text
+msgctxt ",65E049234927816802808281D4B68721"
+msgid "관통"
+msgstr "관통"
+
+#. Key:	748C165B4FC1493615CD26990069352B
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_436.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_436.Text
+msgctxt ",748C165B4FC1493615CD26990069352B"
+msgid "점수"
+msgstr "점수"
+
+#. Key:	77FB15BD46695266C7BDFEABDA3BF094
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_402.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_402.Text
+msgctxt ",77FB15BD46695266C7BDFEABDA3BF094"
+msgid "다음 웨이브"
+msgstr "다음 웨이브"
+
+#. Key:	9814D841440ECE4504BA9EB31D57E882
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._score.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._score.Text
+msgctxt ",9814D841440ECE4504BA9EB31D57E882"
+msgid "99999"
+msgstr "99999"
+
+#. Key:	CB0B54BB4285393040DDF3B9290FFFC4
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_6.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_6.Text
+msgctxt ",CB0B54BB4285393040DDF3B9290FFFC4"
+msgid "적 처치수"
+msgstr "적 처치수"
+
+#. Key:	D5B4AE9E4E8C25DFB1BE8B86C2FA1A97
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock.Text
+msgctxt ",D5B4AE9E4E8C25DFB1BE8B86C2FA1A97"
+msgid "공격속도"
+msgstr "공격속도"
+
+#. Key:	D7A831D347174C7E2CF17F854E13C7E7
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_175.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_175.Text
+msgctxt ",D7A831D347174C7E2CF17F854E13C7E7"
+msgid "공격력"
+msgstr "공격력"
+
+#. Key:	E4930BFB4E083525C99CE6ACC32E2882
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_326.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_326.Text
+msgctxt ",E4930BFB4E083525C99CE6ACC32E2882"
+msgid "전투 시작"
+msgstr "전투 시작"
+
+#. Key:	E8E725E64390C2839F9FF9AFDB0E99F0
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._dmg.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._dmg.Text
+msgctxt ",E8E725E64390C2839F9FF9AFDB0E99F0"
+msgid "dmg"
+msgstr "dmg"
+
+#. Key:	EC61A493472B7B076D6A049DF36673FA
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._hp.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._hp.Text
+msgctxt ",EC61A493472B7B076D6A049DF36673FA"
+msgid "hp"
+msgstr "hp"
+
+#. Key:	F5C0C19F47EAF3AB050AC1A4BAC30D39
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_3.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_3.Text
+msgctxt ",F5C0C19F47EAF3AB050AC1A4BAC30D39"
+msgid "획득 보석"
+msgstr "획득 보석"
+
+#. Key:	F9F1548145987BDE74C944B7F7316403
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_1.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_1.Text
+msgctxt ",F9F1548145987BDE74C944B7F7316403"
+msgid "탄알 증가"
+msgstr "탄알 증가"
+

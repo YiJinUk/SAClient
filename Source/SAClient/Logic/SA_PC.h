@@ -66,6 +66,7 @@ public:
 	void PCUIUpdateCheck();
 
 	void PCUISetCheckBoxSFX(const bool b_is_checked);
+	void PCUISetLanguageBtn(const bool b_is_ko);
 
 	void PCReturnTitle();
 private:

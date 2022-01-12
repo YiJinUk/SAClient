@@ -5,6 +5,7 @@
 #include "Logic/SA_FunctionLibrary.h"
 #include "SA_GM.h"
 #include "UI/SA_UI_Main.h"
+#include "Kismet/KismetInternationalizationLibrary.h"
 
 ASA_PC::ASA_PC()
 {
@@ -36,12 +37,19 @@ void ASA_PC::DebugRefreshTitle()
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 
 	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
-	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
+	//PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
 	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
 	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
 	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
 
 	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
+
+	static FString str_lang = "en";
+	if (str_lang == "en")
+		str_lang = "ko_kr";
+	else
+		str_lang = "en";
+	UKismetInternationalizationLibrary::SetCurrentCulture(str_lang);
 }
 
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
@@ -119,6 +127,10 @@ void ASA_PC::PCUIUpdateCheck()
 void ASA_PC::PCUISetCheckBoxSFX(const bool b_is_checked)
 {
 	_ui_main->UIMainSetCheckBoxSFX(b_is_checked);
+}
+void ASA_PC::PCUISetLanguageBtn(const bool b_is_ko)
+{
+	_ui_main->UIMainSetLanguageBtn(b_is_ko);
 }
 void ASA_PC::PCReturnTitle()
 {

@@ -20,4 +20,6 @@ public:
 public:
 	UPROPERTY()
 		bool is_sfx_on = false;
+	UPROPERTY()
+		FString language = "0";
 };

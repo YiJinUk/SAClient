@@ -212,6 +212,8 @@ protected:
 #pragma endregion
 
 #pragma region Option
+public:
+	void SetLanguage(const FString& str_code_lang);
 private:
 	FInfoOption _info_option;
 #pragma endregion

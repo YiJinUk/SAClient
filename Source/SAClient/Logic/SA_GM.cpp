@@ -18,6 +18,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetInternationalizationLibrary.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -27,7 +28,7 @@ void ASA_GM::DebugWaveStart()
 }
 void ASA_GM::DebugInitPlayer()
 {
-	_info_player.SetGold(10);
+	_info_player.SetGold(1000);
 	_info_player.SetGem(5);
 
 	_info_player.SetDMG(_data_game_cache->GetPlayerBaseDMG());
@@ -36,7 +37,7 @@ void ASA_GM::DebugInitPlayer()
 	_info_player.SetPenetrate(_data_game_cache->GetPlayerBasePenetrate());
 
 	_info_player.SetUpgradeCostDMG1(_data_game_cache->GetUpgradeCostDMG1());
-	_info_player.SetUpgradeCostDMG10(_data_game_cache->GetUpgradeCostDMG10());
+	//_info_player.SetUpgradeCostDMG10(_data_game_cache->GetUpgradeCostDMG10());
 	_info_player.SetUpgradeCostAS(_data_game_cache->GetUpgradeCostAS());
 	_info_player.SetUpgradeCostShotNumber(_data_game_cache->GetUpgradeCostShotNum());
 	_info_player.SetUpgradeCostPenetrate(_data_game_cache->GetUpgradeCostPenetrate());
@@ -157,6 +158,9 @@ void ASA_GM::GMInit()
 	/*로드한 정보를 통해 사운드를 초기화합니다*/
 	_info_option.is_sfx_on = !_info_option.is_sfx_on;
 	SFXToggle();
+
+	/*언어를 초기화합니다*/
+	SetLanguage(_info_option.language);
 
 	ReturnTitle();
 }
@@ -533,6 +537,23 @@ void ASA_GM::SFXToggle()
 	_pc->PCUISetCheckBoxSFX(_info_option.is_sfx_on);
 	GameSaveOption();
 }
+void ASA_GM::SetLanguage(const FString& str_code_lang)
+{
+	if (str_code_lang == "en")
+	{
+		UKismetInternationalizationLibrary::SetCurrentCulture(str_code_lang);
+		_info_option.language = str_code_lang;
+		_pc->PCUISetLanguageBtn(false);
+	}
+	else
+	{
+		UKismetInternationalizationLibrary::SetCurrentCulture("ko_kr");
+		_info_option.language = "ko_kr";
+		_pc->PCUISetLanguageBtn(true);
+	}
+
+	GameSaveOption();
+}
 
 void ASA_GM::UpgradeDMG(const int32 i_cost)
 {
@@ -562,6 +583,11 @@ void ASA_GM::UpgradeShotNum()
 	if (_info_player.GetGold() < _info_player.GetUpgradeCostShotNumber())
 	{
 		return; // 소지금 부족
+	}
+
+	if (_info_player.GetShotNumber() >= 7)
+	{
+		return; // 최대 탄알갯수
 	}
 
 	/*구매가능*/

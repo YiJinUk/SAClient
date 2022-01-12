@@ -55,7 +55,7 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		USA_GI* sagi = GetWorld()->GetGameInstance<USA_GI>();
 		const FDataGame* s_data_game = sagi->GetDataGame();
 
-		s_info_player.SetGold(10);
+		s_info_player.SetGold(1000);
 		s_info_player.SetGem(5);
 
 		s_info_player.SetDMG(s_data_game->GetPlayerBaseDMG());
@@ -75,9 +75,11 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 	if (save_file_option)
 	{
 		s_info_option.is_sfx_on = save_file_option->is_sfx_on;
+		s_info_option.language = save_file_option->language;
 	}
 	else
 	{
 		s_info_option.is_sfx_on = true;
+		s_info_option.language = "ko_kr";
 	}
 }

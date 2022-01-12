@@ -102,6 +102,9 @@ public:
 	UPROPERTY()
 		bool is_sfx_on = true;
 
+	UPROPERTY()
+		FString language = "0";
+
 };
 
 USTRUCT(BlueprintType)

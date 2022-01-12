@@ -27,6 +27,15 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UCheckBox* _sfx_toggle = nullptr;
 
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _language_en_active = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _language_en_deactive = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _language_ko_active = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _language_ko_deactive = nullptr;
+
 	UPROPERTY()
 		ASA_GM* _sagm = nullptr;
 	UPROPERTY()
@@ -34,9 +43,15 @@ private:
 
 public:
 	void UIOptionSetCheckBoxSFX(const bool b_is_checked);
+	void UIOptionSetLanguageBtn(const bool b_is_ko);
 private:
 	UFUNCTION()
 		void ClickedBackGroundBTN();
 	UFUNCTION()
 		void ClickedSFXToggle(const bool b_is_checked);
+
+	UFUNCTION()
+		void ClickedLanguage_En();
+	UFUNCTION()
+		void ClickedLanguage_Ko();
 };

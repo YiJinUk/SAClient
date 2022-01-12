@@ -6,4 +6,5 @@
 void USA_SG_Option::SGSaveData(const FInfoOption& s_info_option)
 {
 	is_sfx_on = s_info_option.is_sfx_on;
+	language = s_info_option.language;
 }

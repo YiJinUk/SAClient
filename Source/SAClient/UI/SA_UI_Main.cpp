@@ -59,7 +59,10 @@ void USA_UI_Main::UIMainSetCheckBoxSFX(const bool b_is_checked)
 {
 	_option->UIOptionSetCheckBoxSFX(b_is_checked);
 }
-
+void USA_UI_Main::UIMainSetLanguageBtn(const bool b_is_ko)
+{
+	_option->UIOptionSetLanguageBtn(b_is_ko);
+}
 void USA_UI_Main::UIMainUpdateWaveRound(const int32 i_wave_current)
 {
 	_wave_round->SetText(FText::AsNumber(i_wave_current));
