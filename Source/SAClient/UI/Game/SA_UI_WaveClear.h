@@ -23,8 +23,6 @@ public:
 	virtual void NativeConstruct() override;
 private:
 	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _obtain_gold = nullptr;
-	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _obtain_gem = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _kill_enemies = nullptr;

@@ -99,7 +99,6 @@ public:
 	void WaveClear();
 	void WaveGameOver();
 
-	void UpdateInfoWaveClearByGold(const int32 i_gold_obtain);
 	void UpdateInfoWaveClearByGem(const int32 i_gem_obtain);
 	void UpdateInfoWaveClearByKillEnemy();
 	void UpdateInfoWaveClearByScore(const int32 i_score);

@@ -33,7 +33,6 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 	USA_SG_Option* save_file_option = Cast<USA_SG_Option>(UGameplayStatics::LoadGameFromSlot("SG_Option", 0));
 	if (save_file_game)
 	{
-		s_info_player.SetGold(save_file_game->gold);
 		s_info_player.SetGem(save_file_game->gem);
 
 		s_info_player.SetDMG(save_file_game->dmg);
@@ -55,7 +54,6 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		USA_GI* sagi = GetWorld()->GetGameInstance<USA_GI>();
 		const FDataGame* s_data_game = sagi->GetDataGame();
 
-		s_info_player.SetGold(1000);
 		s_info_player.SetGem(5);
 
 		s_info_player.SetDMG(s_data_game->GetPlayerBaseDMG());

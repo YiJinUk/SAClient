@@ -35,8 +35,8 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 		i_bonus = monster->GetInfoMonster().bonus_gold;
 		b_is_monster_death = true;
 
-		/*°ñµå È¹µæ*/
-		_sagm->UpdateInfoWaveClearByGold(1);
+		/*Gem È¹µæ*/
+		_sagm->UpdateInfoWaveClearByGem(1);
 		_sagm->UpdateInfoWaveClearByKillEnemy();
 	}
 	else

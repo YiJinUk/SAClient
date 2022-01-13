@@ -99,7 +99,7 @@ void ASA_Monster::MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, 
 	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
-void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc)
+void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const int32 i_drop_gem, const FVector& s_spawn_loc)
 {
 	/*풀링*/
 	MOBSetPoolActive(true);
@@ -113,6 +113,7 @@ void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const
 	/*스탯 초기화*/
 	_info_monster.hp_max = i_hp;
 	_info_monster.hp = i_hp;
+	_info_monster.bonus_gold = i_drop_gem;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);

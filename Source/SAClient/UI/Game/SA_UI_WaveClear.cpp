@@ -16,7 +16,6 @@ void USA_UI_WaveClear::NativeConstruct()
 
 void USA_UI_WaveClear::UIWaveClearUpdate(const FInfoWaveClear& s_info_wave_clear)
 {
-	_obtain_gold->SetText(FText::AsNumber(s_info_wave_clear.obtain_gold));
 	_obtain_gem->SetText(FText::AsNumber(s_info_wave_clear.obtain_gem));
 	_kill_enemies->SetText(FText::AsNumber(s_info_wave_clear.kill_enemies));
 	_score->SetText(FText::AsNumber(s_info_wave_clear.score));

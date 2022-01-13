@@ -43,7 +43,6 @@ enum class EWaveStatus : uint8
 UENUM()
 enum class EPlayerStat : uint8
 {
-	GOLD,
 	GEM,
 	DMG,
 	AS,
@@ -55,7 +54,6 @@ UENUM()
 enum class EUpgradeStat : uint8
 {
 	DMG_1,
-	DMG_10,
 	AS,
 	SHOT_NUMBER,
 	PENETRATE,
@@ -278,8 +276,6 @@ struct FInfoPlayer
 
 private:
 	UPROPERTY()
-		int32 _gold = 0;
-	UPROPERTY()
 		int32 _gem = 0;
 
 	UPROPERTY()
@@ -308,7 +304,6 @@ private:
 	UPROPERTY()
 		int32 _upgrade_cost_penetrate = 1;
 public:
-	FORCEINLINE const int32 GetGold() const { return _gold; }
 	FORCEINLINE const int32 GetGem() const { return _gem; }
 
 	FORCEINLINE const int32 GetDMG() const { return _dmg; }
@@ -322,7 +317,6 @@ public:
 	FORCEINLINE const int32 GetUpgradeCostShotNumber() const { return _upgrade_cost_shot_num; }
 	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
 
-	FORCEINLINE void SetGold(const int32 i_gold) { _gold = i_gold; }
 	FORCEINLINE void SetGem(const int32 i_gem) { _gem = i_gem; }
 
 	FORCEINLINE void SetDMG(const int32 i_dmg) { _dmg = i_dmg; }
@@ -457,8 +451,6 @@ public:
 	UPROPERTY()
 		int32 clear_wave_round = 0;
 	UPROPERTY()
-		int32 obtain_gold = 0;
-	UPROPERTY()
 		int32 obtain_gem = 0;
 	UPROPERTY()
 		int32 kill_enemies = 0;
@@ -469,7 +461,6 @@ public:
 	void InitStruct()
 	{
 		clear_wave_round = 0;
-		obtain_gold = 0;
 		obtain_gem = 0;
 		kill_enemies = 0;
 		score = 0;

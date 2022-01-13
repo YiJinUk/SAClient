@@ -28,8 +28,7 @@ void ASA_GM::DebugWaveStart()
 }
 void ASA_GM::DebugInitPlayer()
 {
-	_info_player.SetGold(1000);
-	_info_player.SetGem(5);
+	_info_player.SetGem(1000);
 
 	_info_player.SetDMG(_data_game_cache->GetPlayerBaseDMG());
 	_info_player.SetAS(_data_game_cache->GetPlayerBaseAS());
@@ -37,7 +36,6 @@ void ASA_GM::DebugInitPlayer()
 	_info_player.SetPenetrate(_data_game_cache->GetPlayerBasePenetrate());
 
 	_info_player.SetUpgradeCostDMG1(_data_game_cache->GetUpgradeCostDMG1());
-	//_info_player.SetUpgradeCostDMG10(_data_game_cache->GetUpgradeCostDMG10());
 	_info_player.SetUpgradeCostAS(_data_game_cache->GetUpgradeCostAS());
 	_info_player.SetUpgradeCostShotNumber(_data_game_cache->GetUpgradeCostShotNum());
 	_info_player.SetUpgradeCostPenetrate(_data_game_cache->GetUpgradeCostPenetrate());
@@ -352,7 +350,7 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 				i_hp_treasure_chest += _sagi->GetMonsterHPByEnum(s_data_wave_monster.GetMonsterHP());
 			}
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
-			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _data_game_cache->GetTreasureChestSpawnLoc());
+			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _wave_round_current * 3, _data_game_cache->GetTreasureChestSpawnLoc());
 			_spawn_monsters.Add(spawn_treasure_chest);
 		}
 	}
@@ -447,11 +445,6 @@ void ASA_GM::WaveGameOver()
 	_pc->PCWaveGameOver();
 }
 
-void ASA_GM::UpdateInfoWaveClearByGold(const int32 i_gold_obtain)
-{
-	_info_wave_clear.obtain_gold += i_gold_obtain;
-	PlayerChangeStat(EPlayerStat::GOLD, i_gold_obtain, true);
-}
 void ASA_GM::UpdateInfoWaveClearByGem(const int32 i_gem_obtain)
 {
 	_info_wave_clear.obtain_gem += i_gem_obtain;
@@ -557,30 +550,30 @@ void ASA_GM::SetLanguage(const FString& str_code_lang)
 
 void ASA_GM::UpgradeDMG(const int32 i_cost)
 {
-	if (_info_player.GetGold() < i_cost)
+	if (_info_player.GetGem() < i_cost)
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, i_cost, false);
+	PlayerChangeStat(EPlayerStat::GEM, i_cost, false);
 	PlayerChangeStat(EPlayerStat::DMG, i_cost, true);
 }
 void ASA_GM::UpgradeAS()
 {
-	if (_info_player.GetGold() < _info_player.GetUpgradeCostAS())
+	if (_info_player.GetGem() < _info_player.GetUpgradeCostAS())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostAS(), false);
+	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostAS(), false);
 	PlayerChangeStat(EPlayerStat::AS, 1, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
 {
-	if (_info_player.GetGold() < _info_player.GetUpgradeCostShotNumber())
+	if (_info_player.GetGem() < _info_player.GetUpgradeCostShotNumber())
 	{
 		return; // 소지금 부족
 	}
@@ -591,19 +584,19 @@ void ASA_GM::UpgradeShotNum()
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostShotNumber(), false);
+	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostShotNumber(), false);
 	PlayerChangeStat(EPlayerStat::SHOT_NUMBER, 1, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::SHOT_NUMBER);
 }
 void ASA_GM::UpgradePenetrate()
 {
-	if (_info_player.GetGold() < _info_player.GetUpgradeCostPenetrate())
+	if (_info_player.GetGem() < _info_player.GetUpgradeCostPenetrate())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GOLD, _info_player.GetUpgradeCostPenetrate(), false);
+	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostPenetrate(), false);
 	PlayerChangeStat(EPlayerStat::PENETRATE, 1, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::PENETRATE);
 }
@@ -612,14 +605,6 @@ void ASA_GM::PlayerChangeStat(const EPlayerStat e_player_stat, const int32 i_val
 {
 	switch (e_player_stat)
 	{
-	case EPlayerStat::GOLD:
-		if(b_is_add)
-			_info_player.SetGold(_info_player.GetGold() + i_value);
-		else
-			_info_player.SetGold(_info_player.GetGold() - i_value);
-
-		_pc->PCUIUpdatePlayerStat(e_player_stat, _info_player.GetGold());
-		break;
 	case EPlayerStat::GEM:
 		if (b_is_add)
 			_info_player.SetGem(_info_player.GetGem() + i_value);

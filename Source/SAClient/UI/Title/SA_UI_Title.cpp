@@ -27,12 +27,12 @@ void USA_UI_Title::UITitleUpdateButtons()
 {
 	const FInfoPlayer& s_ui_info_player = _pc->GetUIInfoPlayer();
 
-	if (s_ui_info_player.GetUpgradeCostDMG10() <= s_ui_info_player.GetGold())
+	if (s_ui_info_player.GetUpgradeCostDMG10() <= s_ui_info_player.GetGem())
 	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
 		//_dmg_upgrade_cost10_btn->SetIsEnabled(true);
 	}
-	else if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGold())
+	else if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGem())
 	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
 		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
@@ -43,17 +43,17 @@ void USA_UI_Title::UITitleUpdateButtons()
 		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
 	}
 
-	if (s_ui_info_player.GetUpgradeCostAS() <= s_ui_info_player.GetGold())
+	if (s_ui_info_player.GetUpgradeCostAS() <= s_ui_info_player.GetGem())
 		_as_upgrade_btn->SetIsEnabled(true);
 	else
 		_as_upgrade_btn->SetIsEnabled(false);
 
-	if (s_ui_info_player.GetUpgradeCostShotNumber() <= s_ui_info_player.GetGold())
+	if (s_ui_info_player.GetUpgradeCostShotNumber() <= s_ui_info_player.GetGem())
 		_shot_num_upgrade_btn->SetIsEnabled(true);
 	else
 		_shot_num_upgrade_btn->SetIsEnabled(false);
 
-	if (s_ui_info_player.GetUpgradeCostPenetrate() <= s_ui_info_player.GetGold())
+	if (s_ui_info_player.GetUpgradeCostPenetrate() <= s_ui_info_player.GetGem())
 		_penetrate_upgrade_btn->SetIsEnabled(true);
 	else
 		_penetrate_upgrade_btn->SetIsEnabled(false);

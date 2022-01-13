@@ -89,10 +89,6 @@ void USA_UI_Main::ClickedOptionShow()
 	_option->SetVisibility(ESlateVisibility::Visible);
 }
 
-void USA_UI_Main::UIMainUpdatePlayerGold(const int32 i_gold_update)
-{
-	_gold->SetText(FText::AsNumber(i_gold_update));
-}
 void USA_UI_Main::UIMainUpdatePlayerGem(const int32 i_gem_update)
 {
 	_gem->SetText(FText::AsNumber(i_gem_update));
@@ -118,10 +114,6 @@ void USA_UI_Main::UIMainUpdatePlayerPenetrate(const int8 i_penetrate_update)
 void USA_UI_Main::UIMainUpdateUgradeCostDMG1(const int32 i_upgrade_cost_dmg_1)
 {
 	_title->UITitleUpdateUpgradeCostDMG1(i_upgrade_cost_dmg_1);
-}
-void USA_UI_Main::UIMainUpdateUgradeCostDMG10(const int32 i_upgrade_cost_dmg_10)
-{
-	_title->UITitleUpdateUpgradeCostDMG10(i_upgrade_cost_dmg_10);
 }
 void USA_UI_Main::UIMainUpdateUgradeCostAS(const int32 i_upgrade_cost_as)
 {

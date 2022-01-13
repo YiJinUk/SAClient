@@ -29,7 +29,6 @@ void ASA_PC::DebugRefreshTitle()
 	_ui_info_player = s_info_player;
 
 	/*위젯을 세부적으로 초기화합니다*/
-	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
 	PCUIUpdatePlayerStat(EPlayerStat::GEM, _ui_info_player.GetGem());
 	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
@@ -37,7 +36,6 @@ void ASA_PC::DebugRefreshTitle()
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 
 	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
-	//PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
 	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
 	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
 	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
@@ -67,7 +65,6 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdateCheck();
 
 	/*위젯을 세부적으로 초기화합니다*/
-	PCUIUpdatePlayerStat(EPlayerStat::GOLD, _ui_info_player.GetGold());
 	PCUIUpdatePlayerStat(EPlayerStat::GEM, _ui_info_player.GetGem());
 	PCUIUpdatePlayerStat(EPlayerStat::DMG, _ui_info_player.GetDMG());
 	PCUIUpdatePlayerStat(EPlayerStat::AS, _ui_info_player.GetAS());
@@ -75,7 +72,6 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 
 	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
-	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_10, _ui_info_player.GetUpgradeCostDMG10());
 	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
 	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
 	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
@@ -142,10 +138,6 @@ void ASA_PC::PCUIUpdatePlayerStat(const EPlayerStat e_player_stat, const int32 i
 {
 	switch (e_player_stat)
 	{
-	case EPlayerStat::GOLD:
-		_ui_info_player.SetGold(i_value);
-		_ui_main->UIMainUpdatePlayerGold(_ui_info_player.GetGold());
-		break;
 	case EPlayerStat::GEM:
 		_ui_info_player.SetGem(i_value);
 		_ui_main->UIMainUpdatePlayerGem(_ui_info_player.GetGem());
@@ -178,10 +170,6 @@ void ASA_PC::PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int3
 	case EUpgradeStat::DMG_1:
 		_ui_info_player.SetUpgradeCostDMG1(i_value);
 		_ui_main->UIMainUpdateUgradeCostDMG1(i_value);
-		break;
-	case EUpgradeStat::DMG_10:
-		_ui_info_player.SetUpgradeCostDMG10(i_value);
-		_ui_main->UIMainUpdateUgradeCostDMG10(i_value);
 		break;
 	case EUpgradeStat::AS:
 		_ui_info_player.SetUpgradeCostAS(i_value);

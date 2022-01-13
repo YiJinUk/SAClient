@@ -5,7 +5,6 @@
 
 void USA_SG_Game::SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wave_round)
 {
-	gold = s_info_player.GetGold();
 	gem = s_info_player.GetGem();
 
 	dmg = s_info_player.GetDMG();
