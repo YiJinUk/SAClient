@@ -304,7 +304,7 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 				//Arrive!
 				_manager_sfx->SFXStart(ESFXType::PROJ_HIT);
 				/*이미 공격한 몬스터인지 확인합니다*/
-				if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
+				//if (spawn_proj->PROJIsAttackedMonsterByMOBId(spawn_monster->GetInfoMonster().id)) continue;
 
 				/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
 				if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))

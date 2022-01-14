@@ -14,7 +14,7 @@ void USA_UI_Title::NativeConstruct()
 	_dmg_upgrade_cost1_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeDMGCost1);
 	_as_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeAS);
 	_shot_num_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradeShotNum);
-	_penetrate_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradePenetrate);
+	//_penetrate_upgrade_btn->OnClicked.AddDynamic(this, &USA_UI_Title::ClickedUpgradePenetrate);
 }
 void USA_UI_Title::UITitleInit(ASA_PC* pc)
 {
@@ -27,21 +27,26 @@ void USA_UI_Title::UITitleUpdateButtons()
 {
 	const FInfoPlayer& s_ui_info_player = _pc->GetUIInfoPlayer();
 
-	if (s_ui_info_player.GetUpgradeCostDMG10() <= s_ui_info_player.GetGem())
-	{
+	//if (s_ui_info_player.GetUpgradeCostDMG10() <= s_ui_info_player.GetGem())
+	//{
+	//	_dmg_upgrade_cost1_btn->SetIsEnabled(true);
+	//	//_dmg_upgrade_cost10_btn->SetIsEnabled(true);
+	//}
+	//else if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGem())
+	//{
+	//	_dmg_upgrade_cost1_btn->SetIsEnabled(true);
+	//	//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
+	//}
+	//else
+	//{
+	//	_dmg_upgrade_cost1_btn->SetIsEnabled(false);
+	//	//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
+	//}
+
+	if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGem())
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
-		//_dmg_upgrade_cost10_btn->SetIsEnabled(true);
-	}
-	else if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGem())
-	{
-		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
-		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
-	}
 	else
-	{
 		_dmg_upgrade_cost1_btn->SetIsEnabled(false);
-		//_dmg_upgrade_cost10_btn->SetIsEnabled(false);
-	}
 
 	if (s_ui_info_player.GetUpgradeCostAS() <= s_ui_info_player.GetGem())
 		_as_upgrade_btn->SetIsEnabled(true);
@@ -53,10 +58,10 @@ void USA_UI_Title::UITitleUpdateButtons()
 	else
 		_shot_num_upgrade_btn->SetIsEnabled(false);
 
-	if (s_ui_info_player.GetUpgradeCostPenetrate() <= s_ui_info_player.GetGem())
-		_penetrate_upgrade_btn->SetIsEnabled(true);
-	else
-		_penetrate_upgrade_btn->SetIsEnabled(false);
+	//if (s_ui_info_player.GetUpgradeCostPenetrate() <= s_ui_info_player.GetGem())
+	//	_penetrate_upgrade_btn->SetIsEnabled(true);
+	//else
+	//	_penetrate_upgrade_btn->SetIsEnabled(false);
 }
 
 void USA_UI_Title::UITitleUpdatePlayerDMG(const int32 i_dmg_update)
@@ -73,7 +78,7 @@ void USA_UI_Title::UITitleUpdatePlayerShotNum(const int8 i_shot_num_update)
 }
 void USA_UI_Title::UITitleUpdatePlayerPenetrate(const int8 i_penetrate)
 {
-	_penetrate_upgrade->SetText(FText::AsNumber(i_penetrate));
+	//_penetrate_upgrade->SetText(FText::AsNumber(i_penetrate));
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostDMG1(const int32 i_upgrade_cost_dmg_1)
 {
@@ -93,7 +98,7 @@ void USA_UI_Title::UITitleUpdateUpgradeCostShotNum(const int32 i_upgrade_cost_sh
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostPenetrate(const int32 i_upgrade_cost_penetrate)
 {
-	_cost_penetrate->SetText(FText::AsNumber(i_upgrade_cost_penetrate));
+	//_cost_penetrate->SetText(FText::AsNumber(i_upgrade_cost_penetrate));
 }
 
 void USA_UI_Title::ClickedUpgradeDMGCost1()
@@ -111,8 +116,8 @@ void USA_UI_Title::ClickedUpgradeShotNum()
 	_gm->UpgradeShotNum();
 	UITitleUpdateButtons();
 }
-void USA_UI_Title::ClickedUpgradePenetrate()
-{
-	_gm->UpgradePenetrate();
-	UITitleUpdateButtons();
-}
+//void USA_UI_Title::ClickedUpgradePenetrate()
+//{
+//	_gm->UpgradePenetrate();
+//	UITitleUpdateButtons();
+//}

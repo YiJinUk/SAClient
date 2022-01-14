@@ -39,10 +39,10 @@ private:
 		UButton* _shot_num_upgrade_btn = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _shot_num_upgrade = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UButton* _penetrate_upgrade_btn = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _penetrate_upgrade = nullptr;
+	//UPROPERTY(Meta = (BindWidget))
+	//	UButton* _penetrate_upgrade_btn = nullptr;
+	//UPROPERTY(Meta = (BindWidget))
+	//	UTextBlock* _penetrate_upgrade = nullptr;
 
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _cost_dmg_1 = nullptr;
@@ -50,8 +50,8 @@ private:
 		UTextBlock* _cost_as = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		UTextBlock* _cost_shot_num = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _cost_penetrate = nullptr;
+	//UPROPERTY(Meta = (BindWidget))
+	//	UTextBlock* _cost_penetrate = nullptr;
 
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
@@ -77,6 +77,6 @@ public:
 		void ClickedUpgradeAS();
 	UFUNCTION()
 		void ClickedUpgradeShotNum();
-	UFUNCTION()
-		void ClickedUpgradePenetrate();
+	//UFUNCTION()
+	//	void ClickedUpgradePenetrate();
 };
