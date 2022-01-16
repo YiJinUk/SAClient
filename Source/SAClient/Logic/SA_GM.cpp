@@ -234,7 +234,7 @@ void ASA_GM::TickSpawnMonster()
 void ASA_GM::TickCheckShootPROJ()
 {
 	++_info_player_chr.as_wait;
-	if (_info_player_chr.as_wait >= _info_player_chr.GetASTotal())
+	if (_info_player_chr.as_wait >= (60.f / float(_info_player_chr.GetASTotal())) * 60.f)
 	{
 		/*발사*/
 		_info_player_chr.as_wait = 0;
@@ -568,7 +568,7 @@ void ASA_GM::UpgradeAS()
 
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostAS(), false);
-	PlayerChangeStat(EPlayerStat::AS, 1, false);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
+	PlayerChangeStat(EPlayerStat::AS, 6, true);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()

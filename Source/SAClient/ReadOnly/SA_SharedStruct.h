@@ -144,22 +144,27 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Monster")
 		int8 _monster_clone_loc_y = 100;
 
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		int32 _upgrade_cost_dmg_1 = 1;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		int32 _upgrade_cost_dmg_10 = 10;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		int32 _upgrade_cost_as = 10;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		int32 _upgrade_cost_shot_num = 10;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		int32 _upgrade_cost_penetrate = 10;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		float _upgrade_as_cost_increase = 1.5;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		float _upgrade_shot_num_cost_increase = 1.5;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
 		float _upgrade_penetrate_cost_increase = 1.5;
+
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Max")
+		int32 _upgrade_max_as = 120;
+	UPROPERTY(EditAnywhere, Category = "Upgrade|Max")
+		int32 _upgrade_max_shot_num = 7;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
 	FORCEINLINE const FVector GetTreasureChestSpawnLoc() const { return _treasure_chest_spawn_loc; }
@@ -187,6 +192,9 @@ public:
 	FORCEINLINE const float GetUpgradeASCostIncrease() const { return _upgrade_as_cost_increase; }
 	FORCEINLINE const float GetUpgradeShotNumCostIncrease() const { return _upgrade_shot_num_cost_increase; }
 	FORCEINLINE const float GetUpgradePenetrateCostIncrease() const { return _upgrade_penetrate_cost_increase; }
+
+	FORCEINLINE const int32 GetUpgradeMaxAS() const { return _upgrade_max_as; }
+	FORCEINLINE const int32 GetUpgradeMaxShotNum() const { return _upgrade_max_shot_num; }
 };
 
 USTRUCT(BlueprintType)

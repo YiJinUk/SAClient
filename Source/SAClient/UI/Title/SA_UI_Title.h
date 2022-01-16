@@ -6,10 +6,12 @@
 #include "UI/SA_UI_Master.h"
 #include "SA_UI_Title.generated.h"
 
+class USA_GI;
 class ASA_PC;
 class ASA_GM;
 class UButton;
 class UTextBlock;
+class UWidgetSwitcher;
 
 /**
  * 
@@ -53,6 +55,13 @@ private:
 	//UPROPERTY(Meta = (BindWidget))
 	//	UTextBlock* _cost_penetrate = nullptr;
 
+	UPROPERTY(Meta = (BindWidget))
+		UWidgetSwitcher* _switcher_as = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UWidgetSwitcher* _switcher_shot_num = nullptr;
+
+	UPROPERTY()
+		USA_GI* _sagi = nullptr;
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;
 	UPROPERTY()
