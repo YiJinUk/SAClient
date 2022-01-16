@@ -49,9 +49,4 @@ private:
 	FDataGame* _data_game = nullptr;
 	FDataWaves* _data_waves = nullptr;
 #pragma endregion
-
-#pragma region Data
-public:
-	const int32 GetMonsterHPByEnum(const EMonsterHP e_monster_hp) const;
-#pragma endregion
 };

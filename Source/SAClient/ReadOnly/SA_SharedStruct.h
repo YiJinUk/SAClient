@@ -59,15 +59,15 @@ enum class EUpgradeStat : uint8
 	PENETRATE,
 };
 
-UENUM()
-enum class EMonsterHP : uint8
-{
-	HP_NO,
-	HP_2,
-	HP_4,
-	HP_8,
-	HP_16,
-};
+//UENUM()
+//enum class EMonsterHP : uint8
+//{
+//	HP_NO,
+//	HP_2,
+//	HP_4,
+//	HP_8,
+//	HP_16,
+//};
 
 UENUM()
 enum class EVFXType : uint8
@@ -237,11 +237,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "General")
 		int32 _spawn_count = 0;
 	UPROPERTY(EditAnywhere, Category = "General")
-		EMonsterHP _mob_hp = EMonsterHP::HP_2;
+		int32 _mob_hp = 0;
+
 public:
 	FORCEINLINE const FString& GetCodeMonster() const { return _code_monster; }
 	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
-	FORCEINLINE const EMonsterHP GetMonsterHP() const { return _mob_hp; }
+	FORCEINLINE const int32 GetMonsterHP() const { return _mob_hp; }
 
 	/*게임모드에서 복제한 웨이브데이터에서만 호출합니다*/
 	FORCEINLINE void SubSpawnCount() { --_spawn_count; }
@@ -402,7 +403,9 @@ public:
 		FRotator rot = FRotator::ZeroRotator;
 
 	UPROPERTY()
-		EMonsterHP mob_hp = EMonsterHP::HP_2;
+		bool is_split = false;
+	UPROPERTY()
+		int32 mob_hp = 0;
 	UPROPERTY()
 		int32 hp = 0;
 	UPROPERTY()

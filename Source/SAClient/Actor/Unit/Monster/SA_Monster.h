@@ -39,8 +39,8 @@ public:
 	void MOBPostInit(const FDataMonster* s_data_monster);
 	virtual void MOBPostInitChild(const FDataMonster* s_data_monster);
 	//풀에서 나올 때 마다 호출됩니다
-	void MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, ASA_SpawnPoint* obj_spawn_point);
-	void MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
+	void MOBInit(const int64 i_id, const int32 i_hp, ASA_SpawnPoint* obj_spawn_point);
+	void MOBInitClone(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot);
 	void MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const int32 i_drop_gem, const FVector& s_spawn_loc);
 
 	void MOBMove(const float f_delta_time);
@@ -63,7 +63,6 @@ public:
 	int32 MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const bool b_is_add = false);
 
 	const FInfoMonster& GetInfoMonster() const;
-	const EMonsterHP GetDownMonsterHP() const;
 
 protected:
 	UPROPERTY()

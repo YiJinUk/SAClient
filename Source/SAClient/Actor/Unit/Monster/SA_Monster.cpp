@@ -49,7 +49,7 @@ void ASA_Monster::MOBPostInitChild(const FDataMonster* s_data_monster)
 	//override
 }
 
-void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, ASA_SpawnPoint* obj_spawn_point)
+void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, ASA_SpawnPoint* obj_spawn_point)
 {
 	//override
 
@@ -68,15 +68,14 @@ void ASA_Monster::MOBInit(const int64 i_id, const EMonsterHP e_monster_hp, ASA_S
 	SetActorLocation(obj_spawn_point->GetPointSpawnLocation());
 
 	/*스탯 초기화*/
-	_info_monster.mob_hp = e_monster_hp;
-	_info_monster.hp_max = _sagi->GetMonsterHPByEnum(e_monster_hp);
+	_info_monster.hp_max = i_hp;
 	_info_monster.hp = _info_monster.hp_max;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
-void ASA_Monster::MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
+void ASA_Monster::MOBInitClone(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc, const FVector& v_velocity, const FRotator& r_rot)
 {
 	/*풀링*/
 	MOBSetPoolActive(true);
@@ -91,8 +90,7 @@ void ASA_Monster::MOBInitClone(const int64 i_id, const EMonsterHP e_monster_hp, 
 	SetActorLocation(s_spawn_loc);
 
 	/*스탯 초기화*/
-	_info_monster.mob_hp = e_monster_hp;
-	_info_monster.hp_max = _sagi->GetMonsterHPByEnum(e_monster_hp);
+	_info_monster.hp_max = i_hp;
 	_info_monster.hp = _info_monster.hp_max;
 
 	/*UI 초기화*/
@@ -185,30 +183,6 @@ int32 ASA_Monster::MOBChangeHP(const int32 i_change_hp, int32& i_pure_dmg, const
 
 	return _info_monster.hp;
 }
-
-const EMonsterHP ASA_Monster::GetDownMonsterHP() const
-{
-	switch (_info_monster.mob_hp)
-	{
-	case EMonsterHP::HP_2:
-		return EMonsterHP::HP_NO;
-		break;
-	case EMonsterHP::HP_4:
-		return EMonsterHP::HP_2;
-		break;
-	case EMonsterHP::HP_8:
-		return EMonsterHP::HP_4;
-		break;
-	case EMonsterHP::HP_16:
-		return EMonsterHP::HP_8;
-		break;
-	default:
-		break;
-	}
-
-	return EMonsterHP::HP_NO;
-}
-
 
 const FInfoMonster& ASA_Monster::GetInfoMonster() const { return _info_monster; }
 

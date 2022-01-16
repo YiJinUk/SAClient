@@ -347,7 +347,7 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 			for (const FDataWaveMonster& s_data_wave_monster : _data_wave_current.GetSpawnMonsters())
 			{
 				//s_data_wave.
-				i_hp_treasure_chest += _sagi->GetMonsterHPByEnum(s_data_wave_monster.GetMonsterHP());
+				i_hp_treasure_chest += s_data_wave_monster.GetMonsterHP();
 			}
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
 			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _wave_round_current * 3, _data_game_cache->GetTreasureChestSpawnLoc());
@@ -485,18 +485,18 @@ void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
 
 void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
 {
-	const EMonsterHP e_monster_hp_origin = monster_origin->GetDownMonsterHP();
-	if (e_monster_hp_origin == EMonsterHP::HP_NO) return;
+	//분열가능한 몬스터인지 확인
+	if (!monster_origin->GetInfoMonster().is_split) return;
 
 	const FVector& v_loc_spawn_origin = monster_origin->GetActorLocation();
 	FVector v_loc_spawn_new = FVector(v_loc_spawn_origin.X, v_loc_spawn_origin.Y + _data_game_cache->GetMonsterCloneLocY(), 0.f);
 	
 	for (int32 i = 0; i < 2; ++i)
 	{
-		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode(monster_origin->GetInfoMonster().code);
+		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode("MOB00001");
 		if (i == 1)
 			v_loc_spawn_new.Y = -v_loc_spawn_new.Y;
-		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetDownMonsterHP(), v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
+		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetInfoMonster().hp_max * 0.5, v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
 		_spawn_monsters.Add(spawn_monster_new);
 	}
 }
