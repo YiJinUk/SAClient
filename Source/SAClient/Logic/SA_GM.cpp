@@ -569,7 +569,7 @@ void ASA_GM::UpgradeAS()
 
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostAS(), false);
-	PlayerChangeStat(EPlayerStat::AS, 30, true);
+	PlayerChangeStat(EPlayerStat::AS, 6, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
