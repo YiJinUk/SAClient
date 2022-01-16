@@ -54,7 +54,7 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		USA_GI* sagi = GetWorld()->GetGameInstance<USA_GI>();
 		const FDataGame* s_data_game = sagi->GetDataGame();
 
-		s_info_player.SetGem(5);
+		s_info_player.SetGem(s_data_game->GetPlayetBaseGem());
 
 		s_info_player.SetDMG(s_data_game->GetPlayerBaseDMG());
 		s_info_player.SetAS(s_data_game->GetPlayerBaseAS());

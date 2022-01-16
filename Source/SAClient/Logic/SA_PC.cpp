@@ -42,12 +42,12 @@ void ASA_PC::DebugRefreshTitle()
 
 	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
 
-	static FString str_lang = "en";
-	if (str_lang == "en")
-		str_lang = "ko_kr";
-	else
-		str_lang = "en";
-	UKismetInternationalizationLibrary::SetCurrentCulture(str_lang);
+	//static FString str_lang = "en";
+	//if (str_lang == "en")
+	//	str_lang = "ko_kr";
+	//else
+	//	str_lang = "en";
+	//UKismetInternationalizationLibrary::SetCurrentCulture(str_lang);
 }
 
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)

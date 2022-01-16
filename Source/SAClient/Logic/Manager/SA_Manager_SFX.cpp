@@ -20,7 +20,7 @@ void ASA_Manager_SFX::SFXStart(const ESFXType e_sfx_type)
 		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetBackGround())->SetUISound(true);
 		break;
 	case ESFXType::PROJ_SHOT:
-		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetPROJShot());
+		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetPROJShot(),1.f,1.f,0.2f);
 		break;
 	case ESFXType::PROJ_HIT:
 		UGameplayStatics::SpawnSound2D(GetWorld(), _data_sfx_cache->GetPROJHit());

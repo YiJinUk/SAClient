@@ -28,7 +28,7 @@ void ASA_GM::DebugWaveStart()
 }
 void ASA_GM::DebugInitPlayer()
 {
-	_info_player.SetGem(1000);
+	_info_player.SetGem(_data_game_cache->GetPlayetBaseGem());
 
 	_info_player.SetDMG(_data_game_cache->GetPlayerBaseDMG());
 	_info_player.SetAS(_data_game_cache->GetPlayerBaseAS());
@@ -344,13 +344,14 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 		{
 			/*Spawn TreasureChest*/
 			int32 i_hp_treasure_chest = 0;
-			for (const FDataWaveMonster& s_data_wave_monster : _data_wave_current.GetSpawnMonsters())
+			FDataWave* arr_data_wave_monster = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+			for (const FDataWaveMonster& s_data_wave_monster : arr_data_wave_monster->GetSpawnMonsters())
 			{
-				//s_data_wave.
-				i_hp_treasure_chest += s_data_wave_monster.GetMonsterHP();
+				i_hp_treasure_chest += s_data_wave_monster.GetMonsterHP() * s_data_wave_monster.GetSpawnCount();
 			}
+
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
-			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _wave_round_current * 3, _data_game_cache->GetTreasureChestSpawnLoc());
+			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _wave_round_current * 5, _data_game_cache->GetTreasureChestSpawnLoc());
 			_spawn_monsters.Add(spawn_treasure_chest);
 		}
 	}
@@ -548,16 +549,16 @@ void ASA_GM::SetLanguage(const FString& str_code_lang)
 	GameSaveOption();
 }
 
-void ASA_GM::UpgradeDMG(const int32 i_cost)
+void ASA_GM::UpgradeDMG()
 {
-	if (_info_player.GetGem() < i_cost)
+	if (_info_player.GetGem() < _data_game_cache->GetUpgradeCostDMG1())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GEM, i_cost, false);
-	PlayerChangeStat(EPlayerStat::DMG, i_cost, true);
+	PlayerChangeStat(EPlayerStat::GEM, _data_game_cache->GetUpgradeCostDMG1(), false);
+	PlayerChangeStat(EPlayerStat::DMG, 10, true);
 }
 void ASA_GM::UpgradeAS()
 {
@@ -568,7 +569,7 @@ void ASA_GM::UpgradeAS()
 
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostAS(), false);
-	PlayerChangeStat(EPlayerStat::AS, 6, true);// 공속이 증가하기 위해 다음공격딜레이 시간을 줄여야 합니다
+	PlayerChangeStat(EPlayerStat::AS, 30, true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
@@ -578,7 +579,7 @@ void ASA_GM::UpgradeShotNum()
 		return; // 소지금 부족
 	}
 
-	if (_info_player.GetShotNumber() >= 7)
+	if (_info_player.GetShotNumber() >= _data_game_cache->GetUpgradeMaxShotNum())
 	{
 		return; // 최대 탄알갯수
 	}

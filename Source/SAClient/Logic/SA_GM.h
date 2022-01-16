@@ -185,7 +185,7 @@ private:
 
 #pragma region Upgrade
 public:
-	void UpgradeDMG(const int32 i_cost);
+	void UpgradeDMG();
 	void UpgradeAS();
 	void UpgradeShotNum();
 	void UpgradePenetrate();

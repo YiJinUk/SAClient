@@ -36,7 +36,7 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 		b_is_monster_death = true;
 
 		/*Gem È¹µæ*/
-		_sagm->UpdateInfoWaveClearByGem(1);
+		_sagm->UpdateInfoWaveClearByGem(monster->GetInfoMonster().hp_max * 0.5f);
 		_sagm->UpdateInfoWaveClearByKillEnemy();
 	}
 	else

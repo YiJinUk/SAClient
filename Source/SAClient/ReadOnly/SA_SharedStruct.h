@@ -131,6 +131,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Player")
 		int16 _player_hp = 100;
 	UPROPERTY(EditAnywhere, Category = "Player")
+		int32 _player_base_gem = 10;
+	UPROPERTY(EditAnywhere, Category = "Player")
 		int32 _player_base_dmg = 1;
 	UPROPERTY(EditAnywhere, Category = "Player")
 		int32 _player_base_as = 60;
@@ -144,26 +146,26 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Monster")
 		int8 _monster_clone_loc_y = 100;
 
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_dmg_1 = 1;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_dmg_10 = 10;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_as = 10;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_shot_num = 10;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_penetrate = 10;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_as_cost_increase = 1.5;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_shot_num_cost_increase = 1.5;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Cost")
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_penetrate_cost_increase = 1.5;
 
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Max")
-		int32 _upgrade_max_as = 120;
-	UPROPERTY(EditAnywhere, Category = "Upgrade|Max")
+	UPROPERTY(EditAnywhere, Category = "UpgradeMax")
+		int32 _upgrade_max_as = 3000;
+	UPROPERTY(EditAnywhere, Category = "UpgradeMax")
 		int32 _upgrade_max_shot_num = 7;
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
@@ -177,6 +179,7 @@ public:
 
 	FORCEINLINE UAnimMontage* GetPlayerAttackMontage() { return _player_attack_montage; }
 	FORCEINLINE const int16 GetPlayetHP() const { return _player_hp; }
+	FORCEINLINE const int32 GetPlayetBaseGem() const { return _player_base_gem; }
 	FORCEINLINE const int32 GetPlayerBaseDMG() const { return _player_base_dmg; }
 	FORCEINLINE const int32 GetPlayerBaseAS() const { return _player_base_as; }
 	FORCEINLINE const int32 GetPlayerBaseShotNum() const { return _player_base_shot_num; }

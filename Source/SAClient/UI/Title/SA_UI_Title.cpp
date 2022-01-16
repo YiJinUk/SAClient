@@ -108,7 +108,7 @@ void USA_UI_Title::UITitleUpdateUpgradeCostPenetrate(const int32 i_upgrade_cost_
 
 void USA_UI_Title::ClickedUpgradeDMGCost1()
 {
-	_gm->UpgradeDMG(1);
+	_gm->UpgradeDMG();
 	//UITitleUpdateButtons();
 }
 void USA_UI_Title::ClickedUpgradeAS()
