@@ -9,6 +9,7 @@
 
 class ASA_GM;
 class USA_UI_Main;
+class USA_UI_Obtain_Gem;
 
 /**
  * 
@@ -86,5 +87,19 @@ public:
 private:
 	UPROPERTY()
 		FInfoPlayer _ui_info_player;
+#pragma endregion
+
+#pragma region Battle, UI.Battle
+public:
+	void PCKillMonster(const FVector& v_loc_monster, const int32 i_obtain_gem);
+
+	USA_UI_Obtain_Gem* PoolOutUIObtainGem();
+	void PoolInUIObtainGem(USA_UI_Obtain_Gem* obtain_gem);
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+		USA_UI_Obtain_Gem* CreateWidgetObtainGem();
+private:
+	UPROPERTY()
+		TArray<USA_UI_Obtain_Gem*> _obtain_gems;
 #pragma endregion
 };

@@ -43,6 +43,9 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _option_show = nullptr;
 
+	UPROPERTY(Meta = (BindWidgetAnim), Transient, Meta = (AllowPrivateAccess = true))
+		UWidgetAnimation* _get_gem = nullptr;
+
 	UPROPERTY()
 		EUIMainStatus _main_status = EUIMainStatus::TITLE;
 

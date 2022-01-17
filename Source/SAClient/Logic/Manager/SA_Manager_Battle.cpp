@@ -4,12 +4,14 @@
 #include "Logic/Manager/SA_Manager_Battle.h"
 #include "SA_Manager_VFX.h"
 #include "Logic/SA_GM.h"
+#include "Logic/SA_PC.h"
 #include "Actor/Unit/Monster/SA_Monster.h"
 #include "Actor/Object/Projectile/SA_Projectile.h"
 
-void ASA_Manager_Battle::BattleInit(ASA_GM* sagm, ASA_Manager_VFX* manager_vfx)
+void ASA_Manager_Battle::BattleInit(ASA_GM* sagm, ASA_PC* pc, ASA_Manager_VFX* manager_vfx)
 {
 	_sagm = sagm;
+	_pc = pc;
 	_manager_vfx = manager_vfx;
 }
 
@@ -26,18 +28,30 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 	*/
 	bool b_is_monster_death = false;
 	int32 i_pure_dmg = 0; // 몬스터에게 실제로 피해를 준 값
-	int32 i_bonus = 0;
+	int32 i_obtain = 0;
 	int32 i_remain_hp = monster->MOBChangeHP(i_dmg, i_pure_dmg);
 
 	/*몬스터가 죽었다면 풀링*/
 	if (i_remain_hp <= 0)
 	{
-		i_bonus = monster->GetInfoMonster().bonus_gold;
-		b_is_monster_death = true;
+		b_is_monster_death = true;		
+		_sagm->UpdateInfoWaveClearByKillEnemy();
 
 		/*Gem 획득*/
-		_sagm->UpdateInfoWaveClearByGem(monster->GetInfoMonster().hp_max * 0.5f);
-		_sagm->UpdateInfoWaveClearByKillEnemy();
+		if (monster->GetInfoMonster().is_treasure_chest)
+		{
+			/*Gem 획득*/
+			i_obtain = monster->GetInfoMonster().bonus_gold;
+		}
+		else
+		{
+			i_obtain = monster->GetInfoMonster().hp_max * 0.5f;
+		}
+
+		if (i_obtain <= 0)
+			i_obtain = 1;
+
+		_sagm->UpdateInfoWaveClearByGem(i_obtain);
 	}
 	else
 	{
@@ -46,12 +60,11 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 
 	_sagm->UpdateInfoWaveClearByScore(i_pure_dmg);
 
-	/*Gem 획득*/
-	if (monster->GetInfoMonster().is_treasure_chest)
-		_sagm->UpdateInfoWaveClearByGem(i_bonus);
+
 
 	/*발사체에게 공격에 성공했다고 알립니다*/
 	proj->PROJAttackSuccess(monster->GetInfoMonster().id);
+	_pc->PCKillMonster(monster->GetActorLocation(), i_obtain);
 
 	return b_is_monster_death;
 }

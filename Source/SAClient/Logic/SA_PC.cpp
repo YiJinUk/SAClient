@@ -5,7 +5,10 @@
 #include "Logic/SA_FunctionLibrary.h"
 #include "SA_GM.h"
 #include "UI/SA_UI_Main.h"
+#include "UI/Game/SA_UI_Obtain_Gem.h"
+
 #include "Kismet/KismetInternationalizationLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 ASA_PC::ASA_PC()
 {
@@ -191,6 +194,37 @@ void ASA_PC::PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int3
 void ASA_PC::PCUIUpdateWaveRound(const int32 i_wave_round)
 {
 	_ui_main->UIMainUpdateWaveRound(i_wave_round);
+}
+
+void ASA_PC::PCKillMonster(const FVector& v_loc_monster, const int32 i_obtain_gem)
+{
+	USA_UI_Obtain_Gem* ui_obtain_gem = PoolOutUIObtainGem();
+	if (!ui_obtain_gem) return;
+
+	FVector2D v_loc_floating;
+	UGameplayStatics::ProjectWorldToScreen(this, v_loc_monster, v_loc_floating);
+	//v_loc_floating += _plgi->GetDataGame()->GetFloatingDmgNumberOffset();
+
+	ui_obtain_gem->AddToViewport();
+	ui_obtain_gem->SetPositionInViewport(v_loc_floating);
+	ui_obtain_gem->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+	ui_obtain_gem->PlayAnim(i_obtain_gem);
+}
+
+USA_UI_Obtain_Gem* ASA_PC::PoolOutUIObtainGem()
+{
+	if (_obtain_gems.Num() <= 0)
+	{
+		return CreateWidgetObtainGem();
+	}
+	else
+	{
+		return _obtain_gems.Pop();
+	}
+}
+void ASA_PC::PoolInUIObtainGem(USA_UI_Obtain_Gem* obtain_gem)
+{
+	_obtain_gems.Add(obtain_gem);
 }
 
 const FInfoPlayer& ASA_PC::GetUIInfoPlayer() const { return _ui_info_player; }

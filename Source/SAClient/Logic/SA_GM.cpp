@@ -126,7 +126,7 @@ void ASA_GM::GMInit()
 
 	/*버그방지를 위해 모든 매니저를 생성하고 한번에 초기화합니다*/
 	_manager_pool->PoolInit(_sagi);
-	_manager_battle->BattleInit(this, _manager_vfx);
+	_manager_battle->BattleInit(this, _pc, _manager_vfx);
 	_manager_sfx->SFXInit(_sagi);
 	_manager_vfx->VFXInit(_sagi);
 

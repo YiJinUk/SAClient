@@ -21,6 +21,7 @@ void USA_UI_WaveClear::UIWaveClearUpdate(const FInfoWaveClear& s_info_wave_clear
 	_score->SetText(FText::AsNumber(s_info_wave_clear.score));
 
 	PlayAnimation(_wave_clear);
+	PlayAnimation(_rotation_light, 0.f, 0);
 }
 
 void USA_UI_WaveClear::ClickedNextWave()

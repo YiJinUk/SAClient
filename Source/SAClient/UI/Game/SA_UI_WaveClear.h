@@ -33,6 +33,8 @@ private:
 
 	UPROPERTY(Meta = (BindWidgetAnim), Transient, Meta = (AllowPrivateAccess = true))
 		UWidgetAnimation* _wave_clear = nullptr;
+	UPROPERTY(Meta = (BindWidgetAnim), Transient, Meta = (AllowPrivateAccess = true))
+		UWidgetAnimation* _rotation_light = nullptr;
 
 	UPROPERTY()
 		ASA_PC* _pc = nullptr;

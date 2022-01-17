@@ -92,6 +92,7 @@ void USA_UI_Main::ClickedOptionShow()
 void USA_UI_Main::UIMainUpdatePlayerGem(const int32 i_gem_update)
 {
 	_gem->SetText(FText::AsNumber(i_gem_update));
+	PlayAnimation(_get_gem);
 }
 void USA_UI_Main::UIMainUpdatePlayerDMG(const int32 i_dmg_update)
 {

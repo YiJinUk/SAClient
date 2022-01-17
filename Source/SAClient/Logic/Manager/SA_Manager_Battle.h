@@ -8,6 +8,7 @@
 
 class ASA_Manager_VFX;
 class ASA_GM;
+class ASA_PC;
 class ASA_Projectile;
 class ASA_Monster;
 
@@ -20,10 +21,12 @@ class SACLIENT_API ASA_Manager_Battle : public ASA_Manager_Master
 	GENERATED_BODY()
 
 public:
-	void BattleInit(ASA_GM* sagm, ASA_Manager_VFX* manager_vfx);
+	void BattleInit(ASA_GM* sagm, ASA_PC* pc, ASA_Manager_VFX* manager_vfx);
 private:
 	UPROPERTY()
 		ASA_GM* _sagm = nullptr;
+	UPROPERTY()
+		ASA_PC* _pc = nullptr;
 	UPROPERTY()
 		ASA_Manager_VFX* _manager_vfx = nullptr;
 
