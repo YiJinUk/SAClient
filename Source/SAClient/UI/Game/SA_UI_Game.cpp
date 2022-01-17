@@ -33,14 +33,3 @@ void USA_UI_Game::UIGameSetVisibleWaveClear(const ESlateVisibility e_ui_visible)
 {
 	_ui_wave_clear->SetVisibility(e_ui_visible);
 }
-
-void USA_UI_Game::UIGameUpdatePlayerDMG(const int32 i_dmg_update)
-{
-	_dmg->SetText(FText::AsNumber(i_dmg_update));
-}
-void USA_UI_Game::UIGameUpdatePlayerAS(const int32 i_as_update)
-{
-	_as->SetText(FText::AsNumber(i_as_update));
-}
-
-void USA_UI_Game::SetHP(const int32 i_hp) { _hp->SetText(FText::AsNumber(i_hp)); }

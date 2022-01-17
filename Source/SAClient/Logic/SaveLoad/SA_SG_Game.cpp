@@ -12,8 +12,7 @@ void USA_SG_Game::SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wav
 	shot_num = s_info_player.GetShotNumber();
 	penetrate = s_info_player.GetPenetrate();
 
-	cost_dmg_1 = s_info_player.GetUpgradeCostDMG1();
-	cost_dmg_10 = s_info_player.GetUpgradeCostDMG10();
+	cost_dmg_1 = s_info_player.GetUpgradeCostDMG();
 	cost_as = s_info_player.GetUpgradeCostAS();
 	cost_shot_num = s_info_player.GetUpgradeCostShotNumber();
 	cost_penetrate = s_info_player.GetUpgradeCostPenetrate();

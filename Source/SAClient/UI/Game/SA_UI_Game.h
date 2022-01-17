@@ -28,12 +28,6 @@ private:
 		USA_UI_GameOver* _ui_game_over = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		USA_UI_WaveClear* _ui_wave_clear = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _hp = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _dmg = nullptr;
-	UPROPERTY(Meta = (BindWidget))
-		UTextBlock* _as = nullptr;
 
 
 
@@ -43,9 +37,4 @@ public:
 
 	void UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible);
 	void UIGameSetVisibleWaveClear(const ESlateVisibility e_ui_visible);
-
-	void UIGameUpdatePlayerDMG(const int32 i_dmg_update);
-	void UIGameUpdatePlayerAS(const int32 i_as_update);
-
-	FORCEINLINE void SetHP(const int32 i_hp);
 };

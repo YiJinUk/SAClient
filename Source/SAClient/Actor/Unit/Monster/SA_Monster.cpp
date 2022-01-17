@@ -36,7 +36,6 @@ void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
 	_sagi = GetWorld()->GetGameInstance<USA_GI>();
 	if (!s_data_monster) return;
 	_info_monster.code = s_data_monster->GetCode();
-	_info_monster.move_speed = s_data_monster->GetMoveSpeed();
 	_info_monster.bonus_gold = s_data_monster->GetBonusGold();
 
 	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
@@ -49,7 +48,7 @@ void ASA_Monster::MOBPostInitChild(const FDataMonster* s_data_monster)
 	//override
 }
 
-void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, ASA_SpawnPoint* obj_spawn_point)
+void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, const int32 i_move_speed, ASA_SpawnPoint* obj_spawn_point)
 {
 	//override
 
@@ -70,6 +69,7 @@ void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, ASA_SpawnPoint* ob
 	/*스탯 초기화*/
 	_info_monster.hp_max = i_hp;
 	_info_monster.hp = _info_monster.hp_max;
+	_info_monster.move_speed = i_move_speed;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);

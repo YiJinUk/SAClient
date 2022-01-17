@@ -38,19 +38,12 @@ void ASA_PC::DebugRefreshTitle()
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 
-	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG, _ui_info_player.GetUpgradeCostDMG());
 	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
 	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
 	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
 
 	PCUIUpdateWaveRound(_sagm->GetWaveRoundCurrent());
-
-	//static FString str_lang = "en";
-	//if (str_lang == "en")
-	//	str_lang = "ko_kr";
-	//else
-	//	str_lang = "en";
-	//UKismetInternationalizationLibrary::SetCurrentCulture(str_lang);
 }
 
 void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
@@ -74,7 +67,7 @@ void ASA_PC::PCInit(ASA_GM* sagm, FInfoPlayerCharacter& s_info_player_chr)
 	PCUIUpdatePlayerStat(EPlayerStat::SHOT_NUMBER, _ui_info_player.GetShotNumber());
 	PCUIUpdatePlayerStat(EPlayerStat::PENETRATE, _ui_info_player.GetPenetrate());
 
-	PCUIUpdateUpgradeCost(EUpgradeStat::DMG_1, _ui_info_player.GetUpgradeCostDMG1());
+	PCUIUpdateUpgradeCost(EUpgradeStat::DMG, _ui_info_player.GetUpgradeCostDMG());
 	PCUIUpdateUpgradeCost(EUpgradeStat::AS, _ui_info_player.GetUpgradeCostAS());
 	PCUIUpdateUpgradeCost(EUpgradeStat::SHOT_NUMBER, _ui_info_player.GetUpgradeCostShotNumber());
 	PCUIUpdateUpgradeCost(EUpgradeStat::PENETRATE, _ui_info_player.GetUpgradeCostPenetrate());
@@ -90,7 +83,6 @@ void ASA_PC::PCWaveStart()
 void ASA_PC::PCWaveClear(const FInfoWaveClear& s_info_wave_clear)
 {
 	_ui_main->UIMainWaveClear(s_info_wave_clear);
-	PCUIUpdateWaveRound(s_info_wave_clear.clear_wave_round);
 }
 
 void ASA_PC::PCWaveGameOver()
@@ -170,8 +162,8 @@ void ASA_PC::PCUIUpdateUpgradeCost(const EUpgradeStat e_upgrade_cost, const int3
 {
 	switch (e_upgrade_cost)
 	{
-	case EUpgradeStat::DMG_1:
-		_ui_info_player.SetUpgradeCostDMG1(i_value);
+	case EUpgradeStat::DMG:
+		_ui_info_player.SetUpgradeCostDMG(i_value);
 		_ui_main->UIMainUpdateUgradeCostDMG1(i_value);
 		break;
 	case EUpgradeStat::AS:

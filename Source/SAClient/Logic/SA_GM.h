@@ -107,9 +107,9 @@ public:
 	const int32 GetWaveRoundCurrent() const;
 private:
 	UPROPERTY()
-		EWaveStatus _wave_status = EWaveStatus::TITLE;
+		FInfoWave _info_wave;
 	UPROPERTY()
-		int32 _wave_round_current = 1;
+		EWaveStatus _wave_status = EWaveStatus::TITLE;
 	//웨이브중 몬스터가 생성된 횟수입니다
 	UPROPERTY()
 		int32 _count_spawn_monster_current = 0;

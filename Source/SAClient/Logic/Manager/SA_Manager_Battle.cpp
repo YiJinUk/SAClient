@@ -52,6 +52,7 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 			i_obtain = 1;
 
 		_sagm->UpdateInfoWaveClearByGem(i_obtain);
+		_pc->PCKillMonster(monster->GetActorLocation(), i_obtain);
 	}
 	else
 	{
@@ -64,7 +65,6 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 
 	/*발사체에게 공격에 성공했다고 알립니다*/
 	proj->PROJAttackSuccess(monster->GetInfoMonster().id);
-	_pc->PCKillMonster(monster->GetActorLocation(), i_obtain);
 
 	return b_is_monster_death;
 }

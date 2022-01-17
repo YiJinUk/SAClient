@@ -38,7 +38,7 @@ public:
 	UPROPERTY()
 		int32 cost_as = 0;
 	UPROPERTY()
-		int8 cost_shot_num = 0;
+		int32 cost_shot_num = 0;
 	UPROPERTY()
 		int8 cost_penetrate = 0;
 

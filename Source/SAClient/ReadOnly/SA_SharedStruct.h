@@ -53,7 +53,7 @@ enum class EPlayerStat : uint8
 UENUM()
 enum class EUpgradeStat : uint8
 {
-	DMG_1,
+	DMG,
 	AS,
 	SHOT_NUMBER,
 	PENETRATE,
@@ -115,6 +115,10 @@ protected:
 		int16 _dest_radius = 100;
 	UPROPERTY(EditAnywhere, Category = "Wave")
 		FVector _treasure_chest_spawn_loc = FVector(-1500.f, 0.f, 0.f);
+	UPROPERTY(EditAnywhere, Category = "Wave")
+		int32 _hp_rate_phase = 0;
+	UPROPERTY(EditAnywhere, Category = "Wave")
+		int32 _add_monster_move_speed = 1;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int16 _proj_speed = 1000;
@@ -145,17 +149,24 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Monster")
 		int8 _monster_clone_loc_y = 100;
+	UPROPERTY(EditAnywhere, Category = "Monster")
+		int32 _monster_base_move_speed = 200;
+
+	UPROPERTY(EditAnywhere, Category = "UpgradeUnit")
+		int32 _upgrade_unit_dmg = 1;
+	UPROPERTY(EditAnywhere, Category = "UpgradeUnit")
+		int32 _upgrade_unit_as = 6;
 
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
-		int32 _upgrade_cost_dmg_1 = 1;
-	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
-		int32 _upgrade_cost_dmg_10 = 10;
+		int32 _upgrade_cost_dmg = 1;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_as = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_shot_num = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_penetrate = 10;
+	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+		float _upgrade_dmg_cost_increase = 1.1;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_as_cost_increase = 1.5;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
@@ -170,6 +181,8 @@ protected:
 public:
 	FORCEINLINE const int16 GetDestRadius() const { return _dest_radius; }
 	FORCEINLINE const FVector GetTreasureChestSpawnLoc() const { return _treasure_chest_spawn_loc; }
+	FORCEINLINE const int32 GetHPRatePhase() const { return _hp_rate_phase; }
+	FORCEINLINE const int32 GetAddMonsterMoveSpeed() const { return _add_monster_move_speed; }
 
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
@@ -186,12 +199,16 @@ public:
 	FORCEINLINE const int32 GetPlayerBasePenetrate() const { return _player_base_penetrate; }
 
 	FORCEINLINE const int8 GetMonsterCloneLocY() const { return _monster_clone_loc_y; }
+	FORCEINLINE const int32 GetMonsterBaseMoveSpeed() const { return _monster_base_move_speed; }
 
-	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
-	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
+	FORCEINLINE const int32 GetUpgradeUnitDMG() const { return _upgrade_unit_dmg; }
+	FORCEINLINE const int32 GetUpgradeUnitAS() const { return _upgrade_unit_as; }
+
+	FORCEINLINE const int32 GetUpgradeCostDMG() const { return _upgrade_cost_dmg; }
 	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
 	FORCEINLINE const int32 GetUpgradeCostShotNum() const { return _upgrade_cost_shot_num; }
 	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
+	FORCEINLINE const float GetUpgradeDMGCostIncrease() const { return _upgrade_dmg_cost_increase; }
 	FORCEINLINE const float GetUpgradeASCostIncrease() const { return _upgrade_as_cost_increase; }
 	FORCEINLINE const float GetUpgradeShotNumCostIncrease() const { return _upgrade_shot_num_cost_increase; }
 	FORCEINLINE const float GetUpgradePenetrateCostIncrease() const { return _upgrade_penetrate_cost_increase; }
@@ -239,13 +256,10 @@ protected:
 		FString _code_monster = "0";
 	UPROPERTY(EditAnywhere, Category = "General")
 		int32 _spawn_count = 0;
-	UPROPERTY(EditAnywhere, Category = "General")
-		int32 _mob_hp = 0;
 
 public:
 	FORCEINLINE const FString& GetCodeMonster() const { return _code_monster; }
 	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
-	FORCEINLINE const int32 GetMonsterHP() const { return _mob_hp; }
 
 	/*게임모드에서 복제한 웨이브데이터에서만 호출합니다*/
 	FORCEINLINE void SubSpawnCount() { --_spawn_count; }
@@ -263,10 +277,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "General")
 		int16 _spawn_tick_interval = 12;
 	UPROPERTY(EditAnywhere, Category = "General")
+		int32 _mob_hp = 0;
+	UPROPERTY(EditAnywhere, Category = "General")
 		TArray<FDataWaveMonster> _spawn_monsters;
 public:
 	FORCEINLINE const int16 GetMaxSpawnOn1Tick() const { return _max_spawn_on_1_tick; }
 	FORCEINLINE const int16 GetSpawnTickInterval() const { return _spawn_tick_interval; }
+	FORCEINLINE const int32 GetMonsterHP() const { return _mob_hp; }
 	FORCEINLINE TArray<FDataWaveMonster>& GetSpawnMonsters() { return _spawn_monsters; }
 };
 
@@ -306,9 +323,7 @@ private:
 		int8 _penetrate = 0;
 
 	UPROPERTY()
-		int32 _upgrade_cost_dmg_1 = 1;
-	UPROPERTY()
-		int32 _upgrade_cost_dmg_10 = 1;
+		int32 _upgrade_cost_dmg = 1;
 	UPROPERTY()
 		int32 _upgrade_cost_as = 1;
 	UPROPERTY()
@@ -323,8 +338,7 @@ public:
 	FORCEINLINE const int8 GetShotNumber() const { return _shot_number; }
 	FORCEINLINE const int8 GetPenetrate() const { return _penetrate; }
 
-	FORCEINLINE const int32 GetUpgradeCostDMG1() const { return _upgrade_cost_dmg_1; }
-	FORCEINLINE const int32 GetUpgradeCostDMG10() const { return _upgrade_cost_dmg_10; }
+	FORCEINLINE const int32 GetUpgradeCostDMG() const { return _upgrade_cost_dmg; }
 	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
 	FORCEINLINE const int32 GetUpgradeCostShotNumber() const { return _upgrade_cost_shot_num; }
 	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
@@ -336,8 +350,7 @@ public:
 	FORCEINLINE void SetShotNumber(const int8 i_shot_number) { _shot_number = i_shot_number; }
 	FORCEINLINE void SetPenetrate(const int8 i_penetrate) { _penetrate = i_penetrate; }
 
-	FORCEINLINE void SetUpgradeCostDMG1(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_1 = i_upgrade_cost_dmg; }
-	FORCEINLINE void SetUpgradeCostDMG10(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg_10 = i_upgrade_cost_dmg; }
+	FORCEINLINE void SetUpgradeCostDMG(const int32 i_upgrade_cost_dmg) { _upgrade_cost_dmg = i_upgrade_cost_dmg; }
 	FORCEINLINE void SetUpgradeCostAS(const int32 i_upgrade_cost_as) { _upgrade_cost_as = i_upgrade_cost_as; }
 	FORCEINLINE void SetUpgradeCostShotNumber(const int32 i_upgrade_cost_shot_number) { _upgrade_cost_shot_num = i_upgrade_cost_shot_number; }
 	FORCEINLINE void SetUpgradeCostPenetrate(const int32 i_upgrade_cost_penetrate) { _upgrade_cost_penetrate = i_upgrade_cost_penetrate; }
@@ -454,6 +467,42 @@ public:
 
 	UPROPERTY()
 		int8 penetrate_current = 0;
+};
+
+USTRUCT()
+struct FInfoWave
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		int32 wave_round = 1;
+	UPROPERTY()
+		int32 wave_phase = 0;
+	UPROPERTY()
+		int32 monster_hp = 0;
+	UPROPERTY()
+		int32 monster_split_hp = 0;
+	UPROPERTY()
+		int32 monster_move_speed = 0;
+
+	UPROPERTY()
+		int32 monster_spawn_count = 0;
+	UPROPERTY()
+		int32 monster_split_spawn_count = 0;
+
+public:
+	void InitStruct()
+	{
+		wave_round = 1;
+		wave_phase = 0;
+		monster_hp = 0;
+		monster_split_hp = 0;
+		monster_move_speed = 0;
+
+		monster_spawn_count = 0;
+		monster_split_spawn_count = 0;
+	}
 };
 
 USTRUCT()

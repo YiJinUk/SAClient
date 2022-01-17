@@ -51,7 +51,6 @@ void USA_UI_Main::UIPlayerUpdateCheck(const FInfoPlayerCharacter& s_info_player_
 {
 	if (s_info_player_new.hp != s_info_player_old.hp)
 	{
-		_game->SetHP(s_info_player_new.hp);
 		s_info_player_old.hp = s_info_player_new.hp;
 	}
 }
@@ -97,12 +96,10 @@ void USA_UI_Main::UIMainUpdatePlayerGem(const int32 i_gem_update)
 void USA_UI_Main::UIMainUpdatePlayerDMG(const int32 i_dmg_update)
 {
 	_title->UITitleUpdatePlayerDMG(i_dmg_update);
-	_game->UIGameUpdatePlayerDMG(i_dmg_update);
 }
 void USA_UI_Main::UIMainUpdatePlayerAS(const int32 i_as_update)
 {
 	_title->UITitleUpdatePlayerAS(i_as_update);
-	_game->UIGameUpdatePlayerAS(i_as_update);
 }
 void USA_UI_Main::UIMainUpdatePlayerShotNum(const int8 i_shot_num_update)
 {

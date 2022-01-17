@@ -35,12 +35,12 @@ void ASA_GM::DebugInitPlayer()
 	_info_player.SetShotNumber(_data_game_cache->GetPlayerBaseShotNum());
 	_info_player.SetPenetrate(_data_game_cache->GetPlayerBasePenetrate());
 
-	_info_player.SetUpgradeCostDMG1(_data_game_cache->GetUpgradeCostDMG1());
+	_info_player.SetUpgradeCostDMG(_data_game_cache->GetUpgradeCostDMG());
 	_info_player.SetUpgradeCostAS(_data_game_cache->GetUpgradeCostAS());
 	_info_player.SetUpgradeCostShotNumber(_data_game_cache->GetUpgradeCostShotNum());
 	_info_player.SetUpgradeCostPenetrate(_data_game_cache->GetUpgradeCostPenetrate());
 
-	_wave_round_current = 1;
+	_info_wave.InitStruct();
 
 	InitInfoPlayerChr();
 
@@ -138,13 +138,11 @@ void ASA_GM::GMInit()
 	/*배경음악 재생*/
 	_manager_sfx->SFXStart(ESFXType::BACKGROUND);
 
+	/*웨이브정보를 초기화합니다*/
+	_info_wave.InitStruct();
+
 	/*플레이어의 세이브데이터를 불러옵니다*/
 	GameLoad();
-	//_info_player.SetGold(10);
-	//_info_player.SetDMG(1);
-	//_info_player.SetAS(60);
-	//_info_player.SetShotNumber(1);
-	//_info_player.SetPenetrate(1);
 
 	/*플레이어를 초기화합니다*/
 	_pc->PCInit(this, _info_player_chr);
@@ -208,26 +206,31 @@ void ASA_GM::TickSpawnMonster()
 {
 	if (_tick % _data_wave_current.GetSpawnTickInterval() == 0)
 	{
-		const int16 i_max_spawn_on_1_tick = _data_wave_current.GetMaxSpawnOn1Tick();
-		TArray<FDataWaveMonster>& arr_data_spawn_monster = _data_wave_current.GetSpawnMonsters();
 		ASA_SpawnPoint* spawn_point_rnd = nullptr;
 		ASA_Monster* spawn_monster = nullptr;
-		for (int16 i = 0; i < i_max_spawn_on_1_tick; ++i)
-		{
-			for (FDataWaveMonster& s_data_spawn_monster : arr_data_spawn_monster)
-			{
-				if (s_data_spawn_monster.GetSpawnCount() <= 0) continue;
 
-				/*생성 성공*/
-				s_data_spawn_monster.SubSpawnCount();
-				spawn_point_rnd = GetRandomSpawnPoint();
-				spawn_monster = _manager_pool->PoolGetMonsterByCode(s_data_spawn_monster.GetCodeMonster());
-				spawn_monster->MOBInit(GetNewId(), s_data_spawn_monster.GetMonsterHP(), spawn_point_rnd);
-				_spawn_monsters.Add(spawn_monster);
-				++_count_spawn_monster_current;
-				break;
-			}
+		if (_info_wave.monster_spawn_count >= 1)
+		{
+			spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00001");
+			spawn_point_rnd = GetRandomSpawnPoint();
+			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_hp, _info_wave.monster_move_speed, spawn_point_rnd);
+			--_info_wave.monster_spawn_count;
 		}
+		else if(_info_wave.monster_split_spawn_count >= 1)
+		{
+			spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00002");
+			spawn_point_rnd = GetRandomSpawnPoint();
+			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_split_hp, _info_wave.monster_move_speed, spawn_point_rnd);
+			--_info_wave.monster_split_spawn_count;
+		}
+		else
+		{
+			/*소환할게 없음*/
+			return;
+		}
+		
+		_spawn_monsters.Add(spawn_monster);
+		++_count_spawn_monster_current;
 	}
 }
 
@@ -239,7 +242,6 @@ void ASA_GM::TickCheckShootPROJ()
 		/*발사*/
 		_info_player_chr.as_wait = 0;
 		PlayAnimAttack();
-		//ShootPROJ();
 	}
 }
 
@@ -257,15 +259,8 @@ void ASA_GM::TickMoveMonster(const float f_delta_time)
 		if (USA_FunctionLibrary::GetDistanceByV3(spawn_monster->GetActorLocation(), _player_loc) <= _data_game_cache->GetDestRadius())
 		{
 			//Arrive!
-			if (spawn_monster->GetInfoMonster().is_treasure_chest)
-			{
-				_is_death_treasure_chest = true;
-			}
-			else
-			{
-				--_info_player_chr.hp;
-			}
-			
+			--_info_player_chr.hp;
+
 			_manager_pool->PoolInMonster(spawn_monster);
 			_spawn_monsters.RemoveAt(i);
 		}
@@ -344,14 +339,14 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 		{
 			/*Spawn TreasureChest*/
 			int32 i_hp_treasure_chest = 0;
-			FDataWave* arr_data_wave_monster = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+			FDataWave* arr_data_wave_monster = _sagi->FindDataWaveByWaveRound(_info_wave.wave_round);
 			for (const FDataWaveMonster& s_data_wave_monster : arr_data_wave_monster->GetSpawnMonsters())
 			{
-				i_hp_treasure_chest += s_data_wave_monster.GetMonsterHP() * s_data_wave_monster.GetSpawnCount();
+				i_hp_treasure_chest += _info_wave.monster_hp * s_data_wave_monster.GetSpawnCount();
 			}
-
+			i_hp_treasure_chest *= 0.5f;
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
-			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _wave_round_current * 5, _data_game_cache->GetTreasureChestSpawnLoc());
+			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _info_wave.wave_round * 5, _data_game_cache->GetTreasureChestSpawnLoc());
 			_spawn_monsters.Add(spawn_treasure_chest);
 		}
 	}
@@ -378,6 +373,7 @@ void ASA_GM::TickCheckWaveEnd()
 
 void ASA_GM::ReturnTitle()
 {
+	_pc->PCUIUpdateWaveRound(_info_wave.wave_round);
 	PoolInAllSpawnedMonsters();
 	PoolInAllSpawnedPROJs();
 
@@ -393,17 +389,18 @@ void ASA_GM::WaveStart()
 	_count_spawn_monster_max = 0;
 	_is_death_treasure_chest = false;
 	_info_wave_clear.InitStruct();
-	_info_wave_clear.clear_wave_round = _wave_round_current;
+	_info_wave_clear.clear_wave_round = _info_wave.wave_round;
 
 	/*해당 웨이브에서 생성되는 몬스터정보를 가져옵니다*/
-	FDataWave* s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+	FDataWave* s_data_wave = _sagi->FindDataWaveByWaveRound(_info_wave.wave_round);
 	if(s_data_wave)
 		_data_wave_current = *s_data_wave;
 	else
 	{
 		//Err 시작할 웨이브데이터가 없습니다. 1웨이브로 돌아갑니다
-		_wave_round_current = 1;
-		s_data_wave = _sagi->FindDataWaveByWaveRound(_wave_round_current);
+		_info_wave.wave_round = 1;
+		++_info_wave.wave_phase;
+		s_data_wave = _sagi->FindDataWaveByWaveRound(_info_wave.wave_round);
 		if (s_data_wave)
 			_data_wave_current = *s_data_wave;
 	}
@@ -415,6 +412,16 @@ void ASA_GM::WaveStart()
 			_count_spawn_monster_max += s_data_spawn_monster.GetSpawnCount();
 		}
 	}
+
+	/*해당 웨이브에서 나오는 몬스터의 체력과 이속을 미리 구합니다*/
+	_info_wave.monster_hp = (_data_wave_current.GetMonsterHP() + (_data_wave_current.GetMonsterHP() * _info_wave.wave_phase * 3)) * 2;
+	_info_wave.monster_split_hp = _info_wave.monster_hp * 0.7f;
+	_info_wave.monster_move_speed = _data_game_cache->GetMonsterBaseMoveSpeed() + _info_wave.wave_round;
+
+	/*분열 몬스터의 생성갯수는 웨이브맞는 비율로 정해지기 때문에 미리 계산합니다*/
+	_count_spawn_monster_max *= 2;
+	_info_wave.monster_split_spawn_count = _count_spawn_monster_max * ((float)_info_wave.wave_round * 0.01f);
+	_info_wave.monster_spawn_count = _count_spawn_monster_max - _info_wave.monster_split_spawn_count;
 
 	//세이브
 	GameSave();
@@ -429,7 +436,7 @@ void ASA_GM::WaveStart()
 void ASA_GM::WaveClear()
 {
 	SetWaveStatus(EWaveStatus::CLEAR);
-	++_wave_round_current;
+	++_info_wave.wave_round;
 	_pc->PCWaveClear(_info_wave_clear);
 
 	//세이브
@@ -497,7 +504,7 @@ void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
 		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode("MOB00001");
 		if (i == 1)
 			v_loc_spawn_new.Y = -v_loc_spawn_new.Y;
-		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetInfoMonster().hp_max * 0.5, v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
+		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetInfoMonster().hp_max, v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
 		_spawn_monsters.Add(spawn_monster_new);
 	}
 }
@@ -551,14 +558,15 @@ void ASA_GM::SetLanguage(const FString& str_code_lang)
 
 void ASA_GM::UpgradeDMG()
 {
-	if (_info_player.GetGem() < _data_game_cache->GetUpgradeCostDMG1())
+	if (_info_player.GetGem() < _data_game_cache->GetUpgradeCostDMG())
 	{
 		return; // 소지금 부족
 	}
 
 	/*구매가능*/
-	PlayerChangeStat(EPlayerStat::GEM, _data_game_cache->GetUpgradeCostDMG1(), false);
-	PlayerChangeStat(EPlayerStat::DMG, 10, true);
+	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostDMG(), false);
+	PlayerChangeStat(EPlayerStat::DMG, _data_game_cache->GetUpgradeUnitDMG(), true);
+	PlayerIncreaseUpgradeCost(EUpgradeStat::DMG);
 }
 void ASA_GM::UpgradeAS()
 {
@@ -569,7 +577,7 @@ void ASA_GM::UpgradeAS()
 
 	/*구매가능*/
 	PlayerChangeStat(EPlayerStat::GEM, _info_player.GetUpgradeCostAS(), false);
-	PlayerChangeStat(EPlayerStat::AS, 6, true);
+	PlayerChangeStat(EPlayerStat::AS, _data_game_cache->GetUpgradeUnitAS(), true);
 	PlayerIncreaseUpgradeCost(EUpgradeStat::AS);
 }
 void ASA_GM::UpgradeShotNum()
@@ -654,6 +662,10 @@ void ASA_GM::PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat)
 {
 	switch (e_upgrade_stat)
 	{
+	case EUpgradeStat::DMG:
+		_info_player.SetUpgradeCostDMG(_info_player.GetUpgradeCostDMG() * _data_game_cache->GetUpgradeDMGCostIncrease());
+		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostDMG());
+		break;
 	case EUpgradeStat::AS:
 		_info_player.SetUpgradeCostAS(_info_player.GetUpgradeCostAS() * _data_game_cache->GetUpgradeASCostIncrease());
 		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostAS());
@@ -674,7 +686,7 @@ void ASA_GM::PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat)
 
 void ASA_GM::GameSave()
 {
-	_manager_saveload->SaveStart(_info_player, _wave_round_current);
+	_manager_saveload->SaveStart(_info_player, _info_wave.wave_round);
 }
 void ASA_GM::GameSaveOption()
 {
@@ -682,7 +694,7 @@ void ASA_GM::GameSaveOption()
 }
 void ASA_GM::GameLoad()
 {
-	_manager_saveload->ReadStart(_info_player, _wave_round_current, _info_option);
+	_manager_saveload->ReadStart(_info_player, _info_wave.wave_round, _info_option);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }
@@ -690,4 +702,4 @@ ASA_SpawnPoint* ASA_GM::GetRandomSpawnPoint() { return _mob_spawn_points[UKismet
 const FInfoPlayerCharacter& ASA_GM::GetInfoPlayerChr() const { return _info_player_chr; }
 const FInfoPlayer& ASA_GM::GetInfoPlayer() const { return _info_player; }
 void ASA_GM::SetWaveStatus(const EWaveStatus e_wave_status) { _wave_status = e_wave_status; }
-const int32 ASA_GM::GetWaveRoundCurrent() const { return _wave_round_current; }
+const int32 ASA_GM::GetWaveRoundCurrent() const { return _info_wave.wave_round; }

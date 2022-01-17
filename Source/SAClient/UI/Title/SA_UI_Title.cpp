@@ -30,7 +30,7 @@ void USA_UI_Title::UITitleUpdateButtons()
 {
 	const FInfoPlayer& s_ui_info_player = _pc->GetUIInfoPlayer();
 
-	if (s_ui_info_player.GetUpgradeCostDMG1() <= s_ui_info_player.GetGem())
+	if (s_ui_info_player.GetUpgradeCostDMG() <= s_ui_info_player.GetGem())
 		_dmg_upgrade_cost1_btn->SetIsEnabled(true);
 	else
 		_dmg_upgrade_cost1_btn->SetIsEnabled(false);
@@ -68,18 +68,15 @@ void USA_UI_Title::UITitleUpdateButtons()
 void USA_UI_Title::UITitleUpdatePlayerDMG(const int32 i_dmg_update)
 {
 	_dmg_upgrade->SetText(FText::AsNumber(i_dmg_update));
-	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdatePlayerAS(const int32 i_as_update)
 {
 	//_as_upgrade->SetText(FText::AsNumber(60.f / (float)i_as_update * 60.f));
 	_as_upgrade->SetText(FText::AsNumber(i_as_update / 60.f));
-	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdatePlayerShotNum(const int8 i_shot_num_update)
 {
 	_shot_num_upgrade->SetText(FText::AsNumber(i_shot_num_update));
-	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdatePlayerPenetrate(const int8 i_penetrate)
 {
@@ -88,6 +85,7 @@ void USA_UI_Title::UITitleUpdatePlayerPenetrate(const int8 i_penetrate)
 void USA_UI_Title::UITitleUpdateUpgradeCostDMG1(const int32 i_upgrade_cost_dmg_1)
 {
 	_cost_dmg_1->SetText(FText::AsNumber(i_upgrade_cost_dmg_1));
+	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostDMG10(const int32 i_upgrade_cost_dmg_10)
 {
@@ -96,10 +94,12 @@ void USA_UI_Title::UITitleUpdateUpgradeCostDMG10(const int32 i_upgrade_cost_dmg_
 void USA_UI_Title::UITitleUpdateUpgradeCostAS(const int32 i_upgrade_cost_as)
 {
 	_cost_as->SetText(FText::AsNumber(i_upgrade_cost_as));
+	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostShotNum(const int32 i_upgrade_cost_shot_num)
 {
 	_cost_shot_num->SetText(FText::AsNumber(i_upgrade_cost_shot_num));
+	UITitleUpdateButtons();
 }
 void USA_UI_Title::UITitleUpdateUpgradeCostPenetrate(const int32 i_upgrade_cost_penetrate)
 {
