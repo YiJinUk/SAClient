@@ -441,7 +441,7 @@ void ASA_GM::WaveStart()
 		_info_wave.monster_split_drop_gem = 1;
 
 	//ºº¿Ã∫Í
-	//GameSave();
+	GameSave();
 
 	InitInfoPlayerChr();
 
