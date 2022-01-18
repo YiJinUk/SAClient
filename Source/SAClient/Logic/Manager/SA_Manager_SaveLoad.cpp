@@ -82,6 +82,6 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, FInfoWave& s_in
 	else
 	{
 		s_info_option.is_sfx_on = true;
-		s_info_option.language = "ko_kr";
+		s_info_option.language = "en";
 	}
 }
