@@ -338,7 +338,7 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 		if (_info_wave.monster_spawn_count_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
 		{
 			/*Spawn TreasureChest*/
-			int32 i_hp_treasure_chest = _info_wave.monster_hp * _info_wave.monster_spawn_count_max;
+			int32 i_hp_treasure_chest = _info_wave.monster_hp * _info_wave.monster_spawn_count_max * 0.5f;
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
 			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _data_game_cache->GetTreasureChestSpawnLoc());
 			_spawn_monsters.Add(spawn_treasure_chest);
@@ -432,9 +432,13 @@ void ASA_GM::WaveStart()
 	_info_wave.monster_spawn_count = _info_wave.monster_spawn_count_max - _info_wave.monster_split_spawn_count;
 
 	/*몬스터 드랍 재화를 미리 계산합니다*/
-	_info_wave.monster_drop_gem = (float)_info_wave.monster_hp * 0.1f;
-	_info_wave.monster_split_drop_gem = (float)_info_wave.monster_split_hp * 0.1f;
+	_info_wave.monster_drop_gem = (float)_info_wave.monster_hp * 0.2f;
+	_info_wave.monster_split_drop_gem = (float)_info_wave.monster_split_hp * 0.2f;
 	_info_wave.treasure_chest_drop_gem = _info_wave.wave_round * 5;
+	if (_info_wave.monster_drop_gem <= 0)
+		_info_wave.monster_drop_gem = 1;
+	if (_info_wave.monster_split_drop_gem <= 0)
+		_info_wave.monster_split_drop_gem = 1;
 
 	//세이브
 	GameSave();
@@ -509,14 +513,16 @@ void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
 	//분열가능한 몬스터인지 확인
 	if (monster_origin->GetInfoMonster().monster_type != EMonsterType::MONSTER_SPLIT) return;
 
-	const FVector& v_loc_spawn_origin = monster_origin->GetActorLocation();
-	FVector v_loc_spawn_new = FVector(v_loc_spawn_origin.X, v_loc_spawn_origin.Y + _data_game_cache->GetMonsterCloneLocY(), 0.f);
+	FVector v_loc_spawn_origin = monster_origin->GetActorLocation();
+	FVector v_loc_spawn_new = FVector(v_loc_spawn_origin.X, v_loc_spawn_origin.Y, 0.f);
 	
 	for (int32 i = 0; i < 2; ++i)
 	{
 		ASA_Monster* spawn_monster_new = _manager_pool->PoolGetMonsterByCode("MOB00001");
-		if (i == 1)
-			v_loc_spawn_new.Y = -v_loc_spawn_new.Y;
+		if(i == 0)
+			v_loc_spawn_new.Y = v_loc_spawn_origin.Y + _data_game_cache->GetMonsterCloneLocY();
+		else
+			v_loc_spawn_new.Y = v_loc_spawn_origin.Y - _data_game_cache->GetMonsterCloneLocY();
 		spawn_monster_new->MOBInitClone(GetNewId(), monster_origin->GetInfoMonster().hp_max, v_loc_spawn_new, USA_FunctionLibrary::GetVelocityByV3(v_loc_spawn_new, _player_loc), FRotator(0.f, USA_FunctionLibrary::GetLookRotatorYawByV3(v_loc_spawn_new, _player_loc), 0.f));
 		_spawn_monsters.Add(spawn_monster_new);
 	}
@@ -723,7 +729,7 @@ void ASA_GM::MonsterDeath(ASA_Monster* monster_death)
 
 void ASA_GM::GameSave()
 {
-	_manager_saveload->SaveStart(_info_player, _info_wave.wave_round, _info_wave.monster_spawn_count_max);
+	_manager_saveload->SaveStart(_info_player, _info_wave);
 }
 void ASA_GM::GameSaveOption()
 {
@@ -731,7 +737,7 @@ void ASA_GM::GameSaveOption()
 }
 void ASA_GM::GameLoad()
 {
-	_manager_saveload->ReadStart(_info_player, _info_wave.wave_round, _info_wave.monster_spawn_count_max, _info_option);
+	_manager_saveload->ReadStart(_info_player, _info_wave, _info_option);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

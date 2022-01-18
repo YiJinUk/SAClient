@@ -8,12 +8,12 @@
 
 #include "Kismet/GameplayStatics.h"
 
-void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round, const int32 i_wave_monster_spawn_count_max)
+void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const FInfoWave& s_info_wave)
 {
 	USA_SG_Game* save_file = Cast<USA_SG_Game>(UGameplayStatics::CreateSaveGameObject(USA_SG_Game::StaticClass()));
 	if (!save_file) return;
 
-	save_file->SGSaveData(s_info_player, i_wave_round, i_wave_monster_spawn_count_max);
+	save_file->SGSaveData(s_info_player, s_info_wave);
 
 	UGameplayStatics::SaveGameToSlot(save_file, "SG_Game", 0);
 }
@@ -27,7 +27,7 @@ void ASA_Manager_SaveLoad::SaveOptionStart(const FInfoOption& s_info_option)
 	UGameplayStatics::SaveGameToSlot(save_file, "SG_Option", 0);
 }
 
-void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, int32& i_wave_monster_spawn_count_max, FInfoOption& s_info_option)
+void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, FInfoWave& s_info_wave, FInfoOption& s_info_option)
 {
 	USA_SG_Game* save_file_game = Cast<USA_SG_Game>(UGameplayStatics::LoadGameFromSlot("SG_Game", 0));
 	USA_SG_Option* save_file_option = Cast<USA_SG_Option>(UGameplayStatics::LoadGameFromSlot("SG_Option", 0));
@@ -45,8 +45,10 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetUpgradeCostShotNumber(save_file_game->cost_shot_num);
 		s_info_player.SetUpgradeCostPenetrate(save_file_game->cost_penetrate);
 
-		i_wave_round = save_file_game->wave_round;
-		i_wave_monster_spawn_count_max = save_file_game->wave_monster_spawn_count_max;
+		s_info_wave.wave_round = save_file_game->wave_round;
+		s_info_wave.monster_spawn_count_max = save_file_game->wave_monster_spawn_count_max;
+		s_info_wave.monster_hp = save_file_game->monster_hp;
+		s_info_wave.monster_split_hp = save_file_game->monster_split_hp;
 	}
 	else
 	{
@@ -66,8 +68,10 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetUpgradeCostShotNumber(s_data_game->GetUpgradeCostShotNum());
 		s_info_player.SetUpgradeCostPenetrate(s_data_game->GetUpgradeCostPenetrate());
 
-		i_wave_round = 1;
-		i_wave_monster_spawn_count_max = 0;
+		s_info_wave.wave_round = 1;
+		s_info_wave.monster_spawn_count_max = 0;
+		s_info_wave.monster_hp = 0;
+		s_info_wave.monster_split_hp = 0;
 	}
 
 	if (save_file_option)

@@ -267,9 +267,6 @@ struct FDataWave
 {
 	GENERATED_BODY()
 protected:
-	//한 틱에 생성될 수 있는 최대 값 입니다
-	UPROPERTY(EditAnywhere, Category = "General")
-		int16 _max_spawn_on_1_tick = 1;
 	//해당 틱 마다 몬스터를 생성합니다
 	UPROPERTY(EditAnywhere, Category = "General")
 		int16 _spawn_tick_interval = 12;
@@ -280,7 +277,6 @@ protected:
 	//UPROPERTY(EditAnywhere, Category = "General")
 		//TArray<FDataWaveMonster> _spawn_monsters;
 public:
-	FORCEINLINE const int16 GetMaxSpawnOn1Tick() const { return _max_spawn_on_1_tick; }
 	FORCEINLINE const int16 GetSpawnTickInterval() const { return _spawn_tick_interval; }
 	FORCEINLINE const int32 GetMonsterHP() const { return _mob_hp; }
 	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }

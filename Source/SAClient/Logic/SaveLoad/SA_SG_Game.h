@@ -16,7 +16,7 @@ class SACLIENT_API USA_SG_Game : public USaveGame
 	GENERATED_BODY()
 	
 public:
-	void SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wave_round, const int32 i_wave_monster_spawn_count_max);
+	void SGSaveData(const FInfoPlayer& s_info_player, const FInfoWave& s_info_wave);
 
 public:
 	UPROPERTY()
@@ -44,4 +44,8 @@ public:
 		int32 wave_round = 1;
 	UPROPERTY()
 		int32 wave_monster_spawn_count_max = 0;
+	UPROPERTY()
+		int32 monster_hp = 0;
+	UPROPERTY()
+		int32 monster_split_hp = 0;
 };
