@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: NewTarget\n"
-"POT-Creation-Date: 2022-01-12 12:34\n"
-"PO-Revision-Date: 2022-01-12 21:35+0900\n"
+"POT-Creation-Date: 2022-01-18 22:53\n"
+"PO-Revision-Date: 2022-01-19 07:53+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -13,6 +13,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
+
+#. Key:	0AB63A654A50BBC49137EDA9C11DAE7F
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_81.Text
+#: /Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_81.Text
+msgctxt ",0AB63A654A50BBC49137EDA9C11DAE7F"
+msgid "정말 초기화를 하시겠습니까?"
+msgstr ""
+"Are you sure you want to do\n"
+"game reset?"
 
 #. Key:	0DA9A93A49682A95A8AA7BB50AA52DD1
 #. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree._cost_dmg_1.Text
@@ -29,25 +38,32 @@ msgid "9"
 msgstr "9"
 
 #. Key:	11C486E54AA2976D03B8E7BF0FA51F90
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_41.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_41.Text
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_1.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_1.Text
 msgctxt ",11C486E54AA2976D03B8E7BF0FA51F90"
 msgid "+"
 msgstr "+"
 
 #. Key:	153A74384278F0AE07A65A90DF1CAD4F
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gold.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gold.Text
+#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gem.Text
+#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree._obtain_gem.Text
 msgctxt ",153A74384278F0AE07A65A90DF1CAD4F"
 msgid "99"
 msgstr "99"
 
 #. Key:	280341104510394AB774639315537BE2
-#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gold.Text
-#: /Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gold.Text
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gem.Text
+#: /Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._gem.Text
 msgctxt ",280341104510394AB774639315537BE2"
-msgid "256"
-msgstr "256"
+msgid "12345"
+msgstr "12345"
+
+#. Key:	3CB924DC43D75F6FD21E3AA5A24932E0
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_224.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_224.Text
+msgctxt ",3CB924DC43D75F6FD21E3AA5A24932E0"
+msgid "최대"
+msgstr "Max"
 
 #. Key:	3DAE0A3E43D19734F528C293E235A037
 #. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Main.SAWB_UI_Main_C:WidgetTree._wave_round_1.Text
@@ -70,6 +86,13 @@ msgctxt ",44D1E7B1458224AEF05E83B4E0EEF86F"
 msgid "한국어"
 msgstr "한국어"
 
+#. Key:	4E1C025C4F37D893F4F7AA89619D4EA7
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Option.SAWB_UI_Option_C:WidgetTree.TextBlock_3.Text
+#: /Game/SAContent/UI/SAWB_UI_Option.SAWB_UI_Option_C:WidgetTree.TextBlock_3.Text
+msgctxt ",4E1C025C4F37D893F4F7AA89619D4EA7"
+msgid "게임 초기화"
+msgstr "GameReset"
+
 #. Key:	4FC9F170467E474EC1DAF9B23BC03973
 #. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_GameOver.SAWB_UI_GameOver_C:WidgetTree.TextBlock_402.Text
 #: /Game/SAContent/UI/Game/SAWB_UI_GameOver.SAWB_UI_GameOver_C:WidgetTree.TextBlock_402.Text
@@ -77,26 +100,12 @@ msgctxt ",4FC9F170467E474EC1DAF9B23BC03973"
 msgid "돌아가기"
 msgstr "Return"
 
-#. Key:	59212CFE49F2768F570F069AE83A8439
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._as.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._as.Text
-msgctxt ",59212CFE49F2768F570F069AE83A8439"
-msgid "as"
-msgstr "as"
-
-#. Key:	5C1E523846956946CBEAAA991B0B5434
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_190.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_190.Text
-msgctxt ",5C1E523846956946CBEAAA991B0B5434"
-msgid "골드"
-msgstr "Gold"
-
-#. Key:	65E049234927816802808281D4B68721
-#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_2.Text
-#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_2.Text
-msgctxt ",65E049234927816802808281D4B68721"
-msgid "관통"
-msgstr "Penetrate"
+#. Key:	6D52C7A84F0249830C74D19707F6AD0C
+#. SourceLocation:	/Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_104.Text
+#: /Game/SAContent/UI/Title/SAWB_UI_Title.SAWB_UI_Title_C:WidgetTree.TextBlock_104.Text
+msgctxt ",6D52C7A84F0249830C74D19707F6AD0C"
+msgid "최대"
+msgstr "Max"
 
 #. Key:	748C165B4FC1493615CD26990069352B
 #. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_436.Text
@@ -133,6 +142,20 @@ msgctxt ",982DC8F4400C01A1C27072AA22FAE443"
 msgid "한국어"
 msgstr "한국어"
 
+#. Key:	A62E8A7B4BE1305C23125B92135864B5
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_99.Text
+#: /Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_99.Text
+msgctxt ",A62E8A7B4BE1305C23125B92135864B5"
+msgid "아니오"
+msgstr "No"
+
+#. Key:	C806664D42CB6806621C40951E523E91
+#. SourceLocation:	/Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_1.Text
+#: /Game/SAContent/UI/SAWB_UI_Option_Reset.SAWB_UI_Option_Reset_C:WidgetTree.TextBlock_1.Text
+msgctxt ",C806664D42CB6806621C40951E523E91"
+msgid "예"
+msgstr "Yes"
+
 #. Key:	CB0B54BB4285393040DDF3B9290FFFC4
 #. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_6.Text
 #: /Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_6.Text
@@ -160,20 +183,6 @@ msgstr "Damage"
 msgctxt ",E4930BFB4E083525C99CE6ACC32E2882"
 msgid "전투 시작"
 msgstr "Battle"
-
-#. Key:	E8E725E64390C2839F9FF9AFDB0E99F0
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._dmg.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._dmg.Text
-msgctxt ",E8E725E64390C2839F9FF9AFDB0E99F0"
-msgid "dmg"
-msgstr "dmg"
-
-#. Key:	EC61A493472B7B076D6A049DF36673FA
-#. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._hp.Text
-#: /Game/SAContent/UI/Game/SAWB_UI_Game.SAWB_UI_Game_C:WidgetTree._hp.Text
-msgctxt ",EC61A493472B7B076D6A049DF36673FA"
-msgid "hp"
-msgstr "hp"
 
 #. Key:	F5C0C19F47EAF3AB050AC1A4BAC30D39
 #. SourceLocation:	/Game/SAContent/UI/Game/SAWB_UI_WaveClear.SAWB_UI_WaveClear_C:WidgetTree.TextBlock_3.Text

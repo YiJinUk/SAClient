@@ -8,6 +8,7 @@
 
 class ASA_GM;
 class ASA_PC;
+class USA_UI_Option_Reset;
 class UButton;
 class UCheckBox;
 
@@ -36,6 +37,11 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 		UButton* _language_ko_deactive = nullptr;
 
+	UPROPERTY(Meta = (BindWidget))
+		USA_UI_Option_Reset* _option_reset = nullptr;
+	UPROPERTY(Meta = (BindWidget))
+		UButton* _reset = nullptr;
+
 	UPROPERTY()
 		ASA_GM* _sagm = nullptr;
 	UPROPERTY()
@@ -54,4 +60,7 @@ private:
 		void ClickedLanguage_En();
 	UFUNCTION()
 		void ClickedLanguage_Ko();
+
+	UFUNCTION()
+		void ClickedReset();
 };

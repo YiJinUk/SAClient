@@ -2,6 +2,7 @@
 
 
 #include "UI/SA_UI_Option.h"
+#include "SA_UI_Option_Reset.h"
 #include "Logic/SA_GM.h"
 #include "Logic/SA_PC.h"
 
@@ -19,11 +20,14 @@ void USA_UI_Option::NativeConstruct()
 	_background_btn->OnClicked.AddDynamic(this, &USA_UI_Option::ClickedBackGroundBTN);
 	_language_en_deactive->OnClicked.AddDynamic(this, &USA_UI_Option::ClickedLanguage_En);
 	_language_ko_deactive->OnClicked.AddDynamic(this, &USA_UI_Option::ClickedLanguage_Ko);
+	_reset->OnClicked.AddDynamic(this, &USA_UI_Option::ClickedReset);
 
 	_language_en_active->SetVisibility(ESlateVisibility::Hidden);
 	_language_en_deactive->SetVisibility(ESlateVisibility::Hidden);
 	_language_ko_active->SetVisibility(ESlateVisibility::Hidden);
 	_language_ko_deactive->SetVisibility(ESlateVisibility::Hidden);
+
+	_option_reset->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void USA_UI_Option::UIOptionSetCheckBoxSFX(const bool b_is_checked)
@@ -68,4 +72,9 @@ void USA_UI_Option::ClickedLanguage_En()
 void USA_UI_Option::ClickedLanguage_Ko()
 {
 	_sagm->SetLanguage("ko_kr");
+}
+
+void USA_UI_Option::ClickedReset()
+{
+	_option_reset->SetVisibility(ESlateVisibility::Visible);
 }
