@@ -59,15 +59,13 @@ enum class EUpgradeStat : uint8
 	PENETRATE,
 };
 
-//UENUM()
-//enum class EMonsterHP : uint8
-//{
-//	HP_NO,
-//	HP_2,
-//	HP_4,
-//	HP_8,
-//	HP_16,
-//};
+UENUM()
+enum class EMonsterType : uint8
+{
+	MONSTER_BASE,
+	MONSTER_SPLIT,
+	TREASURE_CHEST,
+};
 
 UENUM()
 enum class EVFXType : uint8
@@ -119,6 +117,8 @@ protected:
 		int32 _hp_rate_phase = 0;
 	UPROPERTY(EditAnywhere, Category = "Wave")
 		int32 _add_monster_move_speed = 1;
+	UPROPERTY(EditAnywhere, Category = "Wave")
+		int32 _add_monster_spawn_count = 3;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 		int16 _proj_speed = 1000;
@@ -165,8 +165,10 @@ protected:
 		int32 _upgrade_cost_shot_num = 10;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		int32 _upgrade_cost_penetrate = 10;
+	//UPROPERTY(EditAnywhere, Category = "UpgradeCost")
+	//	float _upgrade_dmg_cost_increase = 1.1;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
-		float _upgrade_dmg_cost_increase = 1.1;
+		int32 _upgrade_dmg_cost_increase = 5;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
 		float _upgrade_as_cost_increase = 1.5;
 	UPROPERTY(EditAnywhere, Category = "UpgradeCost")
@@ -183,6 +185,7 @@ public:
 	FORCEINLINE const FVector GetTreasureChestSpawnLoc() const { return _treasure_chest_spawn_loc; }
 	FORCEINLINE const int32 GetHPRatePhase() const { return _hp_rate_phase; }
 	FORCEINLINE const int32 GetAddMonsterMoveSpeed() const { return _add_monster_move_speed; }
+	FORCEINLINE const int32 GetAddMonsterSpawnCount() const { return _add_monster_spawn_count; }
 
 	FORCEINLINE const int16 GetPROJSpeed() const { return _proj_speed; }
 	FORCEINLINE const int16 GetPROJRange() const { return _proj_range; }
@@ -208,7 +211,7 @@ public:
 	FORCEINLINE const int32 GetUpgradeCostAS() const { return _upgrade_cost_as; }
 	FORCEINLINE const int32 GetUpgradeCostShotNum() const { return _upgrade_cost_shot_num; }
 	FORCEINLINE const int32 GetUpgradeCostPenetrate() const { return _upgrade_cost_penetrate; }
-	FORCEINLINE const float GetUpgradeDMGCostIncrease() const { return _upgrade_dmg_cost_increase; }
+	FORCEINLINE const int32 GetUpgradeDMGCostIncrease() const { return _upgrade_dmg_cost_increase; }
 	FORCEINLINE const float GetUpgradeASCostIncrease() const { return _upgrade_as_cost_increase; }
 	FORCEINLINE const float GetUpgradeShotNumCostIncrease() const { return _upgrade_shot_num_cost_increase; }
 	FORCEINLINE const float GetUpgradePenetrateCostIncrease() const { return _upgrade_penetrate_cost_increase; }
@@ -254,15 +257,9 @@ struct FDataWaveMonster
 protected:
 	UPROPERTY(EditAnywhere, Category = "General")
 		FString _code_monster = "0";
-	UPROPERTY(EditAnywhere, Category = "General")
-		int32 _spawn_count = 0;
 
 public:
 	FORCEINLINE const FString& GetCodeMonster() const { return _code_monster; }
-	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
-
-	/*게임모드에서 복제한 웨이브데이터에서만 호출합니다*/
-	FORCEINLINE void SubSpawnCount() { --_spawn_count; }
 };
 
 USTRUCT(BlueprintType)
@@ -279,12 +276,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "General")
 		int32 _mob_hp = 0;
 	UPROPERTY(EditAnywhere, Category = "General")
-		TArray<FDataWaveMonster> _spawn_monsters;
+		int32 _spawn_count = 0;
+	//UPROPERTY(EditAnywhere, Category = "General")
+		//TArray<FDataWaveMonster> _spawn_monsters;
 public:
 	FORCEINLINE const int16 GetMaxSpawnOn1Tick() const { return _max_spawn_on_1_tick; }
 	FORCEINLINE const int16 GetSpawnTickInterval() const { return _spawn_tick_interval; }
 	FORCEINLINE const int32 GetMonsterHP() const { return _mob_hp; }
-	FORCEINLINE TArray<FDataWaveMonster>& GetSpawnMonsters() { return _spawn_monsters; }
+	FORCEINLINE const int32 GetSpawnCount() const { return _spawn_count; }
+	//FORCEINLINE TArray<FDataWaveMonster>& GetSpawnMonsters() { return _spawn_monsters; }
 };
 
 USTRUCT(BlueprintType)
@@ -385,21 +385,12 @@ protected:
 		TSubclassOf<ASA_Monster> _class_monster;
 	UPROPERTY(EditAnywhere, Category = "General")
 		FString _code = "0";
-	//UPROPERTY(EditAnywhere, Category = "General")
-		//bool _is_treasure_chest = false;
-
-	UPROPERTY(EditAnywhere, Category = "Stat")
-		int16 _move_speed = 500;
-
-	UPROPERTY(EditAnywhere, Category = "Bonus")
-		int32 _bonus_gold = 1;
+	UPROPERTY(EditAnywhere, Category = "General")
+		EMonsterType _monster_type = EMonsterType::MONSTER_BASE;
 public:
 	FORCEINLINE const TSubclassOf<ASA_Monster>& GetClassMonster() const { return _class_monster; }
 	FORCEINLINE const FString& GetCode() const { return _code; }
-	//FORCEINLINE const bool GetisTreasureChest() const { return _is_treasure_chest; }
-
-	FORCEINLINE const int16 GetMoveSpeed() const { return _move_speed; }
-	FORCEINLINE const int32 GetBonusGold() const { return _bonus_gold; }
+	FORCEINLINE const EMonsterType GetMonsterType() const { return _monster_type; }
 };
 
 USTRUCT()
@@ -412,6 +403,8 @@ public:
 		int64 id = 0;
 	UPROPERTY()
 		FString code = "0";
+	UPROPERTY()
+		EMonsterType monster_type = EMonsterType::MONSTER_BASE;
 
 	UPROPERTY()
 		FVector velocity = FVector::ZeroVector;
@@ -419,22 +412,11 @@ public:
 		FRotator rot = FRotator::ZeroRotator;
 
 	UPROPERTY()
-		bool is_split = false;
-	UPROPERTY()
 		int32 mob_hp = 0;
 	UPROPERTY()
 		int32 hp = 0;
 	UPROPERTY()
 		int32 hp_max = 0;
-
-	UPROPERTY()
-		int16 move_speed = 0;
-
-	UPROPERTY()
-		int32 bonus_gold = 0;
-
-	UPROPERTY()
-		bool is_treasure_chest = false;
 };
 
 USTRUCT(BlueprintType)
@@ -487,9 +469,18 @@ public:
 		int32 monster_move_speed = 0;
 
 	UPROPERTY()
+		int32 monster_spawn_count_max = 0;
+	UPROPERTY()
 		int32 monster_spawn_count = 0;
 	UPROPERTY()
 		int32 monster_split_spawn_count = 0;
+
+	UPROPERTY()
+		int32 monster_drop_gem = 0;
+	UPROPERTY()
+		int32 monster_split_drop_gem = 0;
+	UPROPERTY()
+		int32 treasure_chest_drop_gem = 0;
 
 public:
 	void InitStruct()
@@ -500,8 +491,13 @@ public:
 		monster_split_hp = 0;
 		monster_move_speed = 0;
 
+		monster_spawn_count_max = 0;
 		monster_spawn_count = 0;
 		monster_split_spawn_count = 0;
+
+		monster_drop_gem = 0;
+		monster_split_drop_gem = 0;
+		treasure_chest_drop_gem = 0;
 	}
 };
 

@@ -213,14 +213,14 @@ void ASA_GM::TickSpawnMonster()
 		{
 			spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00001");
 			spawn_point_rnd = GetRandomSpawnPoint();
-			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_hp, _info_wave.monster_move_speed, spawn_point_rnd);
+			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_hp, spawn_point_rnd);
 			--_info_wave.monster_spawn_count;
 		}
 		else if(_info_wave.monster_split_spawn_count >= 1)
 		{
 			spawn_monster = _manager_pool->PoolGetMonsterByCode("MOB00002");
 			spawn_point_rnd = GetRandomSpawnPoint();
-			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_split_hp, _info_wave.monster_move_speed, spawn_point_rnd);
+			spawn_monster->MOBInit(GetNewId(), _info_wave.monster_split_hp, spawn_point_rnd);
 			--_info_wave.monster_split_spawn_count;
 		}
 		else
@@ -253,7 +253,7 @@ void ASA_GM::TickMoveMonster(const float f_delta_time)
 		spawn_monster = _spawn_monsters[i];
 
 		/*Move*/
-		spawn_monster->MOBMove(f_delta_time);
+		spawn_monster->MOBMove(f_delta_time, _info_wave.monster_move_speed);
 
 		/*Check Arrive*/
 		if (USA_FunctionLibrary::GetDistanceByV3(spawn_monster->GetActorLocation(), _player_loc) <= _data_game_cache->GetDestRadius())
@@ -304,7 +304,7 @@ void ASA_GM::TickMovePROJ(const float f_delta_time)
 				/*공격시도후 몬스터가 죽었다면 몬스터를 풀링합니다*/
 				if (_manager_battle->BattleCalcStart(spawn_proj, spawn_monster, _info_player_chr.GetDMGTotal()))
 				{
-					if (spawn_monster->GetInfoMonster().is_treasure_chest)
+					if (spawn_monster->GetInfoMonster().monster_type == EMonsterType::TREASURE_CHEST)
 					{
 						_is_death_treasure_chest = true;
 					}
@@ -335,18 +335,12 @@ void ASA_GM::TickCheckSpawnTreasuerChest()
 
 	if (_tick % 60 == 0)
 	{
-		if (_count_spawn_monster_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
+		if (_info_wave.monster_spawn_count_max <= _count_spawn_monster_current && _spawn_monsters.Num() <= 0)
 		{
 			/*Spawn TreasureChest*/
-			int32 i_hp_treasure_chest = 0;
-			FDataWave* arr_data_wave_monster = _sagi->FindDataWaveByWaveRound(_info_wave.wave_round);
-			for (const FDataWaveMonster& s_data_wave_monster : arr_data_wave_monster->GetSpawnMonsters())
-			{
-				i_hp_treasure_chest += _info_wave.monster_hp * s_data_wave_monster.GetSpawnCount();
-			}
-			i_hp_treasure_chest *= 0.5f;
+			int32 i_hp_treasure_chest = _info_wave.monster_hp * _info_wave.monster_spawn_count_max;
 			ASA_Monster* spawn_treasure_chest = _manager_pool->PoolGetMonsterByCode("MOB00010");
-			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _info_wave.wave_round * 5, _data_game_cache->GetTreasureChestSpawnLoc());
+			spawn_treasure_chest->MOBInitTreasureChest(GetNewId(), i_hp_treasure_chest, _data_game_cache->GetTreasureChestSpawnLoc());
 			_spawn_monsters.Add(spawn_treasure_chest);
 		}
 	}
@@ -386,7 +380,6 @@ void ASA_GM::WaveStart()
 {
 	_tick = 0;
 	_count_spawn_monster_current = 0;
-	_count_spawn_monster_max = 0;
 	_is_death_treasure_chest = false;
 	_info_wave_clear.InitStruct();
 	_info_wave_clear.clear_wave_round = _info_wave.wave_round;
@@ -404,24 +397,44 @@ void ASA_GM::WaveStart()
 		if (s_data_wave)
 			_data_wave_current = *s_data_wave;
 	}
-	if (s_data_wave)
+
+	//if (s_data_wave)
+	//{
+	//	const TArray<FDataWaveMonster>& arr_data_spawn_monster = _data_wave_current.GetSpawnMonsters();
+	//	for (const FDataWaveMonster& s_data_spawn_monster : arr_data_spawn_monster)
+	//	{
+	//		_count_spawn_monster_max += s_data_spawn_monster.GetSpawnCount();
+	//	}
+	//}
+
+	/*해당 웨이브에 생성될 몬스터갯수를 계산합니다*/
+	if (_data_wave_current.GetSpawnCount() == 0)
 	{
-		const TArray<FDataWaveMonster>& arr_data_spawn_monster = _data_wave_current.GetSpawnMonsters();
-		for (const FDataWaveMonster& s_data_spawn_monster : arr_data_spawn_monster)
-		{
-			_count_spawn_monster_max += s_data_spawn_monster.GetSpawnCount();
-		}
+		_info_wave.monster_spawn_count_max += _data_game_cache->GetAddMonsterSpawnCount();
+	}
+	else
+	{
+		_info_wave.monster_spawn_count_max = _data_wave_current.GetSpawnCount();
 	}
 
 	/*해당 웨이브에서 나오는 몬스터의 체력과 이속을 미리 구합니다*/
-	_info_wave.monster_hp = (_data_wave_current.GetMonsterHP() + (_data_wave_current.GetMonsterHP() * _info_wave.wave_phase * 3)) * 2;
-	_info_wave.monster_split_hp = _info_wave.monster_hp * 0.7f;
+	if (_data_wave_current.GetMonsterHP() != 0)
+	{
+		_info_wave.monster_hp = (_data_wave_current.GetMonsterHP() + (_data_wave_current.GetMonsterHP() * _info_wave.wave_phase * 3));
+		_info_wave.monster_split_hp = _info_wave.monster_hp * 0.7f;
+	}
+
 	_info_wave.monster_move_speed = _data_game_cache->GetMonsterBaseMoveSpeed() + _info_wave.wave_round;
 
 	/*분열 몬스터의 생성갯수는 웨이브맞는 비율로 정해지기 때문에 미리 계산합니다*/
-	_count_spawn_monster_max *= 2;
-	_info_wave.monster_split_spawn_count = _count_spawn_monster_max * ((float)_info_wave.wave_round * 0.01f);
-	_info_wave.monster_spawn_count = _count_spawn_monster_max - _info_wave.monster_split_spawn_count;
+	//_count_spawn_monster_max *= 2;
+	_info_wave.monster_split_spawn_count = _info_wave.monster_spawn_count_max * ((float)_info_wave.wave_round * 0.01f);
+	_info_wave.monster_spawn_count = _info_wave.monster_spawn_count_max - _info_wave.monster_split_spawn_count;
+
+	/*몬스터 드랍 재화를 미리 계산합니다*/
+	_info_wave.monster_drop_gem = (float)_info_wave.monster_hp * 0.1f;
+	_info_wave.monster_split_drop_gem = (float)_info_wave.monster_split_hp * 0.1f;
+	_info_wave.treasure_chest_drop_gem = _info_wave.wave_round * 5;
 
 	//세이브
 	GameSave();
@@ -494,7 +507,7 @@ void ASA_GM::ChangePROJVelocity(const FVector& v_dest)
 void ASA_GM::SpawnMonsterClone(ASA_Monster* monster_origin)
 {
 	//분열가능한 몬스터인지 확인
-	if (!monster_origin->GetInfoMonster().is_split) return;
+	if (monster_origin->GetInfoMonster().monster_type != EMonsterType::MONSTER_SPLIT) return;
 
 	const FVector& v_loc_spawn_origin = monster_origin->GetActorLocation();
 	FVector v_loc_spawn_new = FVector(v_loc_spawn_origin.X, v_loc_spawn_origin.Y + _data_game_cache->GetMonsterCloneLocY(), 0.f);
@@ -663,7 +676,7 @@ void ASA_GM::PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat)
 	switch (e_upgrade_stat)
 	{
 	case EUpgradeStat::DMG:
-		_info_player.SetUpgradeCostDMG(_info_player.GetUpgradeCostDMG() * _data_game_cache->GetUpgradeDMGCostIncrease());
+		_info_player.SetUpgradeCostDMG(_info_player.GetUpgradeCostDMG() + _data_game_cache->GetUpgradeDMGCostIncrease());
 		_pc->PCUIUpdateUpgradeCost(e_upgrade_stat, _info_player.GetUpgradeCostDMG());
 		break;
 	case EUpgradeStat::AS:
@@ -684,9 +697,33 @@ void ASA_GM::PlayerIncreaseUpgradeCost(const EUpgradeStat e_upgrade_stat)
 	}
 }
 
+void ASA_GM::MonsterDeath(ASA_Monster* monster_death)
+{
+	UpdateInfoWaveClearByKillEnemy();
+	switch (monster_death->GetInfoMonster().monster_type)
+	{
+	case EMonsterType::MONSTER_BASE:
+		UpdateInfoWaveClearByGem(_info_wave.monster_drop_gem);
+		_pc->PCKillMonster(monster_death->GetActorLocation(), _info_wave.monster_drop_gem);
+		break;
+	case EMonsterType::MONSTER_SPLIT:
+		UpdateInfoWaveClearByGem(_info_wave.monster_split_drop_gem);
+		_pc->PCKillMonster(monster_death->GetActorLocation(), _info_wave.monster_split_drop_gem);
+		break;
+	case EMonsterType::TREASURE_CHEST:
+		UpdateInfoWaveClearByGem(_info_wave.treasure_chest_drop_gem);
+		_pc->PCKillMonster(monster_death->GetActorLocation(), _info_wave.treasure_chest_drop_gem);
+		break;
+	default:
+		break;
+	}
+
+	UpdateInfoWaveClearByScore(monster_death->GetInfoMonster().hp_max);
+}
+
 void ASA_GM::GameSave()
 {
-	_manager_saveload->SaveStart(_info_player, _info_wave.wave_round);
+	_manager_saveload->SaveStart(_info_player, _info_wave.wave_round, _info_wave.monster_spawn_count_max);
 }
 void ASA_GM::GameSaveOption()
 {
@@ -694,7 +731,7 @@ void ASA_GM::GameSaveOption()
 }
 void ASA_GM::GameLoad()
 {
-	_manager_saveload->ReadStart(_info_player, _info_wave.wave_round, _info_option);
+	_manager_saveload->ReadStart(_info_player, _info_wave.wave_round, _info_wave.monster_spawn_count_max, _info_option);
 }
 
 const int64 ASA_GM::GetNewId() { return ++_id_master; }

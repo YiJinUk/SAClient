@@ -16,8 +16,8 @@ class SACLIENT_API ASA_Manager_SaveLoad : public ASA_Manager_Master
 	GENERATED_BODY()
 	
 public:
-	void SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round);
+	void SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round, const int32 i_wave_monster_spawn_count_max);
 	void SaveOptionStart(const FInfoOption& s_info_option);
 
-	void ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, FInfoOption& s_info_option);
+	void ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, int32& i_wave_monster_spawn_count_max, FInfoOption& s_info_option);
 };

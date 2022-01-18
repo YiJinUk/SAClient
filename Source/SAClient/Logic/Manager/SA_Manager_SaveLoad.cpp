@@ -8,12 +8,12 @@
 
 #include "Kismet/GameplayStatics.h"
 
-void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round)
+void ASA_Manager_SaveLoad::SaveStart(const FInfoPlayer& s_info_player, const int32 i_wave_round, const int32 i_wave_monster_spawn_count_max)
 {
 	USA_SG_Game* save_file = Cast<USA_SG_Game>(UGameplayStatics::CreateSaveGameObject(USA_SG_Game::StaticClass()));
 	if (!save_file) return;
 
-	save_file->SGSaveData(s_info_player, i_wave_round);
+	save_file->SGSaveData(s_info_player, i_wave_round, i_wave_monster_spawn_count_max);
 
 	UGameplayStatics::SaveGameToSlot(save_file, "SG_Game", 0);
 }
@@ -27,7 +27,7 @@ void ASA_Manager_SaveLoad::SaveOptionStart(const FInfoOption& s_info_option)
 	UGameplayStatics::SaveGameToSlot(save_file, "SG_Option", 0);
 }
 
-void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, FInfoOption& s_info_option)
+void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_round, int32& i_wave_monster_spawn_count_max, FInfoOption& s_info_option)
 {
 	USA_SG_Game* save_file_game = Cast<USA_SG_Game>(UGameplayStatics::LoadGameFromSlot("SG_Game", 0));
 	USA_SG_Option* save_file_option = Cast<USA_SG_Option>(UGameplayStatics::LoadGameFromSlot("SG_Option", 0));
@@ -46,6 +46,7 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetUpgradeCostPenetrate(save_file_game->cost_penetrate);
 
 		i_wave_round = save_file_game->wave_round;
+		i_wave_monster_spawn_count_max = save_file_game->wave_monster_spawn_count_max;
 	}
 	else
 	{
@@ -66,6 +67,7 @@ void ASA_Manager_SaveLoad::ReadStart(FInfoPlayer& s_info_player, int32& i_wave_r
 		s_info_player.SetUpgradeCostPenetrate(s_data_game->GetUpgradeCostPenetrate());
 
 		i_wave_round = 1;
+		i_wave_monster_spawn_count_max = 0;
 	}
 
 	if (save_file_option)

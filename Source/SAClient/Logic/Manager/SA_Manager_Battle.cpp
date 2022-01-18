@@ -28,38 +28,39 @@ bool ASA_Manager_Battle::BattleCalcStart(ASA_Projectile* proj, ASA_Monster* mons
 	*/
 	bool b_is_monster_death = false;
 	int32 i_pure_dmg = 0; // ¸ó½ºÅÍ¿¡°Ô ½ÇÁ¦·Î ÇÇÇØ¸¦ ÁØ °ª
-	int32 i_obtain = 0;
+	//int32 i_obtain = 0;
 	int32 i_remain_hp = monster->MOBChangeHP(i_dmg, i_pure_dmg);
 
 	/*¸ó½ºÅÍ°¡ Á×¾ú´Ù¸é Ç®¸µ*/
 	if (i_remain_hp <= 0)
 	{
 		b_is_monster_death = true;		
-		_sagm->UpdateInfoWaveClearByKillEnemy();
+		_sagm->MonsterDeath(monster);
+		//_sagm->UpdateInfoWaveClearByKillEnemy();
 
-		/*Gem È¹µæ*/
-		if (monster->GetInfoMonster().is_treasure_chest)
-		{
-			/*Gem È¹µæ*/
-			i_obtain = monster->GetInfoMonster().bonus_gold;
-		}
-		else
-		{
-			i_obtain = monster->GetInfoMonster().hp_max * 0.5f;
-		}
+		///*Gem È¹µæ*/
+		//if (monster->GetInfoMonster().is_treasure_chest)
+		//{
+		//	/*Gem È¹µæ*/
+		//	i_obtain = monster->GetInfoMonster().bonus_gold;
+		//}
+		//else
+		//{
+		//	i_obtain = monster->GetInfoMonster().hp_max * 0.5f;
+		//}
 
-		if (i_obtain <= 0)
-			i_obtain = 1;
+		//if (i_obtain <= 0)
+		//	i_obtain = 1;
 
-		_sagm->UpdateInfoWaveClearByGem(i_obtain);
-		_pc->PCKillMonster(monster->GetActorLocation(), i_obtain);
+		//_sagm->UpdateInfoWaveClearByGem(i_obtain);
+		//_pc->PCKillMonster(monster->GetActorLocation(), i_obtain);
 	}
 	else
 	{
 		b_is_monster_death = false;
 	}
 
-	_sagm->UpdateInfoWaveClearByScore(i_pure_dmg);
+	//_sagm->UpdateInfoWaveClearByScore(i_pure_dmg);
 
 
 

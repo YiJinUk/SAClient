@@ -3,7 +3,7 @@
 
 #include "Logic/SaveLoad/SA_SG_Game.h"
 
-void USA_SG_Game::SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wave_round)
+void USA_SG_Game::SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wave_round, const int32 i_wave_monster_spawn_count_max)
 {
 	gem = s_info_player.GetGem();
 
@@ -18,4 +18,5 @@ void USA_SG_Game::SGSaveData(const FInfoPlayer& s_info_player, const int32 i_wav
 	cost_penetrate = s_info_player.GetUpgradeCostPenetrate();
 
 	wave_round = i_wave_round;
+	wave_monster_spawn_count_max = i_wave_monster_spawn_count_max;
 }

@@ -13,7 +13,4 @@ UCLASS()
 class SACLIENT_API ASA_MOB00002 : public ASA_Monster
 {
 	GENERATED_BODY()
-
-protected:
-	void MOBPostInitChild(const FDataMonster* s_data_monster) override;
 };

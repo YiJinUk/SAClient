@@ -6,8 +6,4 @@
 void ASA_MOB00010::MOBPostInitChild(const FDataMonster* s_data_monster)
 {
 	_info_monster.velocity = FVector(-1.f, 0.f, 0.f);
-
-	_info_monster.move_speed = s_data_monster->GetMoveSpeed();
-	_info_monster.is_treasure_chest = true;
-	_info_monster.is_split = false;
 }

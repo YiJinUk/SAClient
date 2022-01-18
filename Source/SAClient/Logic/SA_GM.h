@@ -113,9 +113,9 @@ private:
 	//웨이브중 몬스터가 생성된 횟수입니다
 	UPROPERTY()
 		int32 _count_spawn_monster_current = 0;
-	//현재웨이브에서 생성되야할 몬스터의 총 개수입니다
-	UPROPERTY()
-		int32 _count_spawn_monster_max = 0;
+	////현재웨이브에서 생성되야할 몬스터의 총 개수입니다
+	//UPROPERTY()
+	//	int32 _count_spawn_monster_max = 0;
 	// T : 트레져체스트를 부셨거나, 부시지못한채로 클리어 했습니다
 	UPROPERTY()
 		bool _is_death_treasure_chest = false;
@@ -200,6 +200,11 @@ public:
 private:
 	UPROPERTY()
 		FInfoPlayer _info_player;
+#pragma endregion
+
+#pragma region Battle
+public:
+	void MonsterDeath(ASA_Monster* monster_death);
 #pragma endregion
 
 #pragma region SFX

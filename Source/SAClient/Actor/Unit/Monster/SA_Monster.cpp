@@ -36,7 +36,7 @@ void ASA_Monster::MOBPostInit(const FDataMonster* s_data_monster)
 	_sagi = GetWorld()->GetGameInstance<USA_GI>();
 	if (!s_data_monster) return;
 	_info_monster.code = s_data_monster->GetCode();
-	_info_monster.bonus_gold = s_data_monster->GetBonusGold();
+	_info_monster.monster_type = s_data_monster->GetMonsterType();
 
 	_ui_headup_monster = Cast<USA_UI_Headup_Monster>(_ui_headup->GetUserWidgetObject());
 
@@ -48,7 +48,7 @@ void ASA_Monster::MOBPostInitChild(const FDataMonster* s_data_monster)
 	//override
 }
 
-void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, const int32 i_move_speed, ASA_SpawnPoint* obj_spawn_point)
+void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, ASA_SpawnPoint* obj_spawn_point)
 {
 	//override
 
@@ -69,7 +69,6 @@ void ASA_Monster::MOBInit(const int64 i_id, const int32 i_hp, const int32 i_move
 	/*스탯 초기화*/
 	_info_monster.hp_max = i_hp;
 	_info_monster.hp = _info_monster.hp_max;
-	_info_monster.move_speed = i_move_speed;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);
@@ -97,7 +96,7 @@ void ASA_Monster::MOBInitClone(const int64 i_id, const int32 i_hp, const FVector
 	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
-void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const int32 i_drop_gem, const FVector& s_spawn_loc)
+void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const FVector& s_spawn_loc)
 {
 	/*풀링*/
 	MOBSetPoolActive(true);
@@ -111,16 +110,15 @@ void ASA_Monster::MOBInitTreasureChest(const int64 i_id, const int32 i_hp, const
 	/*스탯 초기화*/
 	_info_monster.hp_max = i_hp;
 	_info_monster.hp = i_hp;
-	_info_monster.bonus_gold = i_drop_gem;
 
 	/*UI 초기화*/
 	_ui_headup_monster->UIInit(_info_monster.hp);
 }
 
 
-void ASA_Monster::MOBMove(const float f_delta_time)
+void ASA_Monster::MOBMove(const float f_delta_time, const int32 i_move_speed)
 {
-	AddActorWorldOffset(_info_monster.velocity * _info_monster.move_speed * f_delta_time);
+	AddActorWorldOffset(_info_monster.velocity * i_move_speed * f_delta_time);
 }
 
 void ASA_Monster::MOBSetPoolActive(const bool b_is_active)
