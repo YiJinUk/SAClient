@@ -11,6 +11,7 @@ class ASA_PC;
 class USA_UI_GameOver;
 class USA_UI_WaveClear;
 class UTextBlock;
+class UWidgetSwitcher;
 
 /**
  * 
@@ -24,6 +25,8 @@ public:
 	void UIGameInit(ASA_PC* pc);
 	
 private:
+	UPROPERTY(Meta = (BindWidget))
+		UWidgetSwitcher* _switcher = nullptr;
 	UPROPERTY(Meta = (BindWidget))
 		USA_UI_GameOver* _ui_game_over = nullptr;
 	UPROPERTY(Meta = (BindWidget))

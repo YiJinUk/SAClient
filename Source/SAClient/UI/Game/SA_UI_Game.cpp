@@ -6,17 +6,18 @@
 #include "SA_UI_WaveClear.h"
 
 #include "Components/TextBlock.h"
+#include "Components/WidgetSwitcher.h"
 
 void USA_UI_Game::UIGameInit(ASA_PC* pc)
 {
 	_ui_game_over->UIGameOverInit(pc);
-	_ui_game_over->SetVisibility(ESlateVisibility::Hidden);
+	_switcher->SetActiveWidgetIndex(2);
 }
 
 void USA_UI_Game::UIGameWaveClear(const FInfoWaveClear& s_info_wave_clear)
 {
 	_ui_wave_clear->UIWaveClearUpdate(s_info_wave_clear);
-	_ui_wave_clear->SetVisibility(ESlateVisibility::Visible);
+	UIGameSetVisibleWaveClear(ESlateVisibility::SelfHitTestInvisible);
 }
 
 void USA_UI_Game::UIGameWaveGameOver()
@@ -27,9 +28,26 @@ void USA_UI_Game::UIGameWaveGameOver()
 
 void USA_UI_Game::UIGameSetVisibleGameOver(const ESlateVisibility e_ui_visible)
 {
-	_ui_game_over->SetVisibility(e_ui_visible);
+	if (e_ui_visible == ESlateVisibility::Hidden)
+	{
+		_switcher->SetActiveWidgetIndex(2);
+	}
+	else
+	{
+		_switcher->SetActiveWidgetIndex(0);
+	}
+	
+	//_ui_game_over->SetVisibility(e_ui_visible);
 }
 void USA_UI_Game::UIGameSetVisibleWaveClear(const ESlateVisibility e_ui_visible)
 {
-	_ui_wave_clear->SetVisibility(e_ui_visible);
+	if (e_ui_visible == ESlateVisibility::Hidden)
+	{
+		_switcher->SetActiveWidgetIndex(2);
+	}
+	else
+	{
+		_switcher->SetActiveWidgetIndex(1);
+	}
+	//_ui_wave_clear->SetVisibility(e_ui_visible);
 }

@@ -744,5 +744,6 @@ const int64 ASA_GM::GetNewId() { return ++_id_master; }
 ASA_SpawnPoint* ASA_GM::GetRandomSpawnPoint() { return _mob_spawn_points[UKismetMathLibrary::RandomInteger(_mob_spawn_points.Num())]; }
 const FInfoPlayerCharacter& ASA_GM::GetInfoPlayerChr() const { return _info_player_chr; }
 const FInfoPlayer& ASA_GM::GetInfoPlayer() const { return _info_player; }
+const EWaveStatus ASA_GM::GetWaveStatus() const { return _wave_status; }
 void ASA_GM::SetWaveStatus(const EWaveStatus e_wave_status) { _wave_status = e_wave_status; }
 const int32 ASA_GM::GetWaveRoundCurrent() const { return _info_wave.wave_round; }

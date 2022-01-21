@@ -19,10 +19,17 @@ ASA_PC::ASA_PC()
 void ASA_PC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (_is_tap_pressed && _sagm)
+	if (!_sagm) return;
+
+	if (_is_tap_pressed)
 	{
 		GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, false, _tap_hit);
 		_sagm->ChangePROJVelocity(_tap_hit.Location);
+	}
+
+	if (_sagm->GetWaveStatus() == EWaveStatus::CLEAR)
+	{
+		IsInputKeyDown(EKeys::Android_Back);
 	}
 }
 

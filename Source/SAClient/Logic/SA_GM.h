@@ -103,6 +103,7 @@ public:
 	void UpdateInfoWaveClearByKillEnemy();
 	void UpdateInfoWaveClearByScore(const int32 i_score);
 
+	const EWaveStatus GetWaveStatus() const;
 	FORCEINLINE void SetWaveStatus(const EWaveStatus e_wave_status);
 	const int32 GetWaveRoundCurrent() const;
 private:
